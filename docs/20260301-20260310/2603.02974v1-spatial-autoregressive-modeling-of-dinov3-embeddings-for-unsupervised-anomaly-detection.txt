@@ -1,0 +1,167 @@
+Title: Spatial Autoregressive Modeling of DINOv3 Embeddings for Unsupervised Anomaly Detection
+
+URL Source: https://arxiv.org/pdf/2603.02974v1
+
+Published Time: Wed, 04 Mar 2026 02:05:19 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Spatial Autoregressive Modeling of DINOv3 Embeddings for Unsupervised Anomaly Detection 
+
+Ertunc Erdil, Nico Schulthess, Guney Tombak, and Ender Konukoglu 
+
+Computer Vision Lab. ETH Zurich, Zurich, Switzerland 
+
+erdile@ethz.ch 
+
+Abstract. DINO models provide rich patch-level representations that have recently enabled strong performance in unsupervised anomaly de-tection (UAD). Most existing methods extract patch embeddings from “normal” images and model them independently, ignoring spatial and neighborhood relationships between patches. This implicitly assumes that self-attention and positional encodings sufficiently encode contex-tual information within each patch embedding. In addition, the nor-mative distribution is often modeled as memory banks or prototype-based representations, which require storing large numbers of features and performing costly comparisons at inference time, leading to substan-tial memory and computational overhead. In this work, we address both limitations by proposing a simple and efficient framework that explic-itly models spatial and contextual dependencies between patch embed-dings using a 2D autoregressive (AR) model. Instead of storing embed-dings or clustering prototypes, our approach learns a compact paramet-ric model of the normative distribution via an AR convolutional neural network (CNN). At test time, anomaly detection reduces to a single for-ward pass through the network and enables fast and memory-efficient inference. We evaluate our method on the BMAD benchmark, which comprises three medical imaging datasets, and compare it against ex-isting work including recent DINO-based methods. Experimental results demonstrate that explicitly modeling spatial dependencies achieves com-petitive anomaly detection performance while substantially reducing in-ference time and memory requirements. Code is available at the project page: https://eerdil.github.io/spatial-ar-dinov3-uad/. 
+
+Keywords: Unsupervised Anomaly Detection · Autoregressive Models 
+
+· Foundational Models. 
+
+## 1 Introduction 
+
+Anomaly detection (AD) in images aims to identify pixels or regions that deviate from normal patterns, such as lesions in medical imaging or structural defects in industrial inspection. Supervised approaches require both normal and abnormal images with pixel-level annotations, which demand substantial manual effort and domain expertise—particularly in medical imaging. Moreover, supervised  
+
+> arXiv:2603.02974v1 [cs.CV] 3 Mar 2026 2E. Erdil et al.
+
+training faces challenges such as class imbalance and the underrepresentation of rare anomaly types, potentially leading to biased models. To address these limitations, UAD learns normal anatomical patterns solely from healthy samples, without requiring anomalous data during training. By modeling the distribution of healthy anatomy (the normative distribution), UAD methods detect deviations at test time. Beyond detection accuracy, computa-tional efficiency is crucial for real-world deployment, especially in clinical settings where time and hardware resources are limited. Therefore, memory-efficient and fast methods are highly desirable. Early UAD approaches are reconstruction-based, training models to recon-struct normal anatomical structures and using reconstruction residuals as anomaly scores. Autoencoders and VAEs [5, 30] model normal data in a latent space, while GAN-based [18] and diffusion-based methods [25] aim to improve reconstruction fidelity. Although conceptually simple, reconstruction-based approaches may generalize too well and partially reconstruct anomalous regions. Instead of re-constructing images, feature-based methods model embeddings extracted from pretrained networks. Knowledge distillation-based frameworks [24, 9] detect dis-crepancies between teacher and student features. Other approaches estimate fea-ture distributions using Gaussian models [8], normalizing flows [10], clustering [14], or memory banks with nearest-neighbor search [6, 17, 12]. Recent foundation models such as DINO [16, 20] provide rich patch-level representations. DINO embeddings capture global context via self-attention and have proven highly transferable to anomaly detection [7, 19]. Existing DINO-based approaches typically store embeddings of healthy patches in memory banks and perform nearest-neighbor search at inference time [7], or model the feature distribution using a Dirichlet process mixture model (DPMM) [19]. DINO patch embeddings are globally contextualized through self-attention and encode positional as well as semantic information. Existing DINO-based anomaly detection methods treat them as independent feature samples during density modeling [7, 19]. In particular, the memory-bank and mixture-based ap-proaches estimate marginal feature distributions while disregarding the struc-tured two-dimensional organization of the embedding grid. While self-attention ensures that each embedding is influenced by global image context, this does not imply that the joint spatial distribution over the embedding grid is explic-itly modeled. In this work, we hypothesize that the spatial configuration of DINO features contains additional anatomical information that can be exploited through struc-tured density estimation. To this end, we propose a simple CNN-based autore-gressive (AR) framework [26, 21] that preserves the 2D grid structure of DINO embeddings and explicitly models conditional dependencies between patches. By capturing joint spatial interactions in feature space, our approach provides a more expressive model of normal anatomy while remaining computationally efficient. Unlike memory-bank methods, inference requires only a single forward pass, eliminating the need for costly nearest-neighbor search. Spatial Autoregressive Modeling of DINOv3 Embeddings for UAD 3
+
+AR modeling of patch embeddings raises the question of how much spatial context should be incorporated when predicting each patch. In anatomically structured data, neighboring embeddings may exhibit strong short-range redun-dancy, allowing the model to rely primarily on local interpolation. To study the influence of spatial scale in this setting, we incorporate dilated convolutions as a simple architectural modification that enlarges the receptive field without in-creasing computational cost. This design enables the model to capture broader contextual dependencies while preserving the autoregressive formulation, and allows us to investigate how different spatial modeling scales affect anomaly detection performance. 
+
+## 2 Method 
+
+2.1 Autoregressive Modeling of DINO Features 
+
+Let x ∈ RH×W denote an input image drawn from the distribution of healthy samples pdata (x). A pretrained DINO vision transformer Φ extracts patch-level embeddings arranged on a 2D grid: 
+
+F = Φ(x) ∈ RHp×Wp×D , (1) where Hp × Wp is the spatial patch grid size, D is the embedding dimension, and Fi,j ∈ RD denotes the embedding at location (i, j ).We model the joint distribution over the embedding grid using an AR fac-torization [22]: 
+
+p(F ) = Y
+
+> i,j
+
+p(Fi,j | F<i,j ), (2) where F<i,j denotes embeddings preceding (i, j ) under a raster-scan ordering (row-major traversal from top-left to bottom-right) as shown in Fig. 1(a). This factorization enables structured density modeling over the two-dimensional em-bedding grid by capturing conditional dependencies across spatial locations. Each conditional distribution is modeled as an isotropic Gaussian: 
+
+p(Fi,j | F<i,j ) = N (Fi,j | μi,j , I ), (3) where I denotes the identity covariance matrix. The conditional means are pre-dicted by a neural network, μ = fθ (F ), where the architecture enforces that μi,j 
+
+depends only on F<i,j .The model is trained on healthy samples by minimizing the negative log-likelihood: 
+
+L(θ) = − 1
+
+|X train |
+
+X
+
+> x∈X train
+
+X
+
+> i,j
+
+log p(Fi,j | F<i,j ; θ). (4) At test time, anomaly scores for each patch are computed from the corre-sponding conditional negative log-likelihood values: 
+
+Ai,j = − log p(Fi,j | F<i,j ). (5) 4 E. Erdil et al. Standard convolution Standard dilated convolution Masked convolution first layer Masked convolution subsequent layers Masked dilated convolution first layer Masked dilated convolution subsequent layers  
+
+> abc
+
+Fig. 1. Illustration of (a) raster-scan autoregressive factorization over the embedding grid where the blue cell indicates the current prediction target, green cells denote pre-ceding (conditioned) embeddings, and red cells correspond to future spatial locations which are treated as unobserved to predict the blue embedding, (b) Standard and masked convolutional kernels without dilation, and (c) corresponding dilated convolu-tional kernels. Grey cells indicate masked weights that prevent access to future spatial positions. 
+
+All patch-level anomaly scores are obtained in a single forward pass through 
+
+fθ . The architectural design enabling parallel AR evaluation is described in the following section. 
+
+2.2 CNN-based Autoregressive Architecture 
+
+The AR factorization in Eq. (2) requires that the prediction at location (i, j ) de-pends only on the preceding embeddings F<i,j . Instead of performing sequential evaluation, we enforce this AR constraint using masked convolutions, enabling parallel training and inference similar to PixelCNN-style models [23]. Given the embedding grid F ∈ RHp×Wp×D , the network fθ is implemented as a stack of masked convolutional layers. For a convolutional kernel centered at 
+
+(i, j ), weights corresponding to spatial locations below the current row and to the right within the same row are set to zero, ensuring that the prediction does not access future embeddings under the raster-scan ordering. In the first convolutional layer, we additionally mask the center element of the kernel, preventing direct access to the current embedding Fi,j . In subsequent layers, the center position is unmasked, since intermediate feature maps no longer contain direct access to the original input but instead consist of already masked representations. Fig. 1(b) illustrates the masking patterns applied in the first and subsequent convolutional layers. This design enforces the AR constraint while enabling efficient parallel computation over the entire embedding grid instead of computationally expensive sequential evaluation [23]. A key challenge when AR modeling of DINO embeddings is that these fea-tures are already globally contextualized through self-attention. As a result, neighboring embeddings often exhibit strong local correlations. A CNN may Spatial Autoregressive Modeling of DINOv3 Embeddings for UAD 5
+
+therefore learn to predict each embedding primarily from its immediate spa-tial neighbors, effectively performing short-range interpolation. Such behavior can reduce anomaly sensitivity, as structurally abnormal regions may still be predictable from surrounding normal context. To mitigate this issue, we introduce dilated convolutions [27] in the AR CNN. Dilated convolutions expand the receptive field without increasing the number of parameters by introducing gaps between kernel elements. This increases the effective receptive field under the AR constraint, enabling the model to capture longer-range spatial dependencies in the embedding grid. The combined masking and dilation strategy is illustrated in Fig. 1(c). 
+
+## 3 Experiments and Results 
+
+3.1 Experimental Setup 
+
+Model Architecture: We employ the small (S) variant of DINOv3 as a feature extractor Φ, initialized with officially released pretrained weights 1, resulting in 384-dimensional patch embeddings. The AR network fθ consists of five masked convolutional layers with a dilation factor of 4. The model is trained using the AdamW optimizer [15] with a batch size of 64 and a learning rate 10 −3. Follow-ing [7, 19], input images are resized to 448 × 448 to obtain smoother anomaly maps in DINO-based methods. Model selection is performed based on the highest log-likelihood on the normal validation set. 
+
+Datasets: We evaluate our method on the anomaly segmentation datasets pro-vided by the BMAD benchmark [2], which include 2D images of brain MRI from BraTS2021 [1], liver CT from BTCV [13] and LiTs [3], and retinal OCT from RESC [11]. BraTS2021 contains 8,179 normal and 3,199 anomalous images. The combined liver CT datasets comprise 2,468 normal and 733 anomalous images. RESC includes 5,498 normal and 809 anomalous images. A separate model is trained for each dataset using only normal samples for training and validation. 
+
+Evaluation: We compare our approach against state-of-the-art UAD methods using pixel-level Area Under the Receiver Operating Characteristic curve (AU-ROC) and Area Under the Precision–Recall curve (AUPR). The results are av-eraged over three random seeds, except AnomalyDINO which is deterministic. Following [19], evaluation is performed at the original image resolution. In ad-dition to detection performance, we report computational efficiency in terms of inference time per 2D image and peak total (CPU + GPU) memory consump-tion during inference. Runtime is measured with batch size 1 and averaged over the entire test set after a short warm-up phase. All experiments are performed on an NVIDIA A6000 GPU (48 GB VRAM).  
+
+> 1https://github.com/facebookresearch/dinov3 under the Apache 2.0 License.
+
+6 E. Erdil et al. 10 1 10 2     
+
+> Runtime [ms]
+> 60
+> 80
+> 100
+> AUROC [%]
+> BraTS2021
+> 10 2
+> Runtime [ms]
+> BTCV+LiTs
+> 10 110 210 3
+> Runtime [ms]
+> RESC
+> 10 110 2
+> Runtime [ms]
+> 0
+> 20
+> 40
+> 60
+> AUPR [%]
+> BraTS2021
+> 10 2
+> Runtime [ms]
+> BTCV+LiTs
+> 10 110 210 3
+> Runtime [ms]
+> RESC
+> DRAEM
+> UTRAD
+> RD4AD
+> STFPM
+> PaDiM
+> PatchCore
+> CFA
+> CFLOW
+> AnomalyDINO v2-S
+> AnomalyDINO v3-S
+> DPMM v2-S
+> DPMM v3-S
+> Ours (standard conv)
+> Ours (dilated conv)
+
+Method BraTS2021 BTCV+LiTs RESC RESC DRAEM 63.85 ± 16.37 89.42 ± 4.96 88.81 ± 3.95 130 UTRAD 47.47 ± 3.78 85.54 ± 0.36 94.62 ± 0.11 42 RD4AD 97.85 ± 0.05 95.54 ± 1.73 96.84 ± 0.23 117 STFPM 96.84 ± 0.58 96.30 ± 0.15 95.11 ± 0.31 111 PaDiM 83.59 ± 0.80 90.35 ± 0.17 91.88 ± 0.07 129 PatchCore N/A 96.63 ± 0.00 97.57 ± 0.01 218 CFA 97.33 ± 0.09 97.14 ± 0.13 93.11 ± 0.02 116 CFLOW 94.93 ± 0.71 92.88 ± 2.17 94.68 ± 0.05 219 AnomalyDINO (v2-S) 97.71 ± 0.00 97.24 ± 0.00 94.04 ± 0.00 984 AnomalyDINO (v3-S) 98.38 ± 0.00 96.98 ± 0.00 96.93 ± 0.00 585 DPMM (v2-S) 91.16 ± 3.72 96.30 ± 0.94 86.47 ± 1.84 58 DPMM (v3-S) 96.12 ± 0.55 90.48 ± 1.05 86.94 ± 7.76 149 Ours (standard conv) 97.87 ± 0.24 97.32 ± 0.24 94.39 ± 0.10 20 Ours (dilated conv) AUROC [%] 98.35 ± 0.02 96.39 ± 0.04 93.09 ± 0.19 Runtime [ms] 20 DRAEM 14.61 ± 7.94 7.03 ± 4.79 38.05 ± 9.94 0.5 UTRAD 3.11 ± 0.25 1.36 ± 0.04 49.57 ± 1.20 0.9 RD4AD 52.98 ± 1.25 4.71 ± 1.80 64.77 ± 3.33 0.4 STFPM 43.86 ± 5.28 5.44 ± 0.29 54.10 ± 1.02 0.2 PaDiM 7.02 ± 0.32 1.76 ± 0.03 33.09 ± 1.73 3.7 PatchCore N/A 6.00 ± 0.01 72.77 ± 0.06 5.0 CFA 54.67 ± 0.69 7.13 ± 0.41 30.84 ± 0.09 0.3 CFLOW 34.99 ± 6.26 3.46 ± 0.70 52.23 ± 1.19 0.9 AnomalyDINO (v2-S) 58.69 ± 0.00 17.91 ± 0.00 50.45 ± 0.00 38.1 AnomalyDINO (v3-S) 69.49 ± 0.00 5.35 ± 0.00 63.40 ± 0.00 11.3 DPMM (v2-S) 29.18 ± 6.74 7.05 ± 1.78 34.99 ± 2.79 2.0 DPMM (v3-S) 48.09 ± 6.62 1.94 ± 0.25 37.70 ± 17.83 1.4 Ours (standard conv) 64.70 ± 3.56 8.44 ± 1.09 56.16 ± 1.08 0.2 Ours (dilated conv) AUPR [%] 72.42 ± 0.47 5.51 ± 0.26 42.34 ± 1.07 Memory [GB] 0.2 
+
+Fig. 2. (top) Runtime vs. AUROC and AUPR trade-off across datasets. Methods lo-cated in the upper-left region (high detection performance, low runtime) are preferable. (bottom) Comparison of AUROC and AUPR scores over all datasets and runtime and memory consumption measurements on the RESC dataset. AUROC and AUPR scores are averaged over three random seeds and we report mean ± std. Methods using DINO are highlighted in gray. Spatial Autoregressive Modeling of DINOv3 Embeddings for UAD 7
+
+Baselines: We compare our method with a diverse set of UAD approaches, in-cluding reconstruction-based methods (DRAEM [29], UTRAD [4], student–teacher methods (RD4AD [9], STFPM [24]), feature-distribution modeling approaches (PaDiM [8], CFLOW [10], CFA [14]), and memory-bank-based methods (Patch-Core [17], AnomalyDINO [7], DPMM [19]). We used the WideResNet50 [28] backbone for STFPM, PaDiM and PatchCore. Results for PatchCore on BraTS2021 are not available since this experiment requires more than 80 GB of VRAM. For AnomalyDINO, we report the full-shot setting. AnomalyDINO [7] and DPMM [19] were originally evaluated using DINOv2-S embeddings. To ensure a fair compar-ison, we report their published results with DINOv2-S as well as DINOv3-S embeddings. Baseline results are obtained using official implementations and the BMAD benchmark implementations [2]. 
+
+3.2 Results 
+
+Fig. 2 (top) illustrates the trade-off between runtime and detection performance across datasets. Our method consistently lies in the favorable region of the plots, achieving competitive AUROC and AUPR while operating at considerably lower runtime compared to most baselines. This highlights the efficiency advantage of AR modeling in embedding space. The detailed quantitative results are shown in Fig. 2 (tables at the bottom). Due to space constraints, runtime and GPU memory measurements are reported only on the RESC dataset because we observed little variation across datasets. On the BraTS2021 dataset, our method achieves one of the best results across both AUROC and AUPR metrics. In terms of AUROC, the dilated variant (98.35%) performs nearly identically to AnomalyDINO (v3-S) (98.38%), while the standard convolution variant (97.87%) remains competitive and comparable to other top-performing methods such as RD4AD. For AUPR, the dilated ver-sion of our method achieves the best overall performance (72.42%), surpassing AnomalyDINO (v3-S) (69.49%) and all other baselines. On the BTCV+LiTs dataset, our standard convolution variant achieves the highest AUROC among all methods (97.32%), slightly exceeding AnomalyDINO (v2-S) (97.24%) and CFA (97.14%). The dilated variant attains a marginally lower AUROC (96.39%) but remains competitive with other top-performing ap-proaches. In terms of AUPR, all methods obtain relatively low scores, indicating a challenging setting with pronounced class imbalance. Our standard variant (8.44%) ranks third overall and second among the DINO-based methods on this dataset. On the RESC dataset, our standard and dilated variants obtain AUROC scores of 94.39% and 93.09%, respectively, remaining competitive though be-low the top-performing approache PatchCore (97.57%). In terms of AUPR, PatchCore (72.77%) achieves the strongest result. Our standard variant attains 56.16%, ranking second among the DINO-based methods. One observation from our experiments is that the benefit of dilated convo-lutions varies across datasets. On BraTS2021 (brain MRI), neighboring patch embeddings are often strongly correlated due to the structured nature of brain 8 E. Erdil et al.                                                  
+
+> Table 1. Comparison of different variants of our method in terms of AUPR [%]. Method BraTS2021 BTCV+LiTs RESC Ours (standard conv) 64.70 ±3.56 8.44 ±1.09 56.16 ±1.08 Ours (dilated conv) 72.42 ±0.47 5.51 ±0.26 42.34 ±1.07 Bidirectional (standard conv) 68.72 ±1.33 6.25 ±0.53 45.40 ±2.64 Bidirectional (dilated conv) 71.60 ±1.26 7.06 ±0.19 52.50 ±0.19 Image-space AR 11.03 ±0.15 4.14 ±0.06 15.10 ±0.05
+
+anatomy. As a result, the standard AR model may learn a short-range interpo-lation strategy that generalizes even to anomalous regions, leading to reduced anomaly sensitivity. This interpretation is supported by a retrospective analysis of validation AUROC and AUPR curves: for the standard variant on BraTS, performance reaches a peak in early training and subsequently declines, suggest-ing overfitting to local interpolation patterns. Incorporating dilated convolutions expands the receptive field and mitigates this effect, improving both AUROC and AUPR. In contrast, for BTCV+LiTs (liver CT) and RESC (retinal OCT), prediction appears to rely more strongly on localized structures, and distant patches provide less informative context. Consequently, enlarging the receptive field does not yield additional benefit and may slightly reduce performance. 
+
+3.3 Ablation 
+
+Comparison with Other Variants Tab. 1 compares our AR model with two vari-ants: a bidirectional formulation, where each patch embedding is predicted using both past and future context, and an image-space AR model. The bidirectional variant is implemented by masking only the center position in the first con-volutional layer and applying standard convolution in subsequent layers. Across datasets, the bidirectional formulation performs comparably to the standard AR model, suggesting that future context offers limited benefit and may occasionally slightly degrade performance. In contrast, performing AR modeling directly in image space leads to a substantial performance drop across all datasets. 
+
+Effect of Using Larger DINOv3 Models We evaluate the impact of backbone scale by replacing DINOv3-S with DINOv3-7B in our method on BraTS2021. The larger backbone yields only marginal differences (AUROC: 98 .35 → 98 .25 ,AUPR: 72 .42 → 73 .12 ) while substantially increasing runtime. This suggests that scaling the DINO backbone alone provides limited benefit for anomaly detection in our autoregressive framework. 
+
+## 4 Conclusion 
+
+We presented a simple and efficient framework for UAD by performing spatial AR modeling directly on DINOv3 patch embeddings. By explicitly capturing conditional dependencies on the 2D embedding grid with a lightweight AR CNN, Spatial Autoregressive Modeling of DINOv3 Embeddings for UAD 9
+
+our approach avoids memory-bank storage and costly nearest-neighbor retrieval, enabling fast and memory-efficient inference with a single forward pass. Experi-ments on the BMAD benchmark [2] demonstrate competitive UAD performance across modalities while substantially reducing runtime and GPU memory usage. 10 E. Erdil et al. 
+
+## References 
+
+1. Baid, U., Ghodasara, S., Mohan, S., Bilello, M., Calabrese, E., Colak, E., Farahani, K., Kalpathy-Cramer, J., Kitamura, F.C., Pati, S., et al.: The rsna-asnr-miccai brats 2021 benchmark on brain tumor segmentation and radiogenomic classifica-tion. arXiv preprint arXiv:2107.02314 (2021) 2. Bao, J., Sun, H., Deng, H., He, Y., Zhang, Z., Li, X.: Bmad: Benchmarks for medical anomaly detection. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 4042–4053 (2024) 3. Bilic, P., Christ, P., Li, H.B., Vorontsov, E., Ben-Cohen, A., Kaissis, G., Szeskin, A., Jacobs, C., Mamani, G.E.H., Chartrand, G., et al.: The liver tumor segmentation benchmark (lits). Medical image analysis 84 , 102680 (2023) 4. Chen, L., You, Z., Zhang, N., Xi, J., Le, X.: Utrad: Anomaly detection and local-ization with u-transformer. Neural Networks 147 , 53–62 (2022) 5. Chen, X., Konukoglu, E.: Unsupervised detection of lesions in brain mri using constrained adversarial auto-encoders. arXiv preprint arXiv:1806.04972 (2018) 6. Cohen, N., Hoshen, Y.: Sub-image anomaly detection with deep pyramid corre-spondences. arXiv preprint arXiv:2005.02357 (2020) 7. Damm, S., Laszkiewicz, M., Lederer, J., Fischer, A.: Anomalydino: Boosting patch-based few-shot anomaly detection with dinov2. In: 2025 IEEE/CVF Winter Con-ference on Applications of Computer Vision (WACV). pp. 1319–1329. IEEE (2025) 8. Defard, T., Setkov, A., Loesch, A., Audigier, R.: Padim: a patch distribution model-ing framework for anomaly detection and localization. In: International conference on pattern recognition. pp. 475–489. Springer (2021) 9. Deng, H., Li, X.: Anomaly detection via reverse distillation from one-class embed-ding. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 9737–9746 (2022) 10. Gudovskiy, D., Ishizaka, S., Kozuka, K.: Cflow-ad: Real-time unsupervised anomaly detection with localization via conditional normalizing flows. In: Proceedings of the IEEE/CVF winter conference on applications of computer vision. pp. 98–107 (2022) 11. Hu, J., Chen, Y., Yi, Z.: Automated segmentation of macular edema in oct using deep neural networks. Medical image analysis 55 , 216–227 (2019) 12. Huang, C., Kang, Z., Wu, H.: A prototype-based neural network for image anomaly detection and localization. Neural Processing Letters 56 (3), 169 (2024) 13. Landman, B., Xu, Z., Igelsias, J., Styner, M., Langerak, T., Klein, A.: miccai multi-atlas labeling beyond the cranial vault–workshop and challenge. accessed dec. 2020 (2015) 14. Lee, S., Lee, S., Song, B.C.: Cfa: Coupled-hypersphere-based feature adaptation for target-oriented anomaly localization. IEEE Access 10 , 78446–78454 (2022) 15. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. arXiv preprint arXiv:1711.05101 (2017) 16. Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., Fernandez, P., Haziza, D., Massa, F., El-Nouby, A., et al.: Dinov2: Learning robust visual features without supervision. arXiv preprint arXiv:2304.07193 (2023) 17. Roth, K., Pemula, L., Zepeda, J., Schölkopf, B., Brox, T., Gehler, P.: Towards total recall in industrial anomaly detection. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 14318–14328 (2022) 18. Schlegl, T., Seeböck, P., Waldstein, S.M., Langs, G., Schmidt-Erfurth, U.: f-anogan: Fast unsupervised anomaly detection with generative adversarial networks. Medical image analysis 54 , 30–44 (2019) Spatial Autoregressive Modeling of DINOv3 Embeddings for UAD 11 19. Schulthess, N., Konukoglu, E.: Anomaly detection by clustering dino embeddings using a dirichlet process mixture. In: International Conference on Medical Image Computing and Computer-Assisted Intervention. pp. 46–56. Springer (2025) 20. Siméoni, O., Vo, H.V., Seitzer, M., Baldassarre, F., Oquab, M., Jose, C., Khali-dov, V., Szafraniec, M., Yi, S., Ramamonjisoa, M., et al.: Dinov3. arXiv preprint arXiv:2508.10104 (2025) 21. Sun, P., Jiang, Y., Chen, S., Zhang, S., Peng, B., Luo, P., Yuan, Z.: Autoregres-sive model beats diffusion: Llama for scalable image generation. arXiv preprint arXiv:2406.06525 (2024) 22. Tomczak, J.M.: Autoregressive models. In: Deep Generative Modeling, pp. 37–62. Springer (2024) 23. Van Den Oord, A., Kalchbrenner, N., Kavukcuoglu, K.: Pixel recurrent neural networks. In: International conference on machine learning. pp. 1747–1756. PMLR (2016) 24. Wang, G., Han, S., Ding, E., Huang, D.: Student-teacher feature pyramid matching for anomaly detection. arXiv preprint arXiv:2103.04257 (2021) 25. Wyatt, J., Leach, A., Schmon, S.M., Willcocks, C.G.: Anoddpm: Anomaly detec-tion with denoising diffusion probabilistic models using simplex noise. In: Proceed-ings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 650–656 (2022) 26. Xiong, J., Liu, G., Huang, L., Wu, C., Wu, T., Mu, Y., Yao, Y., Shen, H., Wan, Z., Huang, J., et al.: Autoregressive models in vision: A survey. arXiv preprint arXiv:2411.05902 (2024) 27. Yu, F., Koltun, V.: Multi-scale context aggregation by dilated convolutions. arXiv preprint arXiv:1511.07122 (2015) 28. Zagoruyko, S., Komodakis, N.: Wide residual networks. In: Proceedings of the British Machine Vision Conference (BMVC). pp. 87.1–87.12 (2016) 29. Zavrtanik, V., Kristan, M., Skočaj, D.: Draem-a discriminatively trained re-construction embedding for surface anomaly detection. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 8330–8339 (2021) 30. Zimmerer, D., Isensee, F., Petersen, J., Kohl, S., Maier-Hein, K.: Unsupervised anomaly localization using variational auto-encoders. In: International conference on medical image computing and computer-assisted intervention. pp. 289–297. Springer (2019)

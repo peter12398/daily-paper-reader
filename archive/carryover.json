@@ -1,6 +1,138 @@
 {
-  "generated_at": "2026-03-10T19:14:31.066937+00:00",
-  "updated_date": "20260310",
+  "generated_at": "2026-03-10T22:06:58.210328+00:00",
+  "updated_date": "20260301-20260310",
   "carryover_days": 9,
-  "items": []
+  "items": [
+    {
+      "id": "2603.05012v1",
+      "title": "Tell2Adapt: A Unified Framework for Source Free Unsupervised Domain Adaptation via Vision Foundation Model",
+      "abstract": "Source Free Unsupervised Domain Adaptation (SFUDA) is critical for deploying deep learning models across diverse clinical settings. However, existing methods are typically designed for low-gap, specific domain shifts and cannot generalize into a unified, multi-modalities, and multi-target framework, which presents a major barrier to real-world application. To overcome this issue, we introduce Tell2Adapt, a novel SFUDA framework that harnesses the vast, generalizable knowledge of the Vision Foundation Model (VFM). Our approach ensures high-fidelity VFM prompts through Context-Aware Prompts Regularization (CAPR), which robustly translates varied text prompts into canonical instructions. This enables the generation of high-quality pseudo-labels for efficiently adapting the lightweight student model to target domain. To guarantee clinical reliability, the framework incorporates Visual Plausibility Refinement (VPR), which leverages the VFM's anatomical knowledge to re-ground the adapted model's predictions in target image's low-level visual features, effectively removing noise and false positives. We conduct one of the most extensive SFUDA evaluations to date, validating our framework across 10 domain adaptation directions and 22 anatomical targets, including brain, cardiac, polyp, and abdominal targets. Our results demonstrate that Tell2Adapt consistently outperforms existing approaches, achieving SOTA for a unified SFUDA framework in medical image segmentation. Code are avaliable at https://github.com/derekshiii/Tell2Adapt.",
+      "authors": [
+        "Yulong Shi",
+        "Shijie Li",
+        "Ziyi Li",
+        "Lin Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-05T10:01:22+00:00",
+      "link": "https://arxiv.org/pdf/2603.05012v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Harnesses Vision Foundation Model for domain adaptation in clinical settings",
+      "llm_evidence_cn": "利用视觉基础模型进行临床场景下的领域自适应",
+      "llm_evidence": "利用视觉基础模型进行临床场景下的领域自适应",
+      "canonical_evidence": "利用视觉基础模型进行临床场景下的领域自适应",
+      "llm_tldr_en": "Tell2Adapt uses Vision Foundation Models to enable source-free unsupervised domain adaptation in medical imaging.",
+      "llm_tldr_cn": "Tell2Adapt利用视觉基础模型的知识实现医学影像的无源无监督领域自适应。",
+      "llm_tldr": "Tell2Adapt利用视觉基础模型的知识实现医学影像的无源无监督领域自适应。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.05012v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.07895v1",
+      "title": "MINT: Molecularly Informed Training with Spatial Transcriptomics Supervision for Pathology Foundation Models",
+      "abstract": "Pathology foundation models learn morphological representations through self-supervised pretraining on large-scale whole-slide images, yet they do not explicitly capture the underlying molecular state of the tissue. Spatial transcriptomics technologies bridge this gap by measuring gene expression in situ, offering a natural cross-modal supervisory signal. We propose MINT (Molecularly Informed Training), a fine-tuning framework that incorporates spatial transcriptomics supervision into pretrained pathology Vision Transformers. MINT appends a learnable ST token to the ViT input to encode transcriptomic information separately from the morphological CLS token, preventing catastrophic forgetting through DINO self-distillation and explicit feature anchoring to the frozen pretrained encoder. Gene expression regression at both spot-level (Visium) and patch-level (Xenium) resolutions provides complementary supervision across spatial scales. Trained on 577 publicly available HEST samples, MINT achieves the best overall performance on both HEST-Bench for gene expression prediction (mean Pearson r = 0.440) and EVA for general pathology tasks (0.803), demonstrating that spatial transcriptomics supervision complements morphology-centric self-supervised pretraining.",
+      "authors": [
+        "Minsoo Lee",
+        "Jonghyun Kim",
+        "Juseung Yun",
+        "Sunwoo Yu",
+        "Jongseong Jang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-09T02:29:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.07895v1",
+      "tags": [
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Pathology foundation models using DINO self-distillation",
+      "llm_evidence_cn": "使用DINO自蒸馏的病理基础模型",
+      "llm_evidence": "使用DINO自蒸馏的病理基础模型",
+      "canonical_evidence": "使用DINO自蒸馏的病理基础模型",
+      "llm_tldr_en": "Integrates spatial transcriptomics into pathology ViTs using DINO-based self-distillation for molecular awareness.",
+      "llm_tldr_cn": "利用基于DINO的自蒸馏将空间转录组学整合到病理ViT中，实现分子感知。",
+      "llm_tldr": "利用基于DINO的自蒸馏将空间转录组学整合到病理ViT中，实现分子感知。",
+      "llm_tags": [
+        "query:med-fm:composite"
+      ],
+      "matched_query_tag": "query:med-fm:composite",
+      "matched_query_text": "Papers central to Foundation models（尤其是DINOv3相关）在医学图像分割领域应用的相关论文, especially work that connects or combines: DINOv3 foundation model architecture and features; Vision foundation models for medical imaging; Deep learning for medical image segmentation tasks; Applications of DINOv2 and DINOv3 in healthcare; Recent advances in DINOv3 for medical image analysis; Adapting vision foundation models for medical image segmentation; Performance of DINOv3 in clinical image segmentation benchmarks; Comparison of DINOv3 and other foundation models in medical tasks.",
+      "matched_requirement_id": "req-composite-med-fm",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.07895v1",
+      "carry_days": 1
+    },
+    {
+      "id": "2603.07307v1",
+      "title": "StructSAM: Structure- and Spectrum-Preserving Token Merging for Segment Anything Models",
+      "abstract": "Recent token merging techniques for Vision Transformers (ViTs) provide substantial speedups by reducing the number of tokens processed by self-attention, often without retraining. However, their direct application to the Segment Anything Model (SAM) family is nontrivial: SAM's image encoder mixes windowed and global attention, and its mask decoder relies on dense, prompt-conditioned features for precise boundary prediction. We systematically evaluate representative token-merging methods on SAM and Medical SAM in a strict off-the-shelf setting, and find that existing destination-selection heuristics can erode boundaries and leak prompt information as merge rates increase. We propose \\textbf{StructSAM}, a resolution-preserving merge-unmerge framework tailored to SAM. StructSAM computes a lightweight token-energy score from first-order feature gradients, uses grid-based flatness screening to protect boundary and prompt regions, and merges tokens within flat areas toward low-energy destinations with explicit token recovery. We further provide a spectral graph coarsening view showing that score-guided merging yields bounded Laplacian spectral distortion compared to random or window-restricted baselines. Across eight natural and medical benchmarks, StructSAM reduces encoder FLOPs by 25-30\\% (up to 40\\%+ with prompt-aware merging) with minor drops in mIoU/Dice, consistently outperforming ToMe, PiToMe, ToMeSD, VidToMe, and ALGM at the same compute.",
+      "authors": [
+        "Duy M. H. Nguyen",
+        "Tuan A. Tran",
+        "Duong Nguyen",
+        "Siwei Xie",
+        "Trung Q. Nguyen",
+        "Mai T. N. Truong",
+        "Daniel Palenicek",
+        "An T. Le",
+        "Michael Barz",
+        "TrungTin Nguyen",
+        "Tuan Dam",
+        "Ngan Le",
+        "Minh Vu",
+        "Khoa Doan",
+        "Vien Ngo",
+        "Pengtao Xie",
+        "James Zou",
+        "Daniel Sonntag",
+        "Jan Peters",
+        "Mathias Niepert"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-03-07T18:30:58+00:00",
+      "link": "https://arxiv.org/pdf/2603.07307v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adapting and optimizing Vision Transformer foundation models like SAM and Medical SAM for segmentation",
+      "llm_evidence_cn": "针对分割任务优化和适配SAM及Medical SAM等视觉Transformer基础模型",
+      "llm_evidence": "针对分割任务优化和适配SAM及Medical SAM等视觉Transformer基础模型",
+      "canonical_evidence": "针对分割任务优化和适配SAM及Medical SAM等视觉Transformer基础模型",
+      "llm_tldr_en": "Proposes StructSAM to improve token merging in Segment Anything Models for better efficiency and boundary preservation.",
+      "llm_tldr_cn": "提出StructSAM，通过改进SAM模型的Token合并机制，在提升效率的同时保留精确的分割边界。",
+      "llm_tldr": "提出StructSAM，通过改进SAM模型的Token合并机制，在提升效率的同时保留精确的分割边界。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.07307v1",
+      "carry_days": 1
+    }
+  ]
 }

@@ -1,0 +1,316 @@
+Title: The Texture-Shape Dilemma: Boundary-Safe Synthetic Generation for 3D Medical Transformers
+
+URL Source: https://arxiv.org/pdf/2603.00985v1
+
+Published Time: Tue, 03 Mar 2026 02:15:48 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# The Texture-Shape Dilemma: Boundary-Safe Synthetic Generation for 3D Medical Transformers 
+
+Jiaqi Tang 1⋆, Weixuan Xu 2⋆, Shu Zhang 3, Fandong Zhang 3, and Qingchao Chen 1⋆⋆  
+
+> 1
+
+Peking University 
+
+jiaqi_tang@hsc.pku.edu.cn, qingchao.chen@pku.edu.cn  
+
+> 2
+
+Central South University 
+
+8208231610@csu.edu.cn  
+
+> 3
+
+Deepwise Ltd. 
+
+{zhangshu, zhangfandong}@deepwise.com 
+
+Abstract. Vision Transformers (ViTs) have revolutionized medical im-age analysis, yet their data-hungry nature clashes with the scarcity and privacy constraints of clinical archives. Formula-Driven Supervised Learn-ing (FDSL) has emerged as a promising solution to this bottleneck, syn-thesizing infinite annotated samples from mathematical formulas with-out utilizing real patient data. However, existing FDSL paradigms rely on simple geometric shapes with homogeneous intensities, creating a sub-stantial gap by neglecting tissue textures and noise patterns inherent in modalities like CT and MRI. In this paper, we identify a critical opti-mization conflict termed boundary aliasing: when high-frequency syn-thetic textures are naively added, they corrupt the image gradient sig-nals necessary for learning structural boundaries, causing the model to fail in delineating real anatomical margins. To bridge this gap, we pro-pose a novel Physics-inspired Spatially-Decoupled Synthesis framework. Our approach orthogonalizes the synthesis process: it first constructs a gradient-shielded buffer zone based on boundary distance to ensure stable shape learning, and subsequently injects physics-driven spectral textures into the object core. This design effectively reconciles robust shape representation learning with invariance to acquisition noise. Ex-tensive experiments on the BTCV and MSD datasets demonstrate that our method significantly outperforms previous FDSL, as well as SSL methods trained on real-world medical datasets, by 1.43% on BTCV and up to 1.51% on MSD task, offering a scalable, annotation-free foun-dation for medical ViTs. The code will be made publicly available upon acceptance.  
+
+> ⋆
+
+These authors contributed equally to this work.  
+
+> ⋆⋆
+
+Corresponding author.  
+
+> arXiv:2603.00985v1 [cs.CV] 1 Mar 2026 2J. Tang et al.
+
+1 Introduction 
+
+Vision Transformers (ViTs) [11] have transformed medical image analysis but suffer from a lack of inductive biases, making them notoriously data-hungry and prone to overfitting[4]. While Self-Supervised Learning (SSL) leverages unlabeled data to mitigate this [2, 19, 16], it remains tethered to clinical archives, perpet-uating privacy constraints and dataset-specific biases. Consequently, there is a critical need for pre-training paradigms that initialize ViTs effectively without relying on the restrictive pipeline of real-world data collection. In response to these limitations, Formula-Driven Supervised Learning (FDSL) has emerged as a compelling, privacy-preserving alternative. Instead of relying on natural data, FDSL synthesizes massive pairs of images and dense annotation masks directly from mathematical formulas, enabling models to be pre-trained in a fully supervised manner. [13, 15, 12, 8]. By learning geometric primitives from synthetic patterns, FDSL offers a theoretically almost infinite source of auto-annotated diversity that completely circumvents the bottlenecks of human annotation and patient privacy. Previous works in natural images FDSL, such as TileDB [8] and RCDB [7], have demonstrated that pre-training on synthetic contours alone can rival performance achieved with massive real-world datasets like ImageNet-21k [3]. Recently, this concept has been extended to the med-ical domain by PrimGeoSeg [14], which utilizes 3D geometric primitives (e.g. cylinders, cones) to instill spatial awareness in volumetric networks. Despite these advances, a gap persists between current FDSL paradigms and the intrinsic characteristics of medical imaging. As shown in Figure 1.A, Ex-isting methods, including PrimGeoSeg [14], rely predominantly on geometric contours with uniform, constant-intensity regions , completely devoid of inter-nal texture. While this representation suffices for learning structural bound-aries, it fails to consider the heterogeneous tissue patterns and acquisition noise inherent in modalities like CT and MRI. However, bridging this gap is non-trivial. As shown in Figure 1.B, in the prior experiment, we observe that naively adding high-frequency textures can corrupt the image gradient signals essential for boundary learning, leads to substantial degradation in FDSL pre-training performance (dropping from 56% to 40%), a phenomenon we formally defined as boundary aliasing in our theoretical analysis (Section 2.1). Consequently, mod-els pre-trained on such conflicting signals struggle to adapt to the nuanced in-tensity distributions of real pathology, limiting the transferability of FDSL to downstream tasks (downstream performance drops from 83% to 80%). To address these challenges, we propose a novel physics-inspired spatially-decoupled synthesis framework designed to bridge the domain gap between mathematical formulas and realistic medical acquisition. Our core insight is to or-thogonalize the synthesis process into two complementary modules: the Shield-ing Texture Model and Spatially-Decoupled Texture Synthesis . Unlike prior works that simply overlay noise, we first introduce a Shielding Texture Model that constructs a gradient-shielded buffer zone via distance transforms. This topological constraint ensures that the gradient signals essential for bound-ary learning remain pristine and unaffected by internal high-frequency artifacts. Title Suppressed Due to Excessive Length 3Model  
+
+> Training Composed Volume with Texture
+
+Texture Injection into 𝛀 𝒄𝒐𝒓𝒆 
+
+> %
+
+A | Motivation 
+
+Our Shielding Texture Model Previous FDSL Volume 
+
+Previous 
+
+FDSL Data 
+
+Downstream 
+
+Real Data 
+
+> Contours
+> without Texture
+> Contours with
+> Complex Texture
+> Bridge Domain Gap by Adding
+> Texture to Primitive Geometry
+
+B | Theoretical Analysis   
+
+> Boundary Saliency Ratio (BSR)
+> (a) No gap (b) With gap
+> Noise -
+> dominated
+> gradient
+> GSNR<<1
+> Shape -
+> dominated
+> gradient
+> GSNR>>1
+> Naive texture corrupts the
+> contour learning (low B SR )
+> Shielding Texture Model
+
+C | Texture Synthesis 
+
+> #
+
+2 Spectral Texture Synthesis                   
+
+> 𝒛 =𝜶 𝒊 ~𝑫𝒊𝒓𝒊𝒄𝒉𝒍𝒆𝒕 𝜶
+> ∑𝜶 𝒊 =𝟏
+> 𝝍 𝟏
+> Isotropic
+> Granularity
+> (Perlin Noise)
+> 𝝍 𝟐
+> Anisotropic
+> Fibrosity
+> (Directional
+> Noise)
+> 𝝍 𝟑
+> Structural
+> Porosity
+> (Thresholded
+> Noise)
+> Dirichlet -weighted mix of granular,
+> fibrous, and porous bases
+> 𝑻 𝒙 ;𝒛 =𝝁 𝒄𝒐𝒓𝒆 +𝜶 𝟏 𝝍 𝟏 +𝜶 𝟐 𝝍 𝟐 +𝜶 𝟑 𝝍 𝟑
+> Geometric Decoupling #
+
+1
+
+> Diverse Primitive Texture shapes
+> inside Shielding Gap zone.
+
+D | Two -Stage Training Strategy     
+
+> Synthetic Volume in Shielding Texture Model
+> Synthetic
+> Data input
+> Stage 1: Pre -train on Synthetic Dataset
+> Learn shape &
+> physics texture
+> priors
+> Downstream
+> Adaptation
+> Stage 2: Fine -tune on Real Dataset
+> Adapt to
+> real clinical
+> scans
+> Our model
+> Pre -train
+> With gap
+> 56.52
+> 40.41 Without gap
+> Fine -tune
+> With gap
+> 83.15
+> 80.51 Without gap
+> (c) Val acc
+> on FDSL
+> Data
+> (d) Val acc
+> On
+> Downstream
+
+Fig. 1: Overview of the proposed physics-inspired spatially-decoupled synthesis framework. From left to right: (A) Existing FDSL relies on homogeneous ge-ometric primitives, resulting in a texture gap to real clinical data. (B) Naive texture injection leads to boundary aliasing, where stochastic gradients corrupt structural cues; a gradient-shielded buffer is constructed to preserve boundary signals. (C) Physics-driven textures are injected into a geometrically decoupled core via Dirichlet-weighted spectral mixing. (D) The composed volumes enable synthetic pre-training followed by downstream fine-tuning on real datasets. Subsequently, we implement Geometric Decoupling combined with Spectral Tex-ture Synthesis . By injecting physics-driven textures into a geometrically inde-pendent core, we mimic the biophysical appearance of real anatomy while math-ematically guaranteeing that texture patterns do not interfere with boundary optimization. We validate our approach on the BTCV [10] and MSD [1] datasets us-ing standard UNETR [6] and SwinUNETR [5] architectures. Extensive experi-ments demonstrate that our method significantly outperforms both training from scratch and state-of-the-art FDSL baselines by 1.43% on BTCV and up to 1.51% on challenging MSD tasks. Our results suggest that incorporating physics-based texture into synthetic pre-training effectively reduces the reliance on large-scale annotated medical datasets, offering a scalable and privacy-preserving path for training medical ViTs. 
+
+2 Methodology 
+
+Previous FDSL methods, such as PrimGeoSeg [14], rely exclusively on boundary cues and fail to capture the complex textural interplay inherent in real medi-cal scans. Motivated by our theoretical analysis in Sec. 2.1, which proposes the Boundary Saliency Ratio (BSR) to quantify how stochastic texture gradients 4 J. Tang et al. 
+
+corrupt boundary localization signals, we propose a Physics-Inspired Spatially-Decoupled Synthesis Framework . As illustrated in Fig. 1, our framework consists of two novel components corresponding to the identified challenges: (i) Shield-ing Texture Model (Sec. 2.2), which constructs a gradient-shielded buffer zone to ensure boundary robustness and preserve high BSR; and (ii) Spatially-Decoupled Texture Synthesis (Sec. 2.3), which employs Geometric Decou-pling and Physics-Driven Spectral Mixing that mimic tissue-specific appearance on the object core. This design effectively reconciles textural heterogeneity with geometric optimization stability, enabling the network to learn robust shape pri-ors without interference from high-frequency noise artifacts while bridging the texture gap. 
+
+2.1 Boundary Aliasing: The Texture-Boundary Conflict 
+
+We analyze how stochastic texture fields affect the spatial intensity gradients of the input images, which serve as the fundamental cues for neural networks to detect anatomical boundaries. This analysis acts as a diagnostic to expose why naive texture synthesis leads to feature corruption. 
+
+Setup. Let Ω ⊂ R3 denote the 3D image domain. A geometric primitive is represented by a binary occupancy map M : Ω → { 0, 1}. We analyze the spatial derivative ∇x at the boundary ∂M . Working in discrete voxel coordinates (unit length ∆x = 1 ), an intensity contrast ∆μ across a boundary implies a spatial gradient magnitude of ∆μ . Following previous FDSL methods [14], we assume a uniform background B(x) ≡ μbg , yielding ∇xB = 0.For a clean geometric input Xgeo , the spatial gradient at a boundary voxel xb
+
+provides a pristine signal for edge detection, well-approximated by the surface normal: 
+
+∇xXgeo (xb) ≈ ∆μ ˆn(xb) + O(δ), (1) where ˆn is the outward unit normal. This vector ∇xXgeo represents the ideal 
+
+geometric cue that the network should learn to encode shape priors. 
+
+Signal Corruption under Naive Texture Synthesis. A naive approach over-lays stochastic textures T (x) directly onto the shape: Xnaive (x) = M (x)T (x) + (1 − M (x)) B(x). Expanding the spatial gradient via the discrete product rule reveals a conflict: 
+
+∇xXnaive (xb) ≈ [T (xb) − B(xb)] ˆ n(xb)
+
+| {z }
+
+> Geometric Signal
+
++ M (xb)∇xT (xb)
+
+| {z }
+
+> Texture Interference
+
+. (2) Since medical textures often exhibit high-frequency variations (e.g., trabecular bone), the interference term ∥∇ xT ∥ is frequently comparable in magnitude to the boundary contrast, making the texture gradients overwhelm the geometric normal vector and confuse the network’s feature extractors. To quantify this conflict, we define the Boundary Saliency Ratio (BSR) at boundary voxels: BSR (xb) = |T (xb) − B(xb)|2
+
+Ez[∥∇ xT (xb; z)∥2] + ϵ . (3) Title Suppressed Due to Excessive Length 5
+
+When BSR (xb) ≪ 1, the input features are dominated by stochastic texture artifacts rather than structural boundary, a condition we term boundary aliasing .This implies that to learn robust shape priors, we must enforce ∥∇ xT (x)∥ → 0
+
+within a local neighborhood of ∂M . This theoretical insight directly motivates our Shielding Texture Model , which constructs a gradient-shielded buffer zone to guarantee high BSR while preserving internal textural diversity. 
+
+2.2 Shielding Texture Model 
+
+To resolve the conflict identified above, we introduce a spatial decoupling mech-anism. Instead of global texturing, we orthogonalize the volume into functional strata based on the Euclidean Distance Transform (EDT), DM (x) = min y∈∂M ∥x−
+
+y∥2. We partition the foreground Ωobj into three distinct regions: 
+
+Ωk =
+
+
+
+Ωshell if 0 < DM (x) ≤ τshell 
+
+Ωgap if τshell < DM (x) ≤ τshell + τgap 
+
+Ωcore if DM (x) > τ shell + τgap 
+
+, (4) where Ωshell mimics the organ capsule with constant intensity μshell .In this mode, the region Ωgap acts as a critical gradient shield . By enforcing a constant intensity transition μgap within this buffer, we strictly impose ∇X(x) = 
+
+0, ∀x ∈ Ωgap . Crucially, the buffer width τgap is set to exceed the kernel size of the network’s first-layer gradient operators (e.g., τgap ≥ 2 for 3 × 3 kernels). This topological constraint theoretically ensures BSR (xb) → ∞ , allowing the network to learn shape priors driven purely by deterministic contrast without stochastic corruption from the texture core. 
+
+2.3 Spatially-decoupled Physics-inspired Texture Synthesis 
+
+While the spatial decoupling guarantees boundary stability, simple randomized textures inside Ωcore can lead to trivial solutions such as overfitting to con-centric patterns. We further introduce a physics-driven modeling approach that enhances realism while preventing such shortcuts through Geometric Decoupling 
+
+and Spectral Texture Synthesis .
+
+Geometric Decoupling. A naive erosion of the outer shape M to define the texture region creates a strong spatial correlation that networks can exploit. To break this dependency, we generate the texture-bearing region Ω′ 
+
+> core
+
+using an independent geometric primitive Minner (e.g., a prism within a cylinder). The final core region is defined as the intersection of this transformed primitive and the EDT-safe zone: 
+
+Ω′ 
+
+> core
+
+= A(Minner ) ∩ { x : ϕ(x) > τ shell + τgap }, (5) where A(·) denotes a random affine transformation. This ensures that the inter-nal texture boundary ∂Ω ′ 
+
+> core
+
+is spatially decorrelated from the organ boundary 6 J. Tang et al. 
+
+Table 1: Comparison of segmentation performance on the BTCV dataset.                             
+
+> Pre-training PT Num Type Avg. Spl RKid LKid Gall Eso Liv Sto Aor IVC Veins Pan rad lad
+> UNETR
+> Scratch 0–75.86 93.02 89.79 90.60 51.34 71.12 95.02 72.90 82.95 76.71 69.05 76.29 62.02 55.33 PrimGeoSeg 5K FDSL 78.90 93.19 93.47 93.35 54.49 68.91 95.88 78.83 87.82 82.47 72.73 80.08 65.06 59.35 Ours 5K FDSL 79.61 93.47 93.10 92.86 60.50 69.08 95.82 80.09 90.24 83.42 71.49 79.39 63.93 61.49
+> SwinUNETR
+> Scratch 0–80.12 95.32 94.01 93.51 61.17 73.83 94.40 71.19 88.13 85.20 73.12 80.60 67.15 63.88 PrimGeoSeg 5K FDSL 80.08 95.25 93.76 93.79 61.23 74.47 96.04 80.64 89.39 83.91 74.27 77.83 64.13 56.36 Ours 5K FDSL 81.51 95.72 94.11 93.94 56.72 74.14 96.72 84.16 90.66 85.32 74.20 82.40 66.23 65.28
+
+∂M , forcing the network to learn global shape semantics rather than local in-tensity transitions. 
+
+Spectral Texture Synthesis. To bridge the texture gap with medical scans, we model the texture field T (x) not as simple Gaussian noise, but as a convex combination of biophysical archetypes. We introduce a spectral mixing function: 
+
+T (x; z) = μcore +
+
+> 3
+
+X
+
+> i=1
+
+αiΨi(x), s.t. X αi = 1 , (6) where z = {αi} are mixing weights drawn from a Dirichlet distribution. The basis functions Ψi capture distinct tissue properties: (1) Isotropic Granularity 
+
+via multi-scale Perlin noise for parenchyma; (2) Anisotropic Fibrosity via direc-tionally scaled noise fields Ψ (Svx); and (3) Structural Porosity via thresholded noise fields to mimic trabecular bone. By confining this complex, high-frequency signal strictly within Ω′
+
+> core
+
+, we achieve the dual goal of synthesizing texturally realistic volumes while maintaining the zero-gradient guarantee at the boundary critical for geometric learning. Table 2: Comparison of segmentation performance on several MSD datasets. 
+
+Method MSD Dataset Task 02 Task 06 Task 09 UNETR SwinUNETR UNETR SwinUNETR UNETR SwinUNETR 
+
+Scratch 95.14 95.34 70.68 76.14 92.52 95.92 PrimGeoSeg 95.61 95.77 78.81 80.39 96.30 96.96 
+
+Ours 95.91 96.29 79.20 81.47 96.63 98.47 
+
+3 Experiments and Results 
+
+3.1 Experimental Setup Tasks and datasets: In this part, we conduct experiments on the BTCV [10] and MSD [1] datasets to evaluate the proposed method. The BTCV dataset con-Title Suppressed Due to Excessive Length 7
+
+tains 30 CT volumes with multiple organ annotations. For MSD, we evaluate on Task02 (Heart), Task06 (Lung) and Task09 (Spleen). Following previous meth-ods [14], these datasets are divided into training and validation subsets using the 80/20 split, and all experiments are conducted in an offline setting. 
+
+Implementation details: During pre-training, we use a ROI size of 96 ×96 ×96 ,a batch size of 4, a learning rate of 0.0002, and a weight decay of 0.00001. The model is optimized using AdamW with a warmup cosine learning rate scheduler with training iterations set to 25000 . For fine-tuning, we follow the standard hyperparameter settings used in prior works [14] with a batch size of 4. Specifi-cally, the SwinUNETR [5] settings on BTCV follow the configurations reported in [17], while the hyperparameter settings for MSD follow the established pro-tocol described in [6]. 
+
+3.2 Results Performance on Full Datasets As shown in Table 1 and 2, our method con-sistently outperforms training from scratch and the geometry-only pre-training baseline on BTCV and MSD tasks under both UNETR and SwinUNETR. On BTCV, the average Dice with SwinUNETR improves by 1.39 over Scratch and 
+
+1.43 over the baseline. Improvements are observed across most organs, including thin structures such as pancreas and adrenal glands. On MSD, the gain is more evident on Task06, which contains stronger appearance variation and boundary ambiguity, achieving an improvement of 5.33 over Scratch and 1.08 over the PrimGeoSeg baseline. 
+
+Comparison with Other Self-Supervised Learning Methods We compare our synthetic pre-training strategy with representative SSL [18, 17] methods pre-trained on real CT datasets on RadGenome Dataset [20] on BTCV dataset. While SwinUNETR SSL shows slight improvements, our method achieves 81.51 Dice, outperforming both real-data SSL methods and FDSL baselines. Table 3: Comparison with SSL methods pre-trained on RadGenome Dataset [20]           
+
+> Method Pre-train Data Data Amount Avg. Dice
+> SwinMM [18] Real (CT) 5,000 76.72 SwinUNETR [17] Real (CT) 5,000 80.56
+> Ours Synthetic 5,000 81.51
+
+3.3 Analysis 
+
+We further analyze four key factors in our method: dataset scale, texture source, boundary gap width and backbone architecture. For the first three factors, ex-periments are conducted on BTCV with SwinUNETR. Results are summarized 8 J. Tang et al. 
+
+Table 4: Analysis on the BTCV dataset with the SwinUNETR under different settings, including pre-training dataset scales, texture types, and gap widths.                                      
+
+> Dataset Scale Texture Type Gap Width
+> Scale Avg. Dice Type Avg. Dice Width Avg. Dice 500 80.16 fruit 80.39 w= 0 80.02 5000 81.51 trabecular 80.56 w= 1 80.22 15000 82.26 fibrous 81.10 w= 5 80.55 50000 82.40 granular 80.41 w= 9 80.59
+> ––ours 81.51 w= 13 80.15
+
+in Table 4. For backbone analysis, we further compare UNet with transformer-based architectures. 
+
+Scaling Effects We vary the number of synthetic volumes. Increasing the scale from 500 to 5,000 improves Dice from 80.16 to 81.51. Further scaling to 15,000 and 50,000 leads to 82.26 and 82.40 respectively. The result improves steadily with larger synthetic datasets and the gain becomes smaller at larger scales. 
+
+The Texture Selection Analysis In this part, we evaluate the impact of texture selection. In addition to the single-type physical simulation, we introduce real fruit textures [9] for comparison. Different texture sources lead to noticeable performance variations. Compared with single-type and fruit-based textures, our texture design achieves the highest Dice score, suggesting that effective pre-training depends more on structural consistency than appearance diversity. 
+
+The Gap Width Analysis We vary the black gap width w between boundary regions and inner textures. Removing the gap results in 80.02 Dice. Increasing the gap width consistently improves performance. The best result is obtained at w =9 with 80.59, indicating that explicitly separating boundary regions encourages the model to learn more discriminative structure-aware representations. 
+
+Backbone Generalization Analysis In addition to the experiments reported in Table 1, we further evaluate our method on a standard 3D U-Net architec-ture. Training from scratch achieves 78.87 Dice, while the baseline improves the performance to 80.64 . Our method further boosts the Dice score to 81.94 .These results demonstrate that the proposed synthetic pre-training strategy is not limited to transformer-based architectures, but also effectively enhances con-volutional backbones. 
+
+4 Conclusion 
+
+In this paper, we bridge the domain gap in FDSL via a novel physics-inspired spatially-decoupled synthesis framework. By identifying and resolving the bound-ary aliasing conflict, our approach orthogonalizes the learning of robust geomet-ric priors from heterogeneous textural modeling. Extensive experiments demon-strate that this shielding-and-decoupling paradigm enables our model not only to surpass state-of-the-art FDSL and SSL baselines but, crucially, to achieve Title Suppressed Due to Excessive Length 9
+
+performance parity with pre-training on large-scale real medical datasets. Con-sequently, our method offers a scalable, privacy-preserving foundation for ini-tializing medical Vision Transformers without the constraints of clinical data collection. 
+
+References 
+
+1. Antonelli, M., Reinke, A., Bakas, S., Farahani, K., Kopp-Schneider, A., Landman, B.A., Litjens, G., Menze, B., Ronneberger, O., Summers, R.M., et al.: The medical segmentation decathlon. Nature communications 13 (1), 4128 (2022) 2. Chen, Z., Agarwal, D., Aggarwal, K., Safta, W., Balan, M.M., Brown, K.: Masked image modeling advances 3d medical image analysis. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. pp. 1970– 1980 (2023) 3. Deng, J., Dong, W., Socher, R., Li, L.J., Li, K., Fei-Fei, L.: Imagenet: A large-scale hierarchical image database. In: 2009 IEEE conference on computer vision and pattern recognition. pp. 248–255. Ieee (2009) 4. Dosovitskiy, A.: An image is worth 16x16 words: Transformers for image recogni-tion at scale. arXiv preprint arXiv:2010.11929 (2020) 5. Hatamizadeh, A., Nath, V., Tang, Y., Yang, D., Roth, H., Xu, D.: Swin unetr: Swin transformers for semantic segmentation of brain tumors in mri images (2022), https://arxiv.org/abs/2201.01266 6. Hatamizadeh, A., Tang, Y., Nath, V., Yang, D., Myronenko, A., Landman, B., Roth, H.R., Xu, D.: Unetr: Transformers for 3d medical image segmentation. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. pp. 574–584 (2022) 7. Kataoka, H., Hayamizu, R., Yamada, R., Nakashima, K., Takashima, S., Zhang, X., Martinez-Noriega, E.J., Inoue, N., Yokota, R.: Replacing labeled real-image datasets with auto-generated contours. In: Proceedings of the IEEE/CVF confer-ence on computer vision and pattern recognition. pp. 21232–21241 (2022) 8. Kataoka, H., Matsumoto, A., Yamada, R., Satoh, Y., Yamagata, E., Inoue, N.: Formula-driven supervised learning with recursive tiling patterns. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 4098–4105 (2021) 9. KU Leuven: 3d x-ray images of plant organs:x-plant database, https://www.biw.kuleuven.be/biosyst/mebios/downloads/3d-x-ray-images-of-plant-organs 10. Landman, B., Xu, Z., Igelsias, J., Styner, M., Langerak, T., Klein, A.: Miccai multi-atlas labeling beyond the cranial vault–workshop and challenge. In: Proc. MICCAI multi-atlas labeling beyond cranial vault—workshop challenge. vol. 5, p. 12. Munich, Germany (2015) 11. Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B.: Swin transformer: Hierarchical vision transformer using shifted windows. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 10012–10022 (2021) 12. Nakamura, R., Kataoka, H., Takashima, S., Noriega, E.J.M., Yokota, R., Inoue, N.: Pre-training vision transformers with very limited synthesized images. In: Proceed-ings of the IEEE/CVF International Conference on Computer Vision. pp. 20360– 20369 (2023) 10 J. Tang et al. 13. Shinoda, R., Hayamizu, R., Nakashima, K., Inoue, N., Yokota, R., Kataoka, H.: Segrcdb: Semantic segmentation via formula-driven supervised learning. In: Pro-ceedings of the IEEE/CVF international conference on computer vision. pp. 20054– 20063 (2023) 14. Tadokoro, R., Yamada, R., Kataoka, H.: Pre-training auto-generated volumetric shapes for 3d medical image segmentation. In: Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition. pp. 4740–4745 (2023) 15. Takashima, S., Hayamizu, R., Inoue, N., Kataoka, H., Yokota, R.: Visual atoms: Pre-training vision transformers with sinusoidal waves. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 18579– 18588 (2023) 16. Tang, Y., Yang, D., Li, W., Roth, H.R., Landman, B., Xu, D., Nath, V., Hatamizadeh, A.: Self-supervised pre-training of swin transformers for 3d medi-cal image analysis. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 20730–20740 (June 2022) 17. Tang, Y., Yang, D., Li, W., Roth, H.R., Landman, B., Xu, D., Nath, V., Hatamizadeh, A.: Self-supervised pre-training of swin transformers for 3d medi-cal image analysis. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 20730–20740 (2022) 18. Wang, Y., Li, Z., Mei, J., Wei, Z., Liu, L., Wang, C., Sang, S., Yuille, A.L., Xie, C., Zhou, Y.: Swinmm: masked multi-view with swin transformers for 3d medical image segmentation. In: International conference on medical image computing and computer-assisted intervention. pp. 486–496. Springer (2023) 19. Wu, L., Zhuang, J., Chen, H.: Voco: A simple-yet-effective volume contrastive learn-ing framework for 3d medical image analysis. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp. 22873– 22882 (June 2024) 20. Zhang, X., Wu, C., Zhao, Z., Lei, J., Zhang, Y., Wang, Y., Xie, W.: Radgenome-chest ct: A grounded vision-language dataset for chest ct analysis. arXiv preprint arXiv:2404.16754 (2024)
