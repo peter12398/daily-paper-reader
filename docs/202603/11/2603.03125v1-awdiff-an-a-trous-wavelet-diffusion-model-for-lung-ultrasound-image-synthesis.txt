@@ -1,0 +1,249 @@
+Title: AWDiff: An a trous wavelet diffusion model for lung ultrasound image synthesis
+
+URL Source: https://arxiv.org/pdf/2603.03125v1
+
+Published Time: Wed, 04 Mar 2026 02:30:35 GMT
+
+Number of Pages: 5
+
+Markdown Content:
+# AWDIFF: AN A TROUS WAVELET DIFFUSION MODEL FOR LUNG ULTRASOUND IMAGE SYNTHESIS 
+
+# Maryam Heidari 1, Nantheera Anantrasirichai 1, Steven Walker 2, Rahul Bhatnagar 2 and Alin Achim 11Visual Information Lab, University of Bristol, Bristol, UK 
+
+> 2
+
+# Academic Respiratory Unit, Bristol Medical School, University of Bristol, Bristol, UK 
+
+ABSTRACT 
+
+Lung ultrasound (LUS) is a safe and portable imaging modality, but the scarcity of data limits the development of machine learning methods for image interpretation and disease monitoring. Existing generative augmentation methods, such as Generative Adversarial Networks (GANs) and diffusion models, often lose subtle diagnos-tic cues due to resolution reduction, particularly B-lines and pleural irregularities. We propose A trous Wavelet Diffusion (AWDiff), a diffusion-based augmentation framework that integrates the a trous wavelet transform to preserve fine-scale structures while avoiding destructive downsampling. In addition, semantic conditioning with BioMedCLIP, a vision–language foundation model trained on large-scale biomedical corpora, enforces alignment with clinically mean-ingful labels. On a LUS dataset, AWDiff achieved lower distortion and higher perceptual quality compared to existing methods, demon-strating both structural fidelity and clinical diversity. 
+
+Index Terms — Lung ultrasound, diffusion models, deep learn-ing, data augmentation, medical image synthesis 
+
+1. INTRODUCTION 
+
+LUS has become an established modality for detecting pulmonary conditions such as pleural effusion, pneumonia, and pulmonary edema [1, 2]. Its portability, safety, and bedside accessibility make it particularly valuable in both emergency and routine clinical care. Nevertheless, the promise of machine learning for automated LUS interpretation remains under-realized, largely due to the limited size and heterogeneity of available datasets. Such constraints hinder the ability of algorithms to generalize across diverse patients, disease stages, and acquisition protocols. To address data scarcity, augmen-tation has been widely adopted. Conventional strategies such as geometric transformations and noise injection expand training sets but fail to reproduce the subtle imaging artifacts that are diagnosti-cally critical in ultrasound. Recent surveys emphasize a clear shift from simple geometric heuristics toward generative modeling as the diversity of data and deployment scenarios has expanded [3]. Early efforts in ultrasound augmentation employed adversarial learning and autoencoding. Fatima et al. proposed an autoen-coder–GAN framework to address class imbalance while main-taining coarse anatomical structure [4]. Conditional GANs have also been used at the lesion level to model targeted distribution shifts [5] and single-image approaches like SinGAN have similarly been explored, though with comparable limitations [6]. While these approaches demonstrated potential in small datasets, they generally provided limited semantic control and under-represented subtle, high-frequency, cues that carry diagnostic importance. Conse-quently, their impact on clinically robust pipelines has been modest. Diffusion models have more recently emerged as the state of the art for high-fidelity medical image synthesis. In musculoskele-tal ultrasound, Balla et al. reported improved segmentation when training with diffusion-generated cohorts compared to conventional augmentation [7]. Freiche et al. fine-tuned latent diffusion models to generate realistic breast ultrasound images, validated through expert review [8]. In echo-cardiography, Van De Vyver et al. demonstrated that diffusion-driven augmentation enhanced segmentation robust-ness beyond standard baselines [9]. Similar advantages have been observed in fetal imaging, where diffusion models improved fetal plane classification [10] and enabled anatomy-guided synthesis of normal and anomalous ultrasound images without abnormal exem-plars [11]. More recently, diffusion models have also been applied to lung ultrasound, showing their potential for high-fidelity synthesis in this modality [12]. These studies collectively establish diffusion models as a reliable alternative to traditional augmentation techniques across diverse ultrasound modalities. Closer to lung ultrasound, Zhang et al. adapted single and few-image diffusion (SinDDM/FewDDM) to expand limited cohorts, highlighting the potential of multi-scale de-noising under severe data scarcity [13]. Beyond ultrasound, seman-tically conditioned diffusion has been applied in other modalities: Dorjsembe et al. demonstrated controllable 3D MRI synthesis [14], while Saragih et al. generated paired data for endoscopic segmen-tation [15]. Complementary physics-aware designs have also been explored, with Dominguez et al. incorporating acoustic propagation priors to enhance realism in ultrasound generation [16]. Overall, diffusion models have recently surpassed GANs in sta-bility and fidelity [17, 9], making them a state-of-the-art solution for medical image synthesis. However, some existing methods down-sample during training or generation [18], thereby degrading the fine details that are indispensable for LUS interpretation, including pleu-ral line continuity and the distribution of B-lines [19, 20]. Preserving such structures is essential if synthetic data are to hold clinical value. In this work, AWDiff directly tackles the two key limitations in prior approaches: (i) loss of fine structures from downsampling, avoided with a multi-scale a trous–wavelet encoder [21]; and (ii) weak semantic control, addressed through BioMedCLIP condition-ing [22] that aligns outputs with clinical attributes such as B-lines and pleural irregularities. Through this integration, AWDiff synthe-sizes images that are both anatomically faithful and pathologically diverse. The remainder of this paper is structured as follows: section 2 details the AWDiff framework, including the forward and reverse diffusion processes. Section 3 describes the dataset and training setup with evaluations against existing methods. Finally, section 4 concludes with insights and directions for future work. 
+
+> arXiv:2603.03125v1 [cs.CV] 3 Mar 2026
+
+Forward AWDiff 
+
+Module 
+
+AWDiff: Atrous Wavelet Diffusion 
+
+> A-1
+> A-1
+> C
+> Denoise
+> Denoise
+> Denoise
+> A-1
+> A-1
+
+BioMedClip 
+
+Module   
+
+> C
+> Noisy 0
+> Image
+> Encoder
+> Clinical Lable
+> Prompt: "2 B-lines "
+> Text
+> Encoder
+> zx
+> zy
+> f(Z x,Z y)=c
+> Fusion
+> A
+> A
+> AA-1
+> A-1
+> A-1
+> A-1
+> ϵ
+> ϵ
+> ϵ
+> ϵ
+> x0
+> ϵ
+> A
+> A
+> A
+> A
+> A
+> A-1
+> A-1
+> A-1
+> A-1
+> A-1
+> wp 1
+> wp 2
+> wp 3
+> wp 4Atrous Transform
+> Inverse-Atrous Transform
+> Gaussian Noise
+> Noisy 0
+> Noisy 1
+> Noisy 2
+> Noisy 3
+
+Reverse AWDiff 
+
+Module 
+
+> B-line
+> Condition
+> cb-line
+> Generated Sample
+> Concatenation
+> x
+> y
+
+Fig. 1 . Overview of the proposed AWDiff framework. In the forward diffusion stage, the input image is decomposed by a multi-scale a trous wavelet encoder into wavelet planes (wps) that preserve fine anatomical detail. These wavelet features are then fused with BioMedCLIP embeddings during the reverse diffusion process. 
+
+2. AWDIFF: PROPOSED METHOD 
+
+AWDiff is a conditional diffusion framework for lung ultrasound images that preserves fine-scale structures while maintaining con-sistency with clinical labels. The model integrates multi-scale structural encoding with semantic guidance, enabling the generation of anatomically precise and diagnostically meaningful images. An overview of the framework is shown in Fig. 1. 
+
+2.1. Problem Formulation 
+
+Let X = {xi}Ni=1 denote a dataset of LUS images, each associated with a clinical label yi ∈ Y (e.g., B-line counts). The objective is to learn a conditional generative model: 
+
+pθ (x|y), x ∈ RH×W , (1) The reverse diffusion process is implemented using a UNet de-noiser conditioned on semantic and structural information: 
+
+ϵθ (xt, t, y, f ) = UNet  xt, t, CrossAttention (zy , f ), (2) where zy = Φ Text (y) denotes the BioMedCLIP text embedding and 
+
+f = Eψ (x) represents the multi-scale a trous wavelet features ex-tracted from the input image. AWDiff builds upon the denoising diffusion probabilistic model (DDPM) [23]. In the forward process, a clean image x0 is gradually perturbed with Gaussian noise: 
+
+q(xt|xt−1) = N
+
+
+
+xt; p1 − βt xt−1, β tI
+
+
+
+, (3) where {βt}Tt=1 defines the noise schedule. The process admits a closed-form marginal: 
+
+q(xt|x0) = N  xt; √¯αt x0, (1 − ¯αt)I , ¯αt =
+
+> t
+
+Y
+
+> s=1
+
+(1 −βs). (4) The reverse process is parameterized by a neural network: 
+
+pθ (xt−1|xt, y, f ) = N (xt−1; μθ (xt, t, y, f ), Σθ (xt, t, y, f )) ,
+
+(5) where f denotes the multi-scale structural features extracted by the `a trous–wavelet encoder (WP 1–WP S in Fig. 1). The denoiser ϵθ is trained to predict the injected noise ϵ ∼ N (0 , I ) by minimizing the score-matching loss: 
+
+LMSE = Ex0,ϵ,t ϵ − ϵθ (xt, t, y, f ) 2. (6) 
+
+2.2. A trous–Wavelet Encoder 
+
+Preserving subtle diagnostic cues such as pleural continuity, vertical B-line artifacts, and speckle texture is critical for LUS augmentation. AWDiff employs an encoder Eψ that combines dilated convolutions with iterative wavelet decomposition. A trous convolution at layer ℓ with dilation rate d is defined as: AtrousConv (x)[ i, j ] = X
+
+> m,n
+
+wℓm,n x[i + d · m, j + d · n], (7) which enlarges the receptive field while avoiding subsampling, thus preserving spatial resolution. Wavelet decomposition is then applied iteratively. Starting with 
+
+S(0) = x, smoothed images and wavelet planes are obtained as: 
+
+S(s) = AtrousConv (S(s−1) , K s), (8) 
+
+W P (s) = S(s−1) − S(s), (9) where Ks denotes the fixed B3-spline scaling filter dilated at scale 
+
+s.The final encoder representation is: 
+
+f = Eψ (x) = {W P (1) , W P (2) , . . . , W P (S)}. (10) As shown in Fig. 1, these multi-scale wavelet planes capture fine structural detail and are injected into the denoiser at each reverse diffusion step to preserve clinically salient features. 
+
+2.3. Semantic Conditioning with BioMedCLIP 
+
+Structural preservation alone does not guarantee clinical reliability. AWDiff therefore employs semantic conditioning through BioMed-CLIP [22], a vision–language model trained on large biomedical cor-pora. Given a label y, the text encoder produces an embedding zy =ΦText (y), while the corresponding image encoder produces zx =ΦImage (x). The image embedding zx is used exclusively during train-ing to compute a semantic alignment loss and does not participate in the conditioning of the reverse diffusion process. The reverse diffu-sion process is conditioned only on the text embedding zy and the wavelet features f (Eq. 2). This mechanism (depicted in the fusion block of Fig. 1) ensures that the generated samples reflect both the structural fidelity of ultrasound and the semantic attributes encoded in clinical labels. 
+
+2.4. Conditional Sampling 
+
+Generation starts from Gaussian noise xT ∼ N (0 , I ) and proceeds by iterative denoising: 
+
+xt−1 = μθ (xt, t, z y , f ) + Σ 1/2 
+
+> θ
+
+ϵ, ϵ ∼ N (0 , I ). (11) As indicated by the reverse arrows in Fig. 1, multi-scale wavelet features are injected throughout the trajectory, preserving high-frequency details that are typically lost in conventional diffusion sampling. This design ensures that pleural line morphology and B-line artifacts remain distinct and clinically plausible. 
+
+2.5. Loss Functions 
+
+The training objective balances structural fidelity with semantic alignment. The primary supervision is the denoising score-matching loss: 
+
+LMSE = Ex0,ϵ,t ϵ − ϵθ (xt, t, y, f ) 2. (12) To further enforce semantic consistency, it adds a BioMedCLIP-based loss: 
+
+LBioMedCLIP = 1 − cos  ΦImage (ˆ x0(t)) , ΦText (y), (13) where ˆx0 denotes the reconstructed sample at step t.The final objective is a weighted combination: 
+
+Ltotal = LMSE + λ1LBioMedCLIP . (14) This formulation enforces both pixel-level accuracy and seman-tic alignment, mitigating the mode collapse issues often observed in GAN-based methods and ensuring that synthetic LUS images remain diagnostically reliable. 
+
+Table 1 . Comparison of SIFID, LPIPS, and NIMA for SinDDM, SinGAN, and AWDiff. 
+
+Method Steps SIFID ↓ LPIPS ↑ NIMA ↑
+
+SinDDM 80k 0.05 ±0.08 0.26 ±0.04 5.12 ±0.5 120k 0.04 ±0.01 0.27 ±0.02 5.38 ±0.1 SinGAN Final (16k) 0.08 ±0.01 0.21 ±0.06 4.3 ±0.1 AWDiff 80k 0.03 ±0.5 0.36 ±0.09 5.24 ±0.6 120k 0.03 ±0.06 0.37 ±0.02 5.45 ±0.7 3. EXPERIMENTAL RESULTS 3.1. Dataset and Training Setup 
+
+Our evaluation was conducted on a clinical dataset of 360 dialysis-related LUS scans [24, 25], each paired with expert-annotated la-bels. To expand this limited corpus, AWDiff was used to synthesize additional samples, yielding a total of 2,260 images for fine-tuning BioMedCLIP. All images were resized to 256 × 256 pixels for con-sistency. Clinical labels were converted into text prompts for con-ditioning, while BioMedCLIP weights were frozen to avoid catas-trophic forgetting. Training employed the Adam optimizer ( α =10 −4, β 1 = 0 .9, β 2 = 0 .999 ) with a linear βt schedule over T =100 diffusion steps. Models were trained for 120k epochs with a batch size of 128. To enhance stability, an exponential moving av-erage (EMA) of model parameters was maintained during sampling. This setup ensured that results reflected the generative capacity of AWDiff rather than fluctuations in optimization. 
+
+3.2. Evaluation and Analysis 
+
+Performance was evaluated using three complementary metrics: SIFID [18], LPIPS [26], and NIMA [27]. SIFID evaluates structural fidelity through the alignment of feature distributions from real and generated images, while LPIPS captures perceptual similarity using deep representations. To complement these measures, NIMA ex-tends the evaluation to aesthetic quality, reflecting predicted human ratings of visual appeal. According to Table 1, AWDiff achieves the best overall performance at 120k steps (SIFID = 0.03, LPIPS = 0.37, NIMA = 5.45), outperforming both SinDDM and SinGAN. Compared with SinDDM, AWDiff shows improved metrics, with much of its advantage already apparent at 80k. By contrast, SinGAN performs markedly worse, highlighting its limited suitability for this medical imaging task. Noting that 16k represents SinGAN’s termi-nal training steps, beyond which further iterations lead to overfitting. Also, representative qualitative results are shown in Fig. 2. For four input images, it displays three samples per method. SinDDM and SinGAN often produce weakened pleural or B-lines, whereas AWDiff better preserves pleural continuity and sharper vertical fea-tures. Qualitative feedback from clinical experts suggested that AWDiff outputs are visually easier to interpret. Perceptual diversity was further examined via LPIPS distribu-tions over 16 samples (Fig. 3). AWDiff yields a more favorable distribution than SinDDM and SinGAN which indicates both higher fidelity to the reference images and controlled variability across gen-erated samples. Since AWDiff explicitly leverages a wavelet encoder, we fur-ther compared its structural preservation against standard discrete wavelet transform (DWT) [28], a widely used standard tool in Generated Samples  Training Images         
+
+> SinDDM AWDiff AWDiff AWDiff AWDiff SinDDM SinDDM SinDDM SinGAN SinGAN SinGAN SinGAN
+
+Fig. 2 . Comparison of AWDiff, SinDDM, and SinGAN on four training images, with three generated samples per method. AWDiff more faithfully preserves B-line structures compared to SinDDM and SinGAN. multiresolution analysis. Accordingly, we employed the Complex Wavelet Structural Similarity (CW-SSIM) [29], a metric specifically designed to evaluate local structural similarity in the wavelet do-main. This choice is motivated by the fact that clinically relevant patterns in LUS, such as vertical B-lines, are strongly characterized by directional wavelet coefficients. These coefficients emphasize localized orientation and scale information, which are critical for capturing the sharp artifacts that underpin diagnostic interpretation. 0.10 0.15 0.20 0.25 0.30 0.35 0.40 
+
+> LPIPS
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> Frequency
+> Distribution of LPIPS Scores
+> AWDiff
+> SinDDM
+> SinGAN
+> AWDiff Mean
+> SinDDM Mean
+> SinGAN Mean
+
+Fig. 3 . LPIPS score for AWDiff, SinDDM, and SinGAN. Fig. 4 presents the CW-SSIM distributions for 16 generated sam-ples. Across all cases, the a trous wavelet consistently yields higher similarity scores than DWT. This advantage reflects a stronger ca-pacity to retain local structures and subtle textural cues, which are particularly critical in LUS imagery. 2 4 6 8 10 12 14 16 
+
+> Sample
+> 0.725
+> 0.750
+> 0.775
+> 0.800
+> 0.825
+> 0.850
+> 0.875
+> 0.900
+> CW-SSIM
+> CW-SSIM Comparison
+> Method
+> À Trous
+> DWT
+
+Fig. 4 . CW-SSIM comparison between ` a trous and DWT. 
+
+4. CONCLUSION 
+
+This work introduces AWDiff, a wavelet-conditioned diffusion framework for lung ultrasound synthesis. Combining a multi-scale a trous wavelet encoder with BioMedCLIP semantic conditioning, AWDiff preserves fine diagnostic structures while aligning outputs with clinically meaningful labels. Compared with SinDDM and SinGAN, it consistently attains lower SIFID, higher LPIPS, and su-perior NIMA scores, with experts noting sharper and more reliable B-line reproduction. Beyond surpassing prior methods, AWDiff offers a principled route to generating diverse yet structurally pre-cise synthetic cohorts, directly addressing the scarcity of LUS data. These results position wavelet-driven diffusion as a powerful tool for medical image synthesis, with potential to improve downstream diagnostic models. 5. REFERENCES 
+
+[1] G. Soldati, A. Smargiassi, R. Inchingolo, D. Buonsenso, T. Per-rone, D. F. Briganti, and S. Perlini, “Proposal for international standardization of the use of lung ultrasound for patients with covid-19: a simple, quantitative, reproducible method,” J. Ul-trasound Med. , vol. 39, no. 7, pp. 1413–1419, 2020. [2] T. Yang, O. Karakus ¸, N. Anantrasirichai, and A. Achim, “Cur-rent advances in computational lung ultrasound imaging: a re-view,” IEEE Trans. Ultrason., Ferroelectr., Freq. Control , vol. 70, no. 1, pp. 2–15, 2022. [3] A. Kazerouni, E. K. Aghdam, M. Heidari, R. Azad, M. Fayyaz, I. Hacihaliloglu, and D. Merhof, “Diffusion models in medical imaging: A comprehensive survey,” Med. Image Anal. , vol. 88, pp. 102846, 2023. [4] N. Fatima, F. Mento, S. Afrakhteh, T. Perrone, A. Smargiassi, R. Inchingolo, and L. Demi, “Synthetic lung ultrasound data generation using autoencoder with generative adversarial net-work,” IEEE Trans. Ultrason., Ferroelectr., Freq. Control ,2025. [5] L. Cai, Z. Zhang, Q. Li, and L. Zhang, “Data augmentation based on conditional generative adversarial networks for lesion classification in ultrasound images,” J. Biotech Res. , vol. 17, 2024. [6] T. R. Shaham, T. Dekel, and T. Michaeli, “Singan: Learn-ing a generative model from a single natural image,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2019, pp. 4570– 4580. [7] B. Balla, A. Hibi, and P. N. Tyrrell, “Diffusion-based im-age synthesis or traditional augmentation for enriching mus-culoskeletal ultrasound datasets,” BioMedInformatics , vol. 4, no. 3, pp. 1934–1948, 2024. [8] B. Freiche, A. El-Khoury, A. Nasiri-Sarvi, M. S. Hosseini, D. Garcia, A. Basarab, M. Boily, and H. Rivaz, “Ultrasound image generation using latent diffusion models,” in Proc. SPIE Med. Imaging: Ultrasonic Imaging and Tomography . 2025, vol. 13412, pp. 287–292, SPIE. [9] G. Van De Vyver, A. T. Lenz, E. Smistad, S. H. Olaisen, B. Grenne, E. Holte, H. Dalen, and L. Løvstakken, “Gener-ative augmentations for improved cardiac ultrasound segmen-tation using diffusion models,” arXiv:2502.20100, 2025. [10] Y. Tian, E. Ucurum, X. Han, R. Young, C. Chatwin, and P. Birch, “Enhancing fetal plane classification accuracy with data augmentation using diffusion models,” IET Image Pro-cess. , vol. 19, no. 1, pp. e70151, 2025. [11] Y. Duan, T. Tan, Z. Zhu, Y. Huang, Y. Zhang, and R. Gao, “Fe-talflex: Anatomy-guided diffusion model for flexible control on fetal ultrasound image synthesis,” arXiv:2503.14906, 2025. [12] B. Freiche, A. El-Khoury, A. Nasiri-Sarvi, M. S. Hosseini, D. Garcia, A. Basarab, and H. Rivaz, “Ultrasound image gener-ation using latent diffusion models,” in Proc. SPIE Med. Imag-ing: Ultrasonic Imaging and Tomography , 2025, vol. 13412, pp. 287–292. [13] X. Zhang, A. Gangopadhyay, H. M. Chang, and R. Soni, “Diffusion model-based data augmentation for lung ultrasound classification with limited data,” in Proc. ML4H@NeurIPS ,2023, pp. 664–676. [14] Z. Dorjsembe, H. K. Pao, S. Odonchimed, and F. Xiao, “Con-ditional diffusion models for semantic 3d brain mri synthesis,” 
+
+IEEE J. Biomed. Health Inform. , vol. 28, no. 7, pp. 4084–4093, 2024. [15] D. G. Saragih, A. Hibi, and P. N. Tyrrell, “Using diffusion models to generate synthetic labeled data for medical image segmentation,” Int. J. Comput. Assist. Radiol. Surg. , vol. 19, no. 8, pp. 1615–1625, 2024. [16] M. Dom´ ınguez, Y. Velikova, N. Navab, and M. F. Azampour, “Diffusion as sound propagation: Physics-inspired model for ultrasound image generation,” in Proc. Medical Image Com-puting and Computer Assisted Intervention (MICCAI) . 2024, vol. 15004 of Lecture Notes in Computer Science (LNCS) , pp. 613–623, Springer. [17] F. Wang, K. Whelan, F. Balado, K. M. Curran, and G. Sil-vestre, “Diffusion model-based data augmentation method for fetal head ultrasound segmentation,” arXiv:2506.23664, 2025. [18] V. Kulikov, S. Yadin, M. Kleiner, and T. Michaeli, “Sinddm: A single image denoising diffusion model,” in Proc. ICML ,2023, pp. 17920–17930. [19] T. Sakamoto, T. Asanuma, H. Sasaki, H. Kawahara, K. Uchida, A. Endo, H. Yoshitomi, and K. Tanabe, “Diagnostic value of lung ultrasound b-lines for evaluating left ventricular filling pressure,” Cardiovasc. Ultrasound , vol. 23, no. 1, 2025. [20] D. J. Shah, A. Esposito, A. Pitaktong, and H. Sauthoff, “Tho-racic ultrasound in interstitial lung disease,” Breathe , vol. 21, no. 2, 2025. [21] F. Yu and V. Koltun, “Multi-scale context aggregation by di-lated convolutions,” arXiv:1511.07122, 2015. [22] S. Zhang, Y. Xu, N. Usuyama, H. Xu, J. Bagga, R. Tinn, and S. Preston, “Biomedclip: a multimodal biomedical founda-tion model pretrained from fifteen million scientific image-text pairs,” arXiv:2303.00915, 2023. [23] J. Ho, A. Jain, and P. Abbeel, “Denoising diffusion probabilis-tic models,” in Adv. Neural Inf. Process. Syst. (NeurIPS) , 2020, vol. 33, pp. 6840–6851. [24] T. Yang, N. Anantrasirichai, O. Karakus ¸, M. Allinovi, and A. Achim, “A semi-supervised learning approach for b-line detection in lung ultrasound images,” in Proc. IEEE Int. Symp. Biomed. Imaging (ISBI) , Cartagena, Colombia, 2023, pp. 1–5. [25] N. Anantrasirichai, W. Hayes, M. Allinovi, D. Bull, and A. Achim, “Line detection as an inverse problem: Applica-tion to lung ultrasound imaging,” IEEE Trans. Med. Imaging ,vol. 36, no. 10, pp. 2045–2056, 2017. [26] R. Zhang, P. Isola, A. A. Efros, E. Shechtman, and O. Wang, “The unreasonable effectiveness of deep features as a percep-tual metric,” in Proc. IEEE Conf. Comput. Vis. Pattern Recog-nit. (CVPR) , 2018, pp. 586–595. [27] H. Talebi and P. Milanfar, “Nima: Neural image assessment,” 
+
+IEEE Trans. Image Process. , vol. 27, no. 8, pp. 3998–4011, 2018. [28] S. M. Alessio, Digital signal processing and spectral analysis for scientists: concepts and applications , Springer, 2015. [29] Z. Wang and E. P. Simoncelli, “Translation insensitive im-age similarity in complex wavelet domain,” in Proc. IEEE Int. Conf. Acoust., Speech, Signal Process. (ICASSP) , 2005, vol. 2, pp. 573–576.

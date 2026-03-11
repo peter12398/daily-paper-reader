@@ -1,0 +1,230 @@
+Title: DINOv3 Visual Representations for Blueberry Perception Toward Robotic Harvesting
+
+URL Source: https://arxiv.org/pdf/2603.02419v1
+
+Published Time: Wed, 04 Mar 2026 01:25:09 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# DINO V3 V ISUAL REPRESENTATIONS FOR BLUEBERRY 
+
+# PERCEPTION TOWARD ROBOTIC HARVESTING 
+
+Rui-Feng Wang 1, Daniel Petti 1, Yue Chen 2, and Changying Li 1,* 1Bio-Sensing, Automation, and Intelligence Laboratory, Department of Agricultural and Biological Engineering, Institute of Food and Agricultural Sciences, University of Florida, Gainesville, FL 32611, USA 
+
+> 2
+
+Department of Biomedical Engineering, Georgia Institute of Technology, Atlanta, GA 30332, USA 
+
+ABSTRACT 
+
+Vision Foundation Models trained via large-scale self-supervised learning have demonstrated strong generalization in visual perception; however, their practical role and performance limits in agricultural settings remain insufficiently under-stood. This work evaluates DINOv3 as a frozen backbone for blueberry robotic harvesting-related visual tasks, including fruit and bruise segmentation, as well as fruit and cluster detection. Under a unified protocol with lightweight decoders, seg-mentation benefits consistently from stable patch-level representations and scales with backbone size. In contrast, detection is constrained by target scale variation, patch discretization, and localization compatibility. The failure of cluster detec-tion highlights limitations in modeling relational targets defined by spatial aggre-gation. Overall, DINOv3 is best viewed not as an end-to-end task model, but as a semantic backbone whose effectiveness depends on downstream spatial modeling aligned with fruit-scale and aggregation structures, providing guidance for blue-berry robotic harvesting. Code and dataset will be available upon acceptance. 
+
+Index Terms : DINOv3, Vision Foundation Models, Self-Supervised Learning, Blueberry, Robotic Harvesting 
+
+1 Introduction 
+
+Reliable visual perception is a prerequisite for blueberry robotic harvesting under field conditions [1]. In practice, harvesting strategies may target either individual fruits (“granular” harvesting) or spatially aggregated structures (“cluster” harvesting) [2], imposing distinct visual requirements. Region-level tasks such as fruit and bruise segmentation support quality assessment and post-harvest inspection, whereas instance-level fruit and cluster detection are critical for harvesting and yield estimation [3, 4]. Despite extensive model development, detection precision in field environments remains limited, particularly for dense clusters, and cross-condition robustness has yet to be achieved. Recent Vision Foundation Models have demonstrated strong semantic generalization across vi-sual domains [5, 6]. However, their practical role in harvesting-related perception tasks remains unclear. In frozen-backbone settings, patch discretization, spatial resolution, and task compati-bility may impose structural constraints on downstream segmentation and detection performance.  
+
+> ∗Corresponding author: cli2@ufl.edu
+> arXiv:2603.02419v1 [cs.CV] 2 Mar 2026
+
+A systematic evaluation under harvesting-specific scenarios is therefore necessary. In this work, we evaluate DINOv3 (Self-Distillation with No Labels v3) [7] as a frozen visual representation backbone for blueberry perception tasks related to robotic harvesting. Under a unified experimen-tal protocol, we analyze fruit and bruise segmentation as well as fruit and cluster detection across heterogeneous acquisition conditions. Our objectives are threefold: (1) to quantify task-specifc performance behavior under frozen representations; (2) to identify structural factors that constrain instance-level detection, particularly for small-scale and aggregation-defined targets; and (3) to clarify the operational role of foundation representations within harvesting perception systems. 
+
+2 Related work 2.1 Robotic harvesting-related visual perception task 
+
+Visual perception for blueberry harvesting spans both region-level and instance-level formulations. For bruise segmentation, UNet3+ [8] and YOLO-based approaches [9] have been applied to extract damage regions. Fruit detection and segmentation have been addressed using supervised deep learning frameworks [10, 11, 12], demonstrating feasibility under controlled conditions. However, performance often deteriorates under dense occlusion, scale variation, and cross-device acquisition shifts [13]. In particular, cluster detection poses additional challenges because clusters are defined by spatial aggregation rather than single closed boundaries. Reported precision for cluster localization in field conditions remains limited to 40-50% [10, 14], reflecting the difficulty of modeling relational grouping structures. Existing studies primarily emphasize task-specific architectural refinement [15, 16, 17], while systematic analysis of representational constraints and scale alignment issues remains scarce. 
+
+2.2 Vision foundation models 
+
+Vision Foundation Models trained via large-scale self-supervised learning provide transferable semantic representations with preserved spatial structure [18]. DINOv3 produces dense patch-level embeddings that can serve as generic visual features [7]. Prior agricultural applications have explored foundation models through fine-tuning or adaptation strategies [19, 20]. Nevertheless, limited work has examined their behavior as frozen backbones in harvesting-specific scenarios. In particular, the interaction between patch-level discretization and fruit-scale distributions, as well as the compatibility between generic representations and aggregation-defined targets, remains in-sufficiently understood. This gap motivates the present study. 
+
+3 Methodology 3.1 Datasets 
+
+To investigate the technical behavior and applicability of frozen DINOv3 representations for vi-sual perception in robotic blueberry harvesting, we systematically evaluated blueberry datasets collected and curated by the Bio-Sensing, Automation & Intelligence Lab (BSAIL, https: //uflbsail.net ) (Table 1). This study focuses on fruit- and cluster-level segmentation and de-tection tasks, aiming to characterize representation-level performance under field conditions and to provide technical insights for perception modules optimization in future harvesting systems. The experimental analysis involves four blueberry-related datasets (Figure 1), covering fruit seg-mentation, fruit detection, cluster detection, and bruising segmentation. These datasets exhibit substantial variability in imaging conditions, object scale distributions, instance density, and oc-clusion patterns, reflecting the perceptual challenges encountered in practical harvesting scenarios. By evaluating frozen DINOv3 representations under a unified setting, we analyze their behavior across region-level semantic consistency and instance-level localization accuracy, with particular attention to task-dependent performance differences. To ensure rigor and reproducibility, all datasets are standardized before training and evaluation. Datasets without predefined splits are randomly partitioned (7:2:1 for train/val/test), while orig-
+
+> 2
+
+Table 1: Datasets used for evaluating DINOv3.                                      
+
+> Dataset Total Inst. Train Val. Test Ref.
+> Bruising Seg. 1001 1642 799 101 101 [9] Cluster Det. 991 9361 855 60 76 [10] Fruit Det. 1284 177602 898 256 130 [10] Fruit Seg. 2772 129080 1940 554 278 [10]
+> Total 6048 317685 4492 971 585 –
+> Note: “Total.”, “Train”, “Val,” and “Test” indicate number of images. “Inst.” is annotated objects.
+
+Figure 1: Samples of used datasets: (a) Bruising Segmentation; (b) Cluster Detection; (c) Fruit Segmentation; (d) Fruit Detection. inal splits are retained when available. All annotations are converted to COCO-JSON format to maintain a consistent pipeline for feature extraction and downstream decoder training. 
+
+3.2 Frozen DINOv3 evaluation framework 
+
+To ensure a fair and reproducible evaluation of frozen DINOv3 representations, we construct a standardized feature extraction pipeline that unifies annotation normalization and backbone freez-ing within a single experimental framework. Given the heterogeneity of agricultural datasets [21, 22, 23, 24], all annotations are converted into a unified COCO-JSON format with consis-tent category definitions and geometric representations across detection and segmentation tasks. For datasets providing only segmentation masks [9, 25], bounding boxes (BBox) are automati-cally derived to maintain compatibility between region-level and instance-level supervision. This harmonized setup isolates representation quality as the primary source of performance variation, minimizing confounding factors from data formatting or training protocol inconsistencies while preserving the original semantic content of each dataset. Following annotation normalization, DINOv3 models are employed as frozen visual encoders. We focus on four distilled variants [ViT-S/16 (21M parameters), ViT-S+/16 (29M), ViT-B/16 (86M), and ViT-L/16 (300M) [7]] selected to balance representational capacity and computational feasibil-
+
+> 3
+
+ity for agricultural deployment scenarios. All backbones remain fully frozen throughout training to decouple representation learning from task-specific optimization. This protocol allows us to isolate and analyze the intrinsic transferability and structural properties of DINOv3 features on unseen blueberry perception tasks, rather than assessing end-to-end task performance. For each input image, DINOv3 produces dense patch-level embeddings determined by a fixed 
+
+16 × 16 patch granularity, preserving spatial structure required for detection and segmentation. Features are precomputed and cached per subsets with the frozen DINOv3 encoder [compressed NumPy (.npz) format]. Using fixed representations for all head training and evaluation ensures fair comparisons across backbone variants and avoids redundant computation. These cached patch embeddings are the sole visual input to lightweight decoders for head-only training, quantitative evaluation, and qualitative visualization (Figure 2). 
+
+Figure 2: Workflow of DINOv3-based evaluation framework. 
+
+3.3 Patch-level decoders 
+
+Since DINOv3 operates as a frozen visual encoder and produces dense patch-level embeddings rather than task-specific predictions, downstream detection and segmentation must be formulated directly on the patch grid. The feature representations are defined as F ∈ RB×C×Hp×Wp , where B
+
+denotes batch size, C is channel dimension, and (Hp, W p) is spatial grid of patch tokens derived from non-overlapping 16 × 16 image regions. To adapt these representations for perception tasks, we employ lightweight task-specific decoders operating within the same patch coordinate system (Patch-Level Decoders, Figure 3). 
+
+Shared Adaptation Stem: To align frozen features with downstream objectives while preserving spatial structure, a lightweight adaptation module ϕ(·) is first applied to yield a shared interme-diate representation, S = ϕ(F), where S ∈ RB×CS ×Hp×Wp and CS denotes the adapted channel dimension. This shared representation provides a unified semantic space for both detection and segmentation branches, forming a typical hard parameter sharing framework [26]. By restricting learning to this lightweight module and subsequent heads, we isolate the contribution of DINOv3 
+
+> 4
+
+Figure 3: Structural diagram of Patch-Level Decoders. representations from task-specific feature relearning, ensuring that performance differences pri-marily reflect representation quality rather than backbone optimization [27]. 
+
+Patch-Level Detection Head (Det-Head): Object detection is formulated directly on the patch grid, where each patch serves as an implicit anchor aligned with the backbone’s token struc-ture. Given the shared representation S, the detection head predicts patch-level objectness (O ∈ RB×1×Hp×Wp ), class scores ( C ∈ RB×K×Hp×Wp ) over K categories, and bounding box offsets ( B = ( tx, t y, t w, t h) ∈ RB×4×Hp×Wp ) defined in the local patch coordinate system. This anchor-free, patch-aligned design eliminates multi-scale heuristics and handcrafted anchor config-urations, preserves geometric consistency with patch-level representations, and provides a struc-turally stable formulation for agricultural scenes characterized by sparse objects and local cluster-ing. 
+
+Patch-to-Pixel Segmentation Head (Seg-Head): Semantic segmentation requires dense pixel-level predictions. Since each patch corresponds to a fixed P × P image region ( P = 16 ), the Seg-Head performs structured upsampling from the patch grid (Hp, W p) to the original image resolution (H, W ), satisfying H = Hp · P and W = Wp · P . The decoder outputs a mask 
+
+M = fseg (S), where M ∈ RB×1×H×W . Progressive upsampling stages are used to recover spatial detail while preserving alignment with the underlying patch structure. The additional layers in the segmentation decoder reflect resolution reconstruction requirements rather than increased semantic modeling capacity, ensuring fair comparison under the frozen-backbone setting. 
+
+4 Experiments 4.1 Experimental setup 
+
+All experiments are implemented in PyTorch and conducted on the HiperGator high-performance computing cluster. Each computing node was equipped with 8 AMD EPYC 9655P CPU cores, a single NVIDIA DGX B200 GPU with 180 GB of memory, and 32 GB of system RAM. DINOv3 backbones remain fully frozen, and only the adaptation layer and task-specific decoders are opti-
+
+> 5
+
+mized. Models are trained for 50 epochs using the Adam optimizer with a learning rate of 1 × 10 −3
+
+[28]. Input images are resized while preserving aspect ratio, with dimensions adjusted to remain divisible by the patch size (16), and normalized using ImageNet statistics [29]. A lightweight data augmentation strategy consisting of horizontal flipping is applied during training. During infer-ence, detection predictions are filtered using confidence thresholding and non-maximum suppres-sion, and the maximum number of detections per image is capped to ensure stable and reproducible evaluation. 
+
+4.2 Evaluation metrics 
+
+Performance is evaluated using standard metrics for both semantic segmentation and object detec-tion. While both tasks rely on true positives (TP), false positives (FP), and false negatives (FN), segmentation metrics are computed at the pixel level, whereas detection metrics are defined at the instance level under IoU-based matching. For semantic segmentation, we report mean Intersection over Union (mIoU), Dice coefficient, Precision (P), and Recall (R) (Eq. 1-3). For object detection, P, R, and F1-score (F1) are computed at the instance level based on confidence thresholding and IoU matching, and further summarized performance using mean Average Precision (mAP) (Eq. 3-4). We report both mAP50 (IoU = 0.5) and mAP (IoU 0.50–0.95, step 0.05). 
+
+mIoU = 1
+
+K
+
+> K
+
+X
+
+> k=1
+
+T P k
+
+T P k + F P k + F N k
+
+(1) 
+
+Dice = 2TP 
+
+2TP + FP + FN (2) P = TP TP + FP , R = TP TP + FN (3) F1 = 2P × RP + R , mAP =
+
+PNn=1 AP (n)
+
+N (4) Here, K is the number of semantic classes, AP( n) is the Average Precision of class n, and N is the number of object categories. All metrics are reported in percentage form. 
+
+4.3 Quantitative results 
+
+Tables 2 & 4, Tables 3 & 5 report the validation and test performance of different distilled DINOv3 variants on blueberry segmentation and detection tasks. Since all backbones remain frozen and only lightweight heads are trained, the results reflect the extent to which patch-level representations can be effectively read out under increasing model scale. 
+
+Segmentation: Consistent Scaling Behavior. For semantic segmentation, performance improves consistently as the backbone scale increases from ViT-S to ViT-L. Both mIoU and Dice exhibit monotonic gains on validation and test sets (Tables 2-3), indicating that stronger frozen represen-tations translate into more stable region-level semantic coherence. Across fruit and bruising seg-mentation, larger backbones yield improved overlap quality and a more balanced P–R trade-off. These results suggest that when foreground regions are semantically coherent but exhibit local ap-pearance variability, enhanced representational capacity can be effectively exploited by lightweight decoders to refine decision boundaries, even without backbone fine-tuning. Overall, segmentation shows stable and predictable scaling benefits under the frozen-representation paradigm. 
+
+Detection: Dataset-Dependent and Structurally Constrained. In contrast, object detection ex-hibits substantially greater heterogeneity in scaling effects (Tabes 4-5). While larger backbones generally improve detection metrics for blueberry fruit detection, the gains are less uniform and 
+
+> 6
+
+Table 2: Semantic segmentation results (%) on the validation set.                                      
+
+> Dataset Model mIoU Dice PRBruising ViT-S 67.470 79.330 83.189 80.122 ViT-S+ 67.200 79.400 77.429 85.492
+> ViT-B 65.171 76.810 89.103 71.272 ViT-L 68.416 79.789 86.739 77.675 Fruit Det. ViT-S 66.564 78.438 79.944 78.169 ViT-S+ 68.737 80.119 79.893 81.536 ViT-B 69.610 80.872 79.601 83.258 ViT-L 71.021 82.054 80.515 84.308
+
+Table 3: Semantic segmentation results (%) on the test set.                                      
+
+> Dataset Model mIoU Dice PRBruising ViT-S 66.487 78.861 77.255 83.860 ViT-S+ 67.035 79.170 74.956 87.109
+> ViT-B 68.022 79.300 85.305 76.885 ViT-L 69.401 80.765 83.384 81.540 Fruit Det. ViT-S 64.847 77.282 78.249 77.845 ViT-S+ 66.334 78.317 77.652 80.547 ViT-B 67.969 79.686 78.065 82.446 ViT-L 69.253 80.713 78.466 83.837
+
+more sensitive to target scale and spatial distribution. Notably, detection performance on the Blue-berry Cluster Detection dataset remains extremely low across all backbone variants, with minimal improvement under scaling. This indicates that performance in such regimes is constrained more by spatial resolution and patch-level assignment mechanisms than by semantic representation ca-pacity alone. Dense clustering, small object size, severe foreground–background imbalance at the patch level, or annotation definitions that are poorly aligned with bounding-box-based detection as-sumptions limit the effectiveness of patch-discretized localization, revealing a structural bottleneck independent of backbone scale. Table 4: Object detection results (%) on the validation set.                                                                   
+
+> Dataset Model mAP50 mAP PRF1 Cluster Det. ViT-S 1.166 0.322 30.732 3.179 5.761 ViT-S+ 1.244 0.305 23.304 3.986 6.807 ViT-B 1.770 0.483 29.050 5.247 8.889
+> ViT-L 0.750 0.203 24.348 2.825 5.063 Fruit Det. ViT-S 11.368 2.814 25.480 35.697 29.735 ViT-S+ 13.016 3.301 21.876 39.244 28.092 ViT-B 11.210 2.391 20.879 34.926 26.135 ViT-L 16.031 4.444 29.290 42.800 34.779
+> Fruit Seg. ViT-S 24.348 7.005 36.741 50.196 42.427 ViT-S+ 29.156 9.363 34.687 49.076 40.645 ViT-B 25.841 7.859 36.321 51.275 42.521 ViT-L 24.342 7.478 37.854 49.991 43.084
+
+These observations highlight a fundamental distinction between segmentation and detection un-der frozen representations: segmentation benefits directly from improved semantic abstraction, whereas detection performance is jointly determined by representation quality and spatial dis-cretization constraints imposed by the patch grid. 
+
+Task-Level Divergence Under Identical Representations. A direct comparison of segmentation and detection on the same blueberry datasets further reveals task-dependent response patterns. 
+
+7Table 5: Object detection results (%) on the test set.                                                                   
+
+> Dataset Model mAP50 mAP PRF1 Cluster Det. ViT-S 0.000 0.000 0.000 0.000 0.000 ViT-S+ 0.000 0.000 0.000 0.000 0.000 ViT-B 0.000 0.000 0.000 0.000 0.000 ViT-L 0.000 0.000 0.000 0.000 0.000 Fruit Det. ViT-S 0.898 0.256 29.230 2.246 4.171 ViT-S+ 0.844 0.216 24.839 2.765 4.977 ViT-B 1.814 0.375 33.528 5.387 9.282 ViT-L 2.166 0.576 37.568 5.757 9.985
+> Fruit Seg. ViT-S 0.451 0.082 29.118 1.520 2.889 ViT-S+ 7.622 2.692 64.293 10.977 18.752
+> ViT-B 3.224 0.882 50.139 6.283 11.166 ViT-L 1.591 0.318 35.234 4.507 7.992
+
+Improvements in pixel-level overlap metrics do not always translate into proportional gains in box-level localization accuracy. Larger representations tend to increase recall-oriented behavior, which may benefit segmentation by expanding foreground coverage, yet lead to reduced precision in detection due to stricter instance-level matching criteria. Overall, the quantitative results demonstrate that frozen DINOv3 representations provide consis-tent scalability for blueberry semantic segmentation, while detection performance is more strongly constrained by target density, object scale, and the inductive biases of patch-level localization. 
+
+4.4 Qualitative analysis 
+
+To complement the quantitative results and interpret model behavior from a representation per-spective, we provide qualitative visualizations and PCA projections of patch-level features on the test datasets (Figures 4–6). The qualitative evidence is consistent with the trends observed in Sec-tion 4.3: segmentation benefits steadily from backbone scaling, whereas detection remains more sensitive to spatial and structural constraints imposed by the patch grid. 
+
+Segmentation: From Subtle Boundaries to Cross-Domain Stability. We first examine blueberry bruising segmentation (Figure 4), a task characterized by subtle appearance variation and ambigu-ous boundaries. Although bruised regions are not clearly separable in low-dimensional PCA pro-jections, larger DINOv3 variants still produce more coherent masks and improved overlap quality. This apparent discrepancy does not contradict the quantitative gains. PCA preserves only dominant variance directions, which typically capture global structural information rather than fine-grained texture variations. Prior studies have shown that perceptually subtle yet semantically meaningful differences may reside in phase- or frequency-related components that are not visually salient after dimensionality reduction [30, 31]. Therefore, the absence of clear separation in PCA space does not imply weak discriminative capacity in the full high-dimensional representation. 
+
+Figure 4: Visualization and PCA for bruising segmentation. 
+
+> 8
+
+We next consider fruit segmentation across three acquisition subsets [OpenSet (Figure 5 (a)), HandSet (Figure 5 (b), and RoboSet (Figure 5 (c)] to assess cross-domain stability. In contrast to bruising, fruit-related patch embeddings form relatively compact clusters across subsets and re-main separable from typical background components such as foliage and soil. These observations highlight a core property of DINOv3 as a frozen representation extractor: its dense patch-level features retain semantic consistency across acquisition domains, enabling a lightweight head to learn stable foreground decision boundaries from limited supervision. Importantly, the purpose of these visualizations is not to suggest that the backbone performs segmentation directly, but to demonstrate that, within a unified patch coordinate system, semantically consistent regions are mapped to nearby representations. This structural alignment reduces the effective learning burden of downstream decoders. 
+
+Figure 5: Segmentation and detection results with PCA analysis for the Blueberry Fruit Segmen-tation Dataset. 
+
+> 9
+
+Detection: Relational Targets and Spatial Bottlenecks. We begin with cluster detection, which represents the most structurally constrained regime. Across backbone variants, cluster detection collapses despite meaningful semantic structure observed in PCA projections (Figure 6). It indi-cates that the limitation does not arise purely from weak feature separability. Instead, the bottle-neck lies in the object definition itself. Unlike individual fruits, a “cluster” is not a single, closed-boundary object with stable geometry. Its definition depends on relational aggregation among multiple fruits under varying spatial configurations, occlusions, and discontinuities. Patch-level representations are naturally suited to capturing local semantic similarity but do not explicitly en-code higher-order assembly relationships. Under a standard bounding-box detection formulation on a fixed patch grid, such relational targets become difficult to localize, as spatial grouping must be inferred implicitly from box regression rather than modeled directly. Consequently, performance is dominated by structural mismatch rather than representation capacity. 
+
+Figure 6: Visualization and PCA for cluster detection. In contrast, blueberry fruit detection exhibits partial scalability with backbone size, yet remains sensitive to spatial discretization. When fruit scale aligns more closely with patch granularity (OpenSet (Figure 7(a) left), HandSet (Figure 7(b)(i)), and RoboSet (Figure 7(c))), semantic clus-ters in feature space translate into more stable proposals. However, when fruit extent spans mul-tiple patches or is poorly aligned with the grid (OpenSet (Figure 7(a) right) and HandSet (Figure 7(b)(ii))), box localization remains unstable even if semantic separability is visually plausible. This mismatch reveals that under frozen representations, detection performance ceilings are jointly gov-erned by semantic abstraction and the inductive biases of patch-level localization, including grid resolution, assignment strategy, and non-maximum suppression dynamics. Therefore, detection results illustrate that while frozen DINOv3 representations provide strong semantic grouping at the patch level, successful instance-level localization requires compatibility between object definition, spatial granularity, and decoder formulation. Representation strength alone is insufficient when structural alignment is lacking. Overall, the qualitative analyses reinforce the quantitative findings. Frozen DINOv3 representa-tions maintain stable semantic structure across blueberry perception tasks, enabling reliable seg-mentation through lightweight readout. Detection performance, however, is governed not only by representation quality but also by structural alignment between patch granularity, target scale, and object definition. These observations clarify when frozen patch-level representations can be ef-fectively leveraged and when performance bottlenecks arise from spatial formulation rather than semantic abstraction. 
+
+5 Discussion 5.1 Technical insights 
+
+This study clarifies the role of DINOv3 in blueberry visual perception toward robotic harvesting. Rather than functioning as an end-to-end segmentation or detection system, DINOv3 serves as a 
+
+> 10
+
+Figure 7: Visualization and PCA for the fruit detection. frozen general-purpose visual encoder that provides dense patch-level representations. The objec-tive of this work is therefore not to compare DINOv3 against fully fine-tuned task models (e.g. SAM3 [32], YOLO [33], UNet [34]), but to examine how effectively its frozen representations can be read out by lightweight decoders under harvesting-relevant perception tasks. For bruising segmentation, scaling the backbone yields consistent improvements in region-level metrics despite the subtle appearance differences and ambiguous boundaries characteristic of bruise regions. Although low-dimensional PCA projections do not always visually isolate bruise patches, this does not contradict segmentation performance, as fine-grained texture variations may reside in lower-variance components not preserved in dominant projection axes. The results indi-cate that frozen DINOv3 features retain sufficient high-dimensional semantic structure to support stable foreground separation even when differences are not perceptually salient, suggesting that 
+
+> 11
+
+bruise quantitation in harvesting pipelines can benefit directly from stronger frozen representa-tions with lightweight head-level adaption. Fruit segmentation further demonstrates cross-domain stability across acquisition subsets, where patch embeddings corresponding to fruit regions remain semantically coherent despite variations in illumination, viewpoint, and sensor configuration. This consistency implies that region-level tasks relying on semantic compactness can be reliably supported under heterogeneous field conditions without full backbone fine-tuning, an important property for robotic harvesting systems in dynamic outdoor environments. In contrast, detection exposes structural bottlenecks that are not resolved by increasing represen-tation capacity alone. Instance-level localization is strongly affected by the spatial discretization imposed by the fixed patch grid, and a pronounced scale effect emerges when fruit size misaligns with patch granularity. When fruit extent spans multiple patches or varies substantially across acquisition regimes, bounding-box regression under a discretized grid cannot fully capture con-tinuous spatial variation, leading to unstable localization despite preserved semantic separability. The failure of cluster detection reveals a deeper limitation: clusters are relational targets defined by spatial aggregation rather than single closed boundaries [2, 10], and fruit-level semantic sep-arability does not automatically translate into cluster-level detectability without explicit grouping mechanisms. These observations indicate that detection performance ceilings in frozen-backbone settings might be aligned with spatial modeling strategies optimization (e.g. fruit-level aggrega-tion priors [2], learnable grouping mechanisms within detection frameworks [35], or graph-based reasoning [36]) rather than semantic abstraction strength. From a harvesting-system perspective, improving blueberry detection reliability therefore requires aligning localization mechanisms with patch-level representations and fruit-scale distributions. En-hancements are more likely to arise from multi-scale feature fusion [37], improved box regression under grid discretization [38], adaptive assignment strategies [39], or refined post-processing [40], rather than from merely increasing backbone scale. Frozen DINOv3 representations provide a strong semantic foundation for blueberry perception, but effective deployment in robotic harvest-ing pipelines depends critically on explicitly engineered spatial reasoning that bridges semantic separability and instance-level localization. 
+
+5.2 Future perspectives 
+
+Building upon the empirical findings and technical insights presented in this study, future research on frozen DINOv3 representations for blueberry visual perception in robotic harvesting should focus on strengthening their integration into robotic harvesting pipelines rather than treating as standalone task models. The central implication of our results is that DINOv3 provides a stable semantic foundation, but effective harvesting-oriented perception requires architectural alignment between patch-level representations and task-specific spatial reasoning. 
+
+Figure 8: Structure of AgriSight-MT Dataset Blueberry section. A first practical direction lies in data infrastructure and reproducible evaluation. In this work, the datasets have been reorganized as a dedicated section within the AgriSight-MT dataset, accompa-nied by standardized splits and pre-extracted DINOv3 patch-level features (Figure 8). By publicly releasing this structured blueberry subset together with feature files and preprocessing utilities, we aim to enable controlled comparison of frozen-representation strategies under consistent protocols. 
+
+> 12
+
+For robotic harvesting research, such representation-centric infrastructure reduces overhead for ex-periments and reproducible evaluation, and facilitates systematic study of perception modules. For region-level tasks, particularly fruit and bruise segmentation, future work may further explore lightweight readout mechanisms that fully exploit the semantic coherence preserved in frozen patch embeddings [41]. Instead of increasing network complexity, a promising paradigm for harvesting scenarios is to combine general-purpose representations with minimal, deployment-friendly de-coders. This direction is especially relevant for field robots under limited computation budgets, where stable region extraction is often more critical than architectural complexity. For instance-level detection, however, the primary bottleneck identified in this study is spatial rather than semantic. Future efforts should therefore emphasize better alignment between fruit-scale distributions and patch-grid discretization. Multi-scale feature aggregation, improved box regression across patch boundaries, and adaptive assignment mechanisms may help mitigate scale-induced localization instability. In harvesting contexts, where fruit size and density vary across viewpoints and growth stages, detection robustness will depend more on explicit spatial modeling than on further enlarging backbone capacity. 
+
+Figure 9: A conceptual pipeline for blueberry cluster detection based on fruit-level evidence aggre-gation. Output A generates cluster proposals by fitting BBoxes to predicted foreground regions and refines them using an aggregation verification module. The verification stage evaluates fruit-level cues within each ROI (e.g., fruit spatial compactness, connectivity) to filter proposals inconsistent with the cluster definition. Output B serves as a geometric baseline, where cluster boxes are ob-tained solely through direct region-to-box fitting without aggregation verification. The challenge becomes more pronounced for relational targets such as blueberry clusters. Because cluster identity is defined by aggregation structure rather than a single closed boundary, fruit-level separability in feature space does not automatically yield cluster-level detectability. The conceptual pipeline proposed in this study suggests elevating fruit-level evidence into group-level representations through lightweight aggregation verification (Figure 9). Future research may refine this paradigm by integrating learnable grouping mechanisms or structured reasoning modules that explicitly model spatial composition. Such strategies are likely essential for translating semantic cues into reliable cluster detection for harvesting and yield estimation. Finally, although frozen DINOv3 features demonstrate semantic stability across acquisition sub-sets, detection remains sensitive to cross-domain scale shifts. Rather than relying solely on end-to-end adaptation, future work may explicitly incorporate scale-aware modeling strategies (such as multi-scale detection heads [42] or feature fusion [43]) to handle viewpoint and resolution vari-
+
+> 13
+
+ability common in blueberry fields. Aligning semantic representation with scale-consistent spatial inference will be critical for deploying perception modules in real harvesting robots. 
+
+6 Conclusions 
+
+This study systematically evaluated DINOv3 as a frozen general-purpose visual encoder under a unified protocol for blueberry perception tasks related to robotic harvesting. By designing task-aligned lightweight decoders and standardized training settings, we established a controlled frame-work to analyze its representation behavior across segmentation and detection. Results reveal clear task-dependent characteristics. Region-level segmentation benefits from stable and scalable dense patch representations, with consistent gains as backbone capacity increases. In contrast, instance-level detection is influenced not only by semantic separability but also by target scale distribution, patch discretization, and localization compatibility. Overall, these findings clarify the effective operating regime of frozen DINOv3 in harvesting perception. Rather than serving as an end-to-end model, it functions more appropriately as a semantic backbone, whose reliability depends on structural adaptation (multi-scale modeling & relational reasoning) to translate strong semantic representations into robust instance-level localization and aggregation-aware detection. 
+
+> 14
+
+References 
+
+[1] H. Sun and R.-F. Wang, “Bmdnet-yolo: A lightweight and robust model for high-precision real-time recognition of blueberry maturity,” Horticulturae , vol. 11, no. 10, p. 1202, 2025. [2] R. Gai, J. Gao, and G. Xu, “Hppem: A high-precision blueberry cluster phenotype extraction model based on hybrid task cascade,” Agronomy , vol. 14, no. 6, p. 1178, 2024. [3] G.-h. Xu, L. Lei, Q. An, L.-q. Luo, and H.-x. Wang, “Utilization and development trend analysis of vaccinium of america in blueberry breeding.,” Journal of Fruit Science , vol. 38, no. 7, 2021. [4] Z. Haydar, T. J. Esau, A. A. Farooque, F. Abbas, and A. Fraser, “Integration of machine learning models with real-time global positioning data to automate the wild blueberry har-vester,” Precision Agriculture , vol. 26, no. 1, p. 7, 2025. [5] S. Lu et al., “Vision foundation models in remote sensing: A survey,” IEEE Geoscience and Remote Sensing Magazine , 2025. [6] S. Yan et al., “A multimodal vision foundation model for clinical dermatology,” Nature Medicine , vol. 31, no. 8, pp. 2691–2702, 2025. [7] O. Siméoni et al., “Dinov3,” arXiv preprint arXiv:2508.10104 , 2025. [8] J. Dai, G. Wang, M. Yang, and D. Liu, “Pebu-net: A lightweight segmentation network for blueberry bruising based on unet3+ using hyperspectral transmission imaging,” Measure-ment , vol. 253, p. 117 700, 2025. [9] C. Tan, C. Li, P. Perkins-Veazie, H. Oh, R. Xu, and M. Iorizzo, “High throughput assessment of blueberry fruit internal bruising using deep learning models,” Frontiers in Plant Science ,vol. 16, p. 1 575 038, 2025. [10] Z. Li, R. Xu, C. Li, P. Munoz, F. Takeda, and B. Leme, “In-field blueberry fruit phenotyping with a mars-phenobot and customized berrynet,” Computers and Electronics in Agriculture ,vol. 232, p. 110 057, 2025. [11] P. Singh, N. Niknejad, J. D. Spiers, Y. Bao, and S. Ru, “Development of a smartphone appli-cation for rapid blueberry detection and yield estimation,” Smart Agricultural Technology ,p. 101 361, 2025. [12] F. Zhao et al., “Smart uav-assisted blueberry maturity monitoring with mamba-based com-puter vision,” Precision Agriculture , vol. 26, no. 4, p. 56, 2025. [13] Z. Chen, J. Wang, X. Liu, Y. Gu, and Z. Ren, “The application of optical nondestructive testing for fresh berry fruits,” Food Engineering Reviews , vol. 16, no. 1, pp. 85–115, 2024. [14] Y. Zhao, Y. Li, and X. Xu, “Object detection in high-resolution uav aerial remote sensing images of blueberry canopy fruits,” Agriculture , vol. 14, no. 10, p. 1842, 2024. [15] C. Fu, S. Liu, and A. Tian, “Detection of blueberry based on hyperspectral imaging and deep learning,” Food Research International , p. 117 141, 2025. [16] Y. Huang et al., “Identification of early bruising degrees in blueberries using visible and near-infrared spectroscopy coupled with deep learning,” Spectrochimica Acta Part A: Molecular and Biomolecular Spectroscopy , p. 127 200, 2025. [17] I. Esaki, S. Noma, T. Ban, R. Sultana, and I. Shimizu, “Maturity classification of blueberry fruit using yolo and vision transformer for agricultural assistance,” Horticulturae , vol. 11, no. 10, p. 1272, 2025. [18] M. Awais et al., “Foundation models defining a new era in vision: A survey and outlook,” 
+
+IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 47, no. 4, pp. 2245– 2264, 2025. [19] G. G. Casas, Z. H. Ismail, M. I. Shapiai, and E. K. Karuppiah, “Automated detection and segmentation of baby kale crowns using grounding dino and sam for data-scarce agricultural applications,” Smart Agricultural Technology , vol. 11, p. 100 903, 2025. [20] Y. Wang, S. Xu, Z. Ye, and K. Cheng, “Optimized dino model for accurate object detection of sesame seedlings and weeds,” Scientific Reports , vol. 15, no. 1, p. 11 854, 2025. [21] K. Cui et al., “Efficient localization and spatial distribution modeling of canopy palms using uav imagery,” IEEE Transactions on Geoscience and Remote Sensing , 2025. [22] R.-F. Wang, H.-R. Qu, and W.-H. Su, “From sensors to insights: Technological trends in image-based high-throughput plant phenotyping,” Smart Agricultural Technology ,p. 101 257, 2025. 
+
+> 15
+
+[23] Y. Zhang, F. Zhang, J. Wang, H. Yang, W. Zhang, and J. Li, “Orchard chestnut visual harvest maturity detection and segmentation using an improved yolo-based method,” Agriculture ,vol. 16, no. 4, p. 456, 2026. [24] R.-F. Wang and W.-H. Su, “The application of deep learning in the whole potato production chain: A comprehensive review,” Agriculture , vol. 14, no. 8, p. 1225, 2024. [25] W. Zhang et al., “Center-guided classifier for semantic segmentation of remote sensing im-ages,” arXiv preprint arXiv:2503.16963 , 2025. [26] R. Caruana, “Multitask learning: A knowledge-based source of inductive bias1,” in Proceed-ings of the Tenth International Conference on Machine Learning , 1993, pp. 41–48. [27] H. Wang, X. Jin, Y. Du, N. Zhang, and H. Hao, “Adaptive hard parameter sharing method based on multi-task deep learning,” Mathematics , vol. 11, no. 22, p. 4639, 2023. [28] D. P. Kingma, “Adam: A method for stochastic optimization,” arXiv preprint arXiv:1412.6980 , 2014. [29] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei, “Imagenet: A large-scale hier-archical image database,” in 2009 IEEE conference on computer vision and pattern recogni-tion , Ieee, 2009, pp. 248–255. [30] A. V. Oppenheim and J. S. Lim, “The importance of phase in signals,” Proceedings of the IEEE , vol. 69, no. 5, pp. 529–541, 2005. [31] R. Geirhos, P. Rubisch, C. Michaelis, M. Bethge, F. A. Wichmann, and W. Brendel, “Imagenet-trained cnns are biased towards texture; increasing shape bias improves accuracy and robustness,” in International conference on learning representations , 2018. [32] N. Carion et al., “Sam 3: Segment anything with concepts,” arXiv preprint arXiv:2511.16719 , 2025. [33] R. Sapkota et al., “Yolo advances to its genesis: A decadal and comprehensive review of the you only look once (yolo) series,” Artificial Intelligence Review , vol. 58, no. 9, p. 274, 2025. [34] O. Ronneberger, P. Fischer, and T. Brox, “U-net: Convolutional networks for biomedical im-age segmentation,” in International Conference on Medical image computing and computer-assisted intervention , Springer, 2015, pp. 234–241. [35] A. Newell, Z. Huang, and J. Deng, “Associative embedding: End-to-end learning for joint detection and grouping,” Advances in neural information processing systems , vol. 30, 2017. [36] H. Hu, J. Gu, Z. Zhang, J. Dai, and Y. Wei, “Relation networks for object detection,” in 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 3588–3597. [37] R. Liu et al., “A lightweight model based on multi-scale feature fusion for ultrasonic weld-ing surface defect detection,” Engineering Applications of Artificial Intelligence , vol. 161, p. 112 208, 2025. [38] T. Zhang, C. Chen, Y. Liu, X. Geng, M. M. S. Aly, and J. Lin, “Psrr-maxpoolnms++: Fast non-maximum suppression with discretization and pooling,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 47, no. 2, pp. 978–993, 2024. [39] M. Dang, G. Liu, C. Chen, D. Wang, X. Li, and Q. Wang, “Adaptive spatial and scale la-bel assignment for anchor-free object detection,” Pattern Recognition , vol. 164, p. 111 549, 2025. [40] X. Liu, X. Huang, R. Zhu, C. Hu, C. Wang, and C. Sun, “Yolov5-based dense rice seed count-ing method integrating c3cbam and soft-nms,” Smart Agricultural Technology , p. 101 779, 2026. [41] T. Xue, Z. He, and G. Wei, “Dinov3-unet: A pretrained vision transformer enhanced u-net for surface defect segmentation,” in 2025 5th International Symposium on Artificial Intelligence and Intelligent Manufacturing (AIIM) , IEEE, 2025, pp. 39–42. [42] T. Yang, B. Peng, J. Zhang, D. Zhang, C. Liang, and X. Fan, “Optimizing seed anomaly de-tection in agricultural automation via lightweight asd-yolo and closed-loop control,” Com-puters and Electronics in Agriculture , vol. 243, p. 111 342, 2026. [43] S. Huang, Y. Hou, L. Liu, X. Yu, and X. Shen, “Real-time object detection meets dinov3,” 
+
+arXiv preprint arXiv:2509.20787 , 2025.

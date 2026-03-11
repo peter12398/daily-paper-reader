@@ -1,0 +1,249 @@
+Title: PlaneCycle: Training-Free 2D-to-3D Lifting of Foundation Models Without Adapters
+
+URL Source: https://arxiv.org/pdf/2603.04165v1
+
+Published Time: Thu, 05 Mar 2026 02:22:08 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# P laneCycle : Training-Free 2D-to-3D Lifting of Foundation Models Without Adapters 
+
+Yinghong Yu 1,2⋆[0009 −0001 −6382 −0001] 
+
+, Guangyuan Li 2⋆[0009 −0005 −8063 −7873] 
+
+, and Jiancheng Yang 1,2⋆⋆ [0000 −0003 −4455 −7145]  
+
+> 1
+
+ELLIS Institute Finland, Espoo, 02150, Finland  
+
+> 2
+
+Aalto University, Espoo, 02150, Finland 
+
+jiancheng.yang@aalto.fi 
+
+Abstract. Large-scale 2D foundation models exhibit strong transfer-able representations, yet extending them to 3D volumetric data typi-cally requires retraining, adapters, or architectural redesign. We intro-duce P laneCycle , a training-free, adapter-free operator for architecture-agnostic 2D-to-3D lifting of foundation models. P laneCycle reuses the original pretrained 2D backbone by cyclically distributing spatial aggre-gation across orthogonal HW , DW , and DH planes throughout network depth, enabling progressive 3D fusion while preserving pretrained induc-tive biases. The method introduces no additional parameters and is ap-plicable to arbitrary 2D networks. Using pretrained DINOv3 models, we evaluate P laneCycle on six 3D classification and three 3D segmentation benchmarks. Without any training, the lifted models exhibit intrinsic 3D fusion capability and, under linear probing, outperform slice-wise 2D baselines and strong 3D counterparts, approaching the performance of fully trained models. With full fine-tuning, P laneCycle matches stan-dard 3D architectures, highlighting its potential as a seamless and prac-tical 2D-to-3D lifting operator. These results demonstrate that 3D ca-pability can be unlocked from pretrained 2D foundation models with-out structural modification or retraining. Code is available at https: //github.com/HINTLab/PlaneCycle .
+
+Keywords: Training-Free · Adapter-Free · 2D-to-3D Lifting · Founda-tion Models · DINOv3. 
+
+## 1 Introduction 
+
+Large-scale 2D foundation models [4,8,14,21] have demonstrated strong robust-ness and transferable representations across diverse domains, and have shown increasing promise in medical imaging [19,16], where data are limited and het-erogeneous [29]. While transferring pretrained 2D models to downstream 2D tasks is straightforward via fine-tuning or low-rank adaptation [10], extending  
+
+> ⋆
+
+Equal contribution.  
+
+> ⋆⋆
+
+Corresponding author: Jiancheng Yang (jiancheng.yang@aalto.fi). 
+
+> arXiv:2603.04165v1 [cs.CV] 4 Mar 2026
+
+2 Y. Yu et al. PC  (Ours ） Input       
+
+> Nodule (Lung CT)
+> HW (A xial )DH (C oronal )DW (S agittal)
+> Synapse (EM)
+> HW (A xial )DH (C oronal )DW (S agittal)
+> Organ (Multi -organ CT)
+> HW (A xial )DH (C oronal )DW (S agittal)
+> 2D 3D
+
+Fig. 1. PCA visualizations of frozen lifted DINOv3 [21] features on three 3D datasets [32] across HW , DW , and DH planes; inconsistencies circled. 
+
+them to volumetric 3D data is considerably less natural, despite many clinical imaging modalities (e.g., CT, MRI, OCT) being inherently 3D. A common strategy applies 2D models slice-by-slice and aggregates predic-tions post hoc [16], which is computationally efficient but neglects cross-slice dependencies. Alternatively, 2D backbones can be converted into full 3D [5,2] or augmented with adapters [30,26,17]. Notably, such converted models typically exhibit no intrinsic 3D capability prior to 3D retraining. Other efforts rely on large-scale video pretraining [24] or dedicated 3D medical pretraining [7,27], yet the diversity and accessibility of these data sources remain significantly more lim-ited than natural 2D imagery. In addition, given the enormous computational investment behind modern 2D foundation models, DINOv3 reports 9M H100 GPU hours and 2600 tCO2eq [21], developing mechanisms that more effectively reuse pretrained 2D representations is essential for sustainability. These observations raise a fundamental question: can 3D capability emerge from pretrained 2D foundation models without modifying their architecture or parameters? Ideally, such a mechanism should be training-free while remaining fully compatible with fine-tuning when supervision is available. The closest re-lated perspective is ACS convolution [31], which reorganizes conv kernels across orthogonal planes; however, it is restricted to CNN architectures. In an era where ViT [6] foundation models increasingly dominate, there is a need for architecture-agnostic operators capable of reusing both modern ViT and established CNN backbones [11,20] within a unified 2D-to-3D lifting framework. To address this question, we propose P laneCycle , a parameter-free operator for architecture-agnostic 2D-to-3D lifting. P laneCycle preserves the pretrained 2D backbone, whether CNN or ViT, and enables 3D fusion by distributing spatial aggregation across orthogonal planes throughout network depth. Specifically, P laneCycle : Training-Free 2D-to-3D Model Lifting 3Reshape                                                   
+
+> 𝑫 ×𝑯 ×𝑾 ×𝑪
+> Flatten
+> 𝑫 ×{(𝒈 +𝑯𝑾 )×𝑪 }
+> ViT
+> Block
+> RoPE
+> H
+> W
+> 𝑫 𝑫
+> 𝑯 ×{(𝒈 +𝑫𝑾 )×𝑪 }
+> ViT
+> Block
+> RoPE
+> D
+> W
+> 𝑯 𝑯
+> 𝑾 ×{(𝒈 +𝑫𝑯 )×𝑪 }
+> ViT
+> Block
+> RoPE
+> D
+> H
+> 𝑾 𝑾
+> Reshape Flatten Reshape Flatten Reshape
+> Global tokens
+> HW Plane (Axial )DW Plane (Coronal) DH Plane (Sagittal)
+> 𝑫 ×𝑯 ×𝑾 ×𝑪 𝑫 ×𝑯 ×𝑾 ×𝑪
+
+Fig. 2. Overview of P laneCycle across three orthogonal planes: HW , DW , DH . Flat-tened slice tokens are processed by a shared ViT layers with plane-specific RoPE [22]. 
+
+feature interactions are cyclically performed over the HW , DW , and DH planes across layers, enabling progressive 3D integration in a training-free manner. We use DINOv3 [21] as a representative. As illustrated in Fig. 1, slice-wise 2D inference produces features that are well-structured within the selected plane (HW ) but inconsistent across slices. In contrast, naïvely converted 3D models exhibit weak and poorly aligned 3D representations across all three orthogonal planes prior to retraining. P laneCycle , however, yields well-aligned 3D features across HW , DW , and DH without additional supervision. This intrinsic 3D capability is further reflected in linear probing and zero-training evaluations (Sec. 3.2), where P laneCycle lifting surpasses 2D/3D by considerable margins. After full fine-tuning, performance remains competitive with full 3D models. Importantly, P laneCycle is not a replacement for 3D pretraining [24,7,27] or adapters [30,26], but a complementary operator; lifted models remain fully compatible with these techniques. We aim to demonstrate that 3D capability can be unlocked directly from pretrained 2D foundation models through a simple, seamless, and practical lifting mechanism. 
+
+## 2 Method 
+
+2.1 Problem Formulation 
+
+2D-to-3D lifting typically exhibits two extremes: slice-wise 2D processing [15,19] and full-volume 3D modeling [23,25]. The former extracts features independently from individual slices, whereas the latter operates directly on the full volumes. For CNNs, 2D-to-3D lifting [5,31] primarily increases kernel dimensional-ity and parameters, while maintaining locally linear complexity. In contrast, Transformer self-attention scales quadratically with sequence length, leading to a substantial increase in attention cost. Formally, given a 3D feature map Xi ∈ RD×H×W ×C , the 2D baseline ap-plies pretrained layer Fθ independently to each of the D slices. The result-ing self-attention cost is O(( HW )2) per slice, leading to a total complexity of 
+
+O(D(HW )2). The 3D baseline flattens the volume and applies Fθ once, yielding 
+
+O(( DHW )2) self-attention, D× higher than 2D slicing. 4 Y. Yu et al. 
+
+Algorithm 1: P laneCycle 
+
+Input : 3D feature Xi ∈ RD×H×W ×C , global tokens Gi ∈ RP ′×g×C .
+
+Parameters : Pretrained 2D layer Fθ , plane P ∈ { D, H, W }.
+
+Output : 3D feature Xo ∈ RD×H×W ×C , global tokens Go ∈ RP ×g×C . 
+
+> 1
+
+X = reshape (Xi) ∈ RP ×(DHW/P )×C , G = adaptivePool (Gi) ∈ RP ×g×C ; 
+
+> 2
+
+T = Fθ ([ G, X]) ∈ RP ×(g+DHW/P )×C ; // apply 2D layer P times  
+
+> 3
+
+Xo = reshape (T [: , g :]) ∈ RD×H×W ×C , Go = T [: , : g] ∈ RP ×g×C .
+
+The 2D baseline preserves computational efficiency but restricts attention to intra-slice tokens. The 3D baseline enables global volumetric interaction, yet incurs quadratic self-attention cost. These two baselines reveal a trade-off be-tween efficient 2D weight reuse and scalable volumetric interaction, motivating a unified and computationally efficient lifting strategy. 
+
+2.2 P laneCycle : Training-Free 2D-to-3D Lifting Operator 
+
+We propose P laneCycle , an adapter-free operator for 2D-to-3D lifting. As de-tailed in Algorithm 1, the procedure involves plane-wise reshaping, intra-plane aggregation, and 3D restoration. Given a 3D feature map Xi and global tokens 
+
+Gi ∈ RP ′×g×C , where g denotes the number of global tokens per slice ( g = 5 fol-lowing DINOv3, consisting of one CLS token and four register tokens), we reuse the pretrained 2D weights and select an axis P ∈ { D, H, W }, corresponding to the HW , DW , DH plane. The volumetric feature map is reshaped into P slices, and each slice is flattened into a token sequence of length DHW/P , resulting in X = reshape (Xi) ∈ RP ×(DHW/P )×C . To map global tokens across planes, we apply adaptive average pooling to obtain G = adaptivePool (Gi) ∈ RP ×g×C .The global tokens and patch tokens are concatenated and passed to the frozen 2D layer P times independently, introducing no additional parameters: 
+
+T = Fθ
+
+ [G, X] ∈ RP ×(g+DHW/P )×C . (1) After feature aggregation on plane P , the global tokens are separated and the patch tokens are reshaped back to the volumetric layout. Our method modifies only the viewing plane of the 3D feature representation, introducing negligible computational overhead. Although the formulation includes global tokens specific to Transformer ar-chitectures, the operator is not restricted to Transformers. For CNN backbones, the same procedure applies without global tokens. 
+
+2.3 Network-Level Lifting 
+
+The P laneCycle operator preserves input–output structural consistency and can be seamlessly inserted into arbitrary layers of both convolutional and transformer-based architectures without modifying pretrained parameters. P laneCycle : Training-Free 2D-to-3D Model Lifting 5
+
+Cyclic cross-plane feature interaction. In principle, the aggregation plane can be scheduled arbitrarily across network depth. In practice, we adopt a four-operator cycle: HW (axial) → DW (coronal) → DH (sagittal) → HW . This schedule follows standard ViT designs defined on HW plane and matches common depths that are multiples of four. Repeating HW within each cycle assigns more capac-ity to the axial plane, which typically exhibits higher resolution and stronger anatomical continuity in 3D medical data. Figure 2 illustrates the plane-wise operator, showing how feature aggregation transitions from the HW plane to the subsequent DW and DH planes within a single P laneCycle . The implementation follows Algorithm 1; the last HW oper-ator is omitted for brevity. As DINOv3 incorporates RoPE, each plane-specific operator computes flattened token coordinates for its corresponding plane. This re-indexing introduces no learnable parameters and is inherently compatible with the cyclic plane operators. 
+
+Handling global tokens. Since the axis lengths may differ, switching across or-thogonal planes induces a token-length mismatch. We adopt a global mean (P Cm ) strategy which averages global tokens across slices and replicates them for the next plane. However, assigning identical tokens to all slices may alter layer-wise token statistics, especially with a frozen backbone. To preserve dis-tribution consistency, we further introduce a grouping variant ( P Cg ), averaging tokens within groups for downsampling and broadcasting them for upsampling. Both P Cm and P Cg can be unified as adaptive average pooling and efficiently implemented using AdaptiveAvgPool1d , which supports arbitrary input and output sizes. 
+
+Complexity analysis. We compare the computational complexity of slice-wise 2D, full-volume 3D, and P laneCycle . Section 2.1 derives the attention cost of the 2D and 3D baselines. For P laneCycle , the token sequence length depends on the active plane. Assuming cubic volumes with D = H = W , each layer processes plane-wise 2D tokens, so the per-layer self-attention complexity matches the slice-wise 2D case, yielding a D-fold reduction compared to full 3D attention. 
+
+## 3 Experiments 
+
+3.1 Setup 
+
+Datasets. We conduct experiments on six 3D datasets: Organ [3,28], Nodule [1], Fracture [13], Adrenal [32], Vessel [33], and Synapse [32]. They cover diverse modalities (CT, MRI, and electron microscopy) and anatomical regions (whole-body, lung, abdomen, chest, brain, and cellular structures). We follow the official MedMNIST+ [32] preprocessing and split protocol. For segmentation, we evaluate on LIDC [1] for lung nodule segmentation from CT (2,142 for training and 526 for testing) and MMWHS [34] for whole heart segmentation from CT and MRI (both use 16 for training and 4 for testing). 6 Y. Yu et al. 
+
+Table 1. Linear probing results (averaged over 5 runs) and average training cost on six 3D classification datasets [32]. R denotes fully fine-tuned ResNet-50 [9]. Best in blod ,and those achieved by ours in red . 
+
+Methods Organ Nodule Fracture Adrenal Vessel Synapse AVG AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC R-3D [32] 99.4 88.3 87.5 84.7 72.5 49.4 82.8 74.5 90.7 91.8 85.1 79.5 86.3 78.0 R-ACS [32] 99.4 88.9 88.6 84.1 75.0 51.7 82.8 75.8 91.2 85.8 71.9 70.9 84.8 76.2 
+
+ViT-S/16 (PCg Average Training, GPU memory: 2.5 GB; Time: 10 min) 2D [15,19] 98.6 84.5 89.2 88.4 64.1 48.2 87.0 83.9 84.7 88.7 85.7 83.8 84.9 79.6 3D [23,25] 97.4 75.0 77.7 81.5 70.5 50.8 77.7 77.2 73.9 88.7 74.5 75.6 78.6 74.8 PCm 99.4 90.2 88.9 86.4 62.9 45.8 85.0 83.4 87.6 88.2 85.3 83.0 84.8 79.5 PCg 99.2 88.2 90.7 87.0 69.6 52.0 85.9 83.3 86.2 88.8 88.6 85.3 86.7 80.8 
+
+ViT-B/16 (PCg Average Training, GPU memory: 4.3 GB; Time: 20 min) 2D [15,19] 98.9 88.3 88.9 85.8 63.6 46.7 85.0 82.2 88.9 89.5 86.7 85.2 85.1 79.0 3D [23,25] 97.8 77.6 81.7 83.1 70.5 54.6 80.5 79.0 77.5 88.7 82.3 80.5 81.7 77.2 PCm 99.8 94.2 91.0 87.4 65.5 47.1 85.6 82.6 90.3 90.6 87.4 84.9 86.6 81.2 PCg 99.7 93.4 92.7 88.6 69.4 51.4 86.9 83.4 90.5 90.9 88.9 85.7 87.8 82.0 
+
+ViT-L/16 (PCg Average Training, GPU memory: 7.0 GB; Time: 60 min) 2D [15,19] 98.2 81.5 90.1 88.1 63.3 44.3 86.2 82.4 81.5 88.8 86.1 81.6 84.2 77.8 3D [23,25] 98.6 83.3 87.5 85.6 69.9 47.0 77.6 77.9 82.4 88.9 79.5 79.1 82.6 77.0 PCm 99.5 91.5 90.9 86.8 65.6 47.4 84.0 83.3 85.2 89.2 86.7 83.4 85.3 80.2 PCg 99.2 87.7 90.9 85.5 69.3 51.7 85.2 82.6 90.1 90.0 88.9 86.5 87.3 80.7 
+
+Implementation. P laneCycle involves no additional parameters. We use official pretrained ViT-S/16, ViT-B/16, and ViT-L/16 backbones [21]. In linear probing, the backbone is frozen and only a classification head or a 3D segmentation decoder is trained. In full fine-tuning, all parameters are optimized. For classification, models are trained for 10k iterations using AdamW [18] with 500 warm-up iterations and cosine annealing, and results are averaged over five runs. For segmentation, models are trained for 20k iterations using AdamW with 1k warm-up iterations and cosine annealing. 
+
+Metrics. We report AUC and ACC for classification, and Dice for segmentation. Fracture 
+
+> PCg
+> PCm
+> 3D
+> 2D
+> Nodule
+> PCg
+> PCm
+> 3D
+> 2D
+> Adrenal
+> PCg
+> PCm
+> 3D
+> 2D
+> Vessel
+> PCg
+> PCm
+> 3D
+> 2D
+> Synapse
+> PCg
+> PCm
+> 3D
+> 2D
+> Organ
+> PCg
+> PCm
+> 3D
+> 2D
+> Linear  probing Fine -tuning
+
+Fig. 3. Paired t-tests of AUC on six 3D classification datasets [32] on ViT-B/16, com-puted over five runs. Red indicates significance ( p < 0.05 ). P laneCycle : Training-Free 2D-to-3D Model Lifting 7
+
+Table 2. Full fine-tuning (averaged over 5 runs) and average training cost on six 3D classification datasets [32]. Best in blod , and those achieved by ours in red .                                                                                                                                                                        
+
+> Methods Organ Nodule Fracture Adrenal Vessel Synapse AVG AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC AUC ACC ViViT [12] 99.9 96.5 88.3 87.2 69.9 51.0 86.3 82.9 95.1 94.0 93.5 90.5 88.8 83.7
+> ViT-S/16 (PCg Average Training, GPU memory: 17 GB; Time: 15 min) 2D [15,19] 98.6 85.8 89.1 85.5 62.2 44.1 81.7 80.8 84.2 90.1 93.0 88.2 84.8 79.1 3D [23,25] 99.8 95.7 93.8 87.8 76.0 55.0 89.7 85.6 94.9 91.9 96.5 92.7 91.8 84.8 PCm 99.9 96.2 93.4 87.4 73.8 56.4 89.2 85.4 94.9 93.4 95.1 91.8 91.0 85.1
+> PCg 99.9 96.2 93.2 87.8 72.2 51.9 88.5 84.6 94.1 93.6 95.7 92.2 90.6 84.4
+> ViT-B/16 (PCg Average Training, GPU memory: 33 GB; Time: 40 min) 2D [15,19] 99.0 87.8 90.8 86.8 61.1 44.9 80.6 80.5 82.0 89.4 94.1 88.5 84.6 79.7 3D [23,25] 99.8 96.2 92.7 87.7 74.2 52.6 89.0 85.1 94.9 92.0 96.1 91.7 91.1 84.2 PCm 100.0 97.5 91.8 88.1 72.8 52.7 86.6 81.5 94.6 91.9 96.0 92.7 90.3 84.1 PCg 99.9 97.0 94.6 88.5 73.1 53.1 89.1 84.8 93.8 92.7 96.9 93.3 91.2 84.9
+> ViT-L/16 (PCg Average Training, GPU memory: 87 GB; Time: 120 min) 2D [15,19] 98.6 84.6 90.2 86.8 64.6 43.8 81.1 80.1 85.3 89.7 90.5 86.8 85.0 78.6 3D [23,25] 99.8 97.2 93.6 88.3 76.6 58.4 88.9 84.8 96.7 94.4 97.3 93.0 92.2 86.0
+> PCm 99.9 97.0 93.2 86.9 73.9 57.1 87.5 83.0 95.1 93.6 96.6 91.9 91.0 84.9 PCg 99.9 97.5 94.0 87.0 73.8 53.7 87.7 83.8 95.8 92.6 97.1 90.1 91.4 84.1
+
+To assess volumetric feature coherence without additional optimization, we define FeatDice , as no established metric directly evaluates this. For each volume, the feature at the central lesion voxel serves as a reference to compute similarities to all voxel-wise features, yielding a dense similarity map. The Dice coefficient is calculated between the map and the ground-truth lesion mask. 
+
+3.2 Key Insights 
+
+Proper lifting unlocks the 3D capability of pretrained 2D foundation models. The proposed adapter-free P laneCycle can lift pretrained 2D foundation models for volumetric tasks, even outperforming fully fine-tuned baselines under linear probing. As shown in Tab. 1, P Cg surpasses R-ACS [32] 3.0 AUC scores and nearly 6.0 ACC scores in average across six benchmarks [32] using ViT-B/16. Af-ter fine-tuning (Tab. 2), it further exceeds Transformer-based volumetric models (ViViT [12]) by up to 2.6 AUC scores. It indicates that P laneCycle is more effective preservation of pretrained semantics, whereas ViViT lacks comparable pretraining. In same settings, slice-wise 2D processing does not surpass ViViT ,as it fails to effectively transfer the pretrained model into coherent 3D modeling. These findings indicate that our method unlocks the 3D capability of pre-trained 2D foundation models, even when they are pretrained on natural images. 
+
+Without training, P laneCycle yields discriminative 3D representations. We an-alyze zero-training features produced from the frozen backbone in Fig. 1 and Tab. 3, P laneCycle produces more coherent feature maps and achieves higher 
+
+FeatDice scores than both 2D and 3D, indicating stronger 3D representations. 8 Y. Yu et al. 
+
+Table 3. Segmentation performance on LIDC [1] and MMWHS [34] under different settings. Best in blod , and those achieved by ours in red .                                                                                                                                          
+
+> Methods ViT-S/16 ViT-B/16 ViT-L/16 LIDC MMWHS AVG LIDC MMWHS AVG LIDC MMWHS AVG CT MRI CT MRI CT MRI
+> Zero-training Features (FeatDice)
+> 2D [15,19] 36.9 31.3 26.5 31.6 28.3 30.4 26.1 28.3 22.4 29.1 25.1 25.5 3D [23,25] 13.9 22.4 24.4 20.2 22.3 26.2 28.6 25.7 21.5 26.2 27.4 25.0 PCm 42.3 31.3 30.8 34.8 30.8 33.5 29.5 31.3 27.9 33.7 29.2 30.3
+> PCg 42.6 30.9 29.9 34.5 32.2 33.2 29.3 31.6 28.0 33.5 29.0 30.2
+> Linear Probing
+> 2D [15,19] 60.1 67.7 58.4 62.1 62.2 68.2 57.6 62.7 62.6 68.8 59.5 63.6 3D [23,25] 59.4 65.9 60.9 62.1 62.6 66.8 59.2 62.9 61.5 65.6 57.5 61.5 PCm 64.9 69.3 61.5 65.2 65.8 69.4 61.4 65.5 66.1 69.2 59.8 65.0 PCg 64.4 68.7 61.4 64.8 64.8 69.5 61.3 65.2 65.7 69.2 61.8 65.6
+> Full Fine-tuning
+> 2D [15,19] 71.2 68.4 60.7 66.8 71.3 69.8 61.2 67.4 71.1 70.2 61.2 67.5 3D [23,25] 72.1 71.5 66.2 69.9 73.4 71.0 66.2 70.2 74.0 72.6 65.5 70.7 PCm 72.6 74.2 67.8 71.5 73.5 73.8 64.9 70.7 73.8 74.3 64.0 70.7 PCg 72.8 74.0 70.8 72.5 73.5 76.5 64.6 71.5 74.4 76.2 63.8 71.5
+
+Under linear probing (Tab. 1 and Tab. 3), P laneCycle achieves the best performance on nearly all settings. Paired t-tests (Fig. 3) over five runs further confirm statistical significance ( p < 0.05 ) on 5/6 datasets under linear probing. 
+
+With fine-tuning, P laneCycle matches full 3D without compromise. Under full fine-tuning (Tab. 2 and Tab. 3), P laneCycle consistently outperforms slice-wise 2D processing and achieves performance comparable to 3D flattening. In seg-mentation, P laneCycle even surpasses 3D flattening by up to 2.6 Dice points. However, 3D flattening requires substantially higher computational cost, incur-ring a D× larger self-attention complexity and > 2× the training time (36.2 h vs. 16.3 h on ViT-L/16 on LIDC), and performs poorly under linear probing. These results indicate that 3D flattening relies heavily on end-to-end fine-tuning to realize its potential, whereas P laneCycle attains comparable or better performance while retaining 2D’s computational efficiency. 
+
+## 4 Conclusion and Future Work 
+
+We introduced P laneCycle , a parameter-free operator for architecture-agnostic 2D-to-3D lifting that unlocks 3D capability in pretrained 2D foundation models without architectural modification or retraining, while remaining fully compati-ble with 3D fine-tuning whenever supervision is available. Several limitations warrant further investigation. Although P laneCycle is inherently compatible with both CNN and ViT backbones, we have not yet con-ducted systematic comparisons. The P laneCycle -lifted models are also applica-ble to 3D pretraining [7] and adapters such as LoRA [10,17], which remain to be explored. Besides, while the computational complexity of P laneCycle matches P laneCycle : Training-Free 2D-to-3D Model Lifting 9
+
+that of its underlying 2D backbone and suggests favorable scaling behavior com-pared to full 3D, its large-scale potential has not yet been validated. Prelimi-nary results indicate that lifting DINOv3-7B is feasible, representing a scale not previously achieved in 3D settings. Moreover, for segmentation, our study inten-tionally isolates the lifting effect by employing a shared lightweight decoder. The simple decoder and the 16 × downsampling in ViT may limit spatial recovery. Future work will investigate different architectures, broader datasets, task-specific decoders, and extensions to multimodal or vision–language settings. 
+
+Acknowledgment. This study was supported by ELLIS Institute Finland and School of Electrical Engineering, Aalto University. We acknowledge CSC-IT Cen-ter for Science, Finland, for providing access to the supercomputers Mahti and Puhti, as well as LUMI, owned by the European High Performance Computing Joint Undertaking (EuroHPC JU) and hosted by CSC Finland in collaboration with the LUMI consortium. We also acknowledge the computational resources provided by the Aalto Science-IT project through the Triton cluster. 
+
+Disclosure of Interests. The authors have no competing interests to declare that are relevant to the content of this article. 
+
+## References 
+
+1. Armato III, S.G., McLennan, G., Bidaut, L., others.: The lung image database con-sortium (lidc) and image database resource initiative (idri): A completed reference database of lung nodules on ct scans. Medical Physics 38 (2), 915–931 (2011) 2. Arnab, A., Dehghani, M., Heigold, G., Sun, C., Lučić, M., Schmid, C.: Vivit: A video vision transformer. In: International Conference on Computer Vision. pp. 6836–6846 (2021) 3. Bilic, P., Christ, P.F., et al.: The liver tumor segmentation benchmark (lits). arXiv Preprint (2019) 4. Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., Joulin, A.: Emerging properties in self-supervised vision transformers. In: International Conference on Computer Vision. pp. 9650–9660 (2021) 5. Carreira, J., Zisserman, A.: Quo vadis, action recognition? a new model and the kinetics dataset. In: Conference on Computer Vision and Pattern Recognition. pp. 6299–6308 (2017) 6. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., et al.: An image is worth 16x16 words: Transformers for image recognition at scale. In: International Con-ference on Learning Representations (2021) 7. Hamamci, I.E., Er, S., Wang, C., Almas, F., Simsek, A.G., Esirgun, S.N., Dogan, I., Durugol, O.F., Hou, B., Shit, S., et al.: Generalist foundation models from a multimodal dataset for 3d computed tomography. Nature Biomedical Engineering pp. 1–19 (2026) 8. He, K., Chen, X., Xie, S., Li, Y., Dollár, P., Girshick, R.: Masked autoencoders are scalable vision learners. In: Conference on Computer Vision and Pattern Recogni-tion. pp. 16000–16009 (2022) 10 Y. Yu et al. 9. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In: Conference on Computer Vision and Pattern Recognition. pp. 770–778 (2016) 10. Hu, E.J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen, W., et al.: Lora: Low-rank adaptation of large language models. International Confer-ence on Learning Representations 1(2), 3 (2022) 11. Isensee, F., Wald, T., Ulrich, C., Baumgartner, M., Roy, S., Maier-Hein, K., Jaeger, P.F.: nnu-net revisited: A call for rigorous validation in 3d medical image seg-mentation. In: Conference on Medical Image Computing and Computer Assisted Intervention. pp. 488–498. Springer (2024) 12. Jain, S., Li, X., Xu, M.: Knowledge transfer from macro-world to micro-world: enhancing 3d cryo-et classification through fine-tuning video-based deep models. Bioinformatics 40 (7), btae368 (2024) 13. Jin, L., Yang, J., Kuang, K., Ni, B., Gao, Y., Sun, Y., Gao, P., Ma, W., Tan, M., Kang, H., Chen, J., Li, M.: Deep-learning-assisted detection and segmentation of rib fractures from ct scans: Development and validation of fracnet. EBioMedicine 
+
+62 , 103106 (2020) 14. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., et al.: Segment anything. In: International Conference on Computer Vision. pp. 4015–4026 (2023) 15. Li, Y., Wu, Y., Lai, Y., Hu, M., Yang, X.: Meddinov3: How to adapt vision foun-dation models for medical image segmentation? arXiv Preprint (2025) 16. Liu, C., Chen, Y., Shi, H., Lu, J., Jian, B., Pan, J., Cai, L., Wang, J., Zhang, Y., Li, J., et al.: Does dinov3 set a new medical vision standard? arXiv Preprint (2025) 17. Liu, H., Georgescu, B., Zhang, Y., Yoo, Y., Baumgartner, M., Gao, R., Wang, J., Zhao, G., Gibson, E., Comaniciu, D., et al.: Revisiting 2d foundation models for scalable 3d medical image classification. arXiv Preprint (2025) 18. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. In: International Conference on Learning Representations (2018) 19. Ma, J., He, Y., Li, F., Han, L., You, C., Wang, B.: Segment anything in medical images. Nature communications 15 (1), 654 (2024) 20. Roy, S., Kirchhoff, Y., Ulrich, C., Rokuss, M., Wald, T., Isensee, F., Maier-Hein, K.: Mednext-v2: Scaling 3d convnexts for large-scale supervised representation learning in medical image segmentation. arXiv Preprint (2025) 21. Siméoni, O., Vo, H.V., Seitzer, M., Baldassarre, F., Oquab, M., Jose, C., Khalidov, V., Szafraniec, M., Yi, S., Ramamonjisoa, M., et al.: Dinov3. arXiv Preprint (2025) 22. Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W., Liu, Y.: Roformer: Enhanced trans-former with rotary position embedding. Neurocomputing 568 , 127063 (2024) 23. Wald, T., Roy, S., Isensee, F., Ulrich, C., Ziegler, S., Trofimova, D., Stock, R., Baumgartner, M., Köhler, G., Maier-Hein, K.: Primus: enforcing attention usage for 3d medical image segmentation (2025) 24. Wang, Y., Li, K., Li, X., Yu, J., He, Y., Chen, G., Pei, B., Zheng, R., Wang, Z., Shi, Y., et al.: Internvideo2: Scaling foundation models for multimodal video un-derstanding. In: European Conference on Computer Vision. pp. 396–416. Springer (2024) 25. Wei, X., Liu, X., Zang, Y., Dong, X., Zhang, P., Cao, Y., Tong, J., Duan, H., Guo, Q., Wang, J., et al.: Videorope: What makes for good video rotary position embedding? arXiv Preprint (2025) 26. Wu, J., Wang, Z., Hong, M., Ji, W., Fu, H., Xu, Y., Xu, M., Jin, Y.: Medical sam adapter: Adapting segment anything model for medical image segmentation. Medical Image Analysis 102 , 103547 (2025) P laneCycle : Training-Free 2D-to-3D Model Lifting 11 27. Wu, L., Zhuang, J., Chen, H.: Large-scale 3d medical image pre-training with geometric context priors. IEEE Transactions on Pattern Analysis and Machine Intelligence (2025) 28. Xu, X., Zhou, F., et al.: Efficient multiple organ localization in ct image using 3d region proposal network. IEEE Transactions on Medical Imaging 38 (8), 1885–1898 (2019) 29. Yang, J.: Multi-task learning for medical foundation models. Nature Computa-tional Science 4(7), 473–474 (2024) 30. Yang, J., He, Y., Kuang, K., Lin, Z., Pfister, H., Ni, B.: Asymmetric 3d context fusion for universal lesion detection. In: Conference on Medical Image Computing and Computer Assisted Intervention. pp. 571–580. Springer (2021) 31. Yang, J., Huang, X., He, Y., Xu, J., Yang, C., Xu, G., Ni, B.: Reinventing 2d convolutions for 3d images. IEEE Journal of Biomedical and Health Informatics 
+
+25 (8), 3009–3018 (2021) 32. Yang, J., Shi, R., Wei, D., Liu, Z., Zhao, L., Ke, B., Pfister, H., Ni, B.: Medmnist v2-a large-scale lightweight benchmark for 2d and 3d biomedical image classification. Scientific Data 10 (1), 41 (2023) 33. Yang, X., Xia, D., Kin, T., Igarashi, T.: Intra: 3d intracranial aneurysm dataset for deep learning. In: Conference on Computer Vision and Pattern Recognition (June 2020) 34. Zhuang, X., Li, L., Payer, C., Štern, D., Urschler, M., Heinrich, M.P., Oster, J., Wang, C., Smedby, Ö., Bian, C., et al.: Evaluation of algorithms for multi-modality whole heart segmentation: an open-access grand challenge. Medical Image Analysis 
+
+58 , 101537 (2019)

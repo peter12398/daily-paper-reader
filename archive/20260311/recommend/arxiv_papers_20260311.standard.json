@@ -1,0 +1,897 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-11T19:40:57.115899+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 26,
+    "deep_cap": 6,
+    "deep_selected": 10,
+    "quick_candidates": 52,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2603.04165v1",
+      "title": "PlaneCycle: Training-Free 2D-to-3D Lifting of Foundation Models Without Adapters",
+      "abstract": "Large-scale 2D foundation models exhibit strong transferable representations, yet extending them to 3D volumetric data typically requires retraining, adapters, or architectural redesign. We introduce PlaneCycle, a training-free, adapter-free operator for architecture-agnostic 2D-to-3D lifting of foundation models. PlaneCycle reuses the original pretrained 2D backbone by cyclically distributing spatial aggregation across orthogonal HW, DW, and DH planes throughout network depth, enabling progressive 3D fusion while preserving pretrained inductive biases. The method introduces no additional parameters and is applicable to arbitrary 2D networks. Using pretrained DINOv3 models, we evaluate PlaneCycle on six 3D classification and three 3D segmentation benchmarks. Without any training, the lifted models exhibit intrinsic 3D fusion capability and, under linear probing, outperform slice-wise 2D baselines and strong 3D counterparts, approaching the performance of fully trained models. With full fine-tuning, PlaneCycle matches standard 3D architectures, highlighting its potential as a seamless and practical 2D-to-3D lifting operator. These results demonstrate that 3D capability can be unlocked from pretrained 2D foundation models without structural modification or retraining. Code is available at https://github.com/HINTLab/PlaneCycle.",
+      "authors": [
+        "Yinghong Yu",
+        "Guangyuan Li",
+        "Jiancheng Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-04T15:23:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.04165v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Uses pretrained DINOv3 models for 3D segmentation tasks",
+      "llm_evidence_cn": "使用预训练的 DINOv3 模型进行 3D 分割任务",
+      "llm_evidence": "使用预训练的 DINOv3 模型进行 3D 分割任务",
+      "canonical_evidence": "使用预训练的 DINOv3 模型进行 3D 分割任务",
+      "llm_tldr_en": "PlaneCycle enables training-free 2D-to-3D lifting of foundation models like DINOv3 for 3D medical segmentation.",
+      "llm_tldr_cn": "PlaneCycle 实现了 DINOv3 等基础模型的免训练 2D 到 3D 提升，适用于 3D 医学分割。",
+      "llm_tldr": "PlaneCycle 实现了 DINOv3 等基础模型的免训练 2D 到 3D 提升，适用于 3D 医学分割。",
+      "llm_tags": [
+        "query:med-fm:composite"
+      ],
+      "matched_query_tag": "query:med-fm:composite",
+      "matched_query_text": "Papers central to Foundation models（尤其是DINOv3相关）在医学图像分割领域应用的相关论文, especially work that connects or combines: DINOv3 foundation model architecture and features; Vision foundation models for medical imaging; Deep learning for medical image segmentation tasks; Applications of DINOv2 and DINOv3 in healthcare; Recent advances in DINOv3 for medical image analysis; Adapting vision foundation models for medical image segmentation; Performance of DINOv3 in clinical image segmentation benchmarks; Comparison of DINOv3 and other foundation models in medical tasks.",
+      "matched_requirement_id": "req-composite-med-fm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.03030v1",
+      "title": "BRIGHT: A Collaborative Generalist-Specialist Foundation Model for Breast Pathology",
+      "abstract": "Generalist pathology foundation models (PFMs), pretrained on large-scale multi-organ datasets, have demonstrated remarkable predictive capabilities across diverse clinical applications. However, their proficiency on the full spectrum of clinically essential tasks within a specific organ system remains an open question due to the lack of large-scale validation cohorts for a single organ as well as the absence of a tailored training paradigm that can effectively translate broad histomorphological knowledge into the organ-specific expertise required for specialist-level interpretation. In this study, we propose BRIGHT, the first PFM specifically designed for breast pathology, trained on approximately 210 million histopathology tiles from over 51,000 breast whole-slide images derived from a cohort of over 40,000 patients across 19 hospitals. BRIGHT employs a collaborative generalist-specialist framework to capture both universal and organ-specific features. To comprehensively evaluate the performance of PFMs on breast oncology, we curate the largest multi-institutional cohorts to date for downstream task development and evaluation, comprising over 25,000 WSIs across 10 hospitals. The validation cohorts cover the full spectrum of breast pathology across 24 distinct clinical tasks spanning diagnosis, biomarker prediction, treatment response and survival prediction. Extensive experiments demonstrate that BRIGHT outperforms three leading generalist PFMs, achieving state-of-the-art (SOTA) performance in 21 of 24 internal validation tasks and in 5 of 10 external validation tasks with excellent heatmap interpretability. By evaluating on large-scale validation cohorts, this study not only demonstrates BRIGHT's clinical utility in breast oncology but also validates a collaborative generalist-specialist paradigm, providing a scalable template for developing PFMs on a specific organ system.",
+      "authors": [
+        "Xiaojing Guo",
+        "Jiatai Lin",
+        "Yumian Jia",
+        "Jingqi Huang",
+        "Zeyan Xu",
+        "Weidong Li",
+        "Longfei Wang",
+        "Jingjing Chen",
+        "Qin Li",
+        "Weiwei Wang",
+        "Lifang Cui",
+        "Wen Yue",
+        "Zhiqiang Cheng",
+        "Xiaolong Wei",
+        "Jianzhong Yu",
+        "Xia Jin",
+        "Baizhou Li",
+        "Honghong Shen",
+        "Jing Li",
+        "Chunlan Li",
+        "Yanfen Cui",
+        "Yi Dai",
+        "Yiling Yang",
+        "Xiaolong Qian",
+        "Liu Yang",
+        "Yang Yang",
+        "Guangshen Gao",
+        "Yaqing Li",
+        "Lili Zhai",
+        "Chenying Liu",
+        "Tianhua Zhang",
+        "Zhenwei Shi",
+        "Cheng Lu",
+        "Xingchen Zhou",
+        "Jing Xu",
+        "Miaoqing Zhao",
+        "Fang Mei",
+        "Jiaojiao Zhou",
+        "Ning Mao",
+        "Fangfang Liu",
+        "Chu Han",
+        "Zaiyi Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T14:24:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.03030v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Generalist pathology foundation models",
+      "llm_evidence_cn": "通用病理基础模型",
+      "llm_evidence": "通用病理基础模型",
+      "canonical_evidence": "通用病理基础模型",
+      "llm_tldr_en": "Presents BRIGHT, a specialist foundation model for breast pathology trained on 210 million tiles.",
+      "llm_tldr_cn": "推出BRIGHT，首个专门针对乳腺病理学训练的专家级基础模型。",
+      "llm_tldr": "推出BRIGHT，首个专门针对乳腺病理学训练的专家级基础模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.03187v1",
+      "title": "ProSMA-UNet: Decoder Conditioning for Proximal-Sparse Skip Feature Selection",
+      "abstract": "Medical image segmentation commonly relies on U-shaped encoder-decoder architectures such as U-Net, where skip connections preserve fine spatial detail by injecting high-resolution encoder features into the decoder. However, these skip pathways also propagate low-level textures, background clutter, and acquisition noise, allowing irrelevant information to bypass deeper semantic filtering -- an issue that is particularly detrimental in low-contrast clinical imaging. Although attention gates have been introduced to address this limitation, they typically produce dense sigmoid masks that softly reweight features rather than explicitly removing irrelevant activations. We propose ProSMA-UNet (Proximal-Sparse Multi-Scale Attention U-Net), which reformulates skip gating as a decoder-conditioned sparse feature selection problem. ProSMA constructs a multi-scale compatibility field using lightweight depthwise dilated convolutions to capture relevance across local and contextual scales, then enforces explicit sparsity via an $\\ell_1$ proximal operator with learnable per-channel thresholds, yielding a closed-form soft-thresholding gate that can remove noisy responses. To further suppress semantically irrelevant channels, ProSMA incorporates decoder-conditioned channel gating driven by global decoder context. Extensive experiments on challenging 2D and 3D benchmarks demonstrate state-of-the-art performance, with particularly large gains ($\\approx20$\\%) on difficult 3D segmentation tasks. Project page: https://math-ml-x.github.io/ProSMA-UNet/",
+      "authors": [
+        "Chun-Wun Cheng",
+        "Yanqi Cheng",
+        "Peiyuan Jing",
+        "Guang Yang",
+        "Carola-Bibiane Schönlieb",
+        "Angelica I. Aviles-Rivero"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T17:46:29+00:00",
+      "link": "https://arxiv.org/pdf/2603.03187v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Deep learning architecture for medical image segmentation tasks",
+      "llm_evidence_cn": "用于医学图像分割任务的深度学习架构",
+      "llm_evidence": "用于医学图像分割任务的深度学习架构",
+      "canonical_evidence": "用于医学图像分割任务的深度学习架构",
+      "llm_tldr_en": "Proposes ProSMA-UNet to improve medical image segmentation by filtering irrelevant features in skip connections.",
+      "llm_tldr_cn": "提出ProSMA-UNet，通过过滤跳跃连接中的无关特征来改进医学图像分割。",
+      "llm_tldr": "提出ProSMA-UNet，通过过滤跳跃连接中的无关特征来改进医学图像分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.03961v1",
+      "title": "ProFound: A moderate-sized vision foundation model for multi-task prostate imaging",
+      "abstract": "Many diagnostic and therapeutic clinical tasks for prostate cancer increasingly rely on multi-parametric MRI. Automating these tasks is challenging because they necessitate expert interpretations, which are difficult to scale to capitalise on modern deep learning. Although modern automated systems achieve expert-level performance in isolated tasks, their general clinical utility remains limited by the requirement of large task-specific labelled datasets. In this paper, we present ProFound, a domain-specialised vision foundation model for volumetric prostate mpMRI. ProFound is pre-trained using several variants of self-supervised approaches on a diverse, multi-institutional collection of 5,000 patients, with a total of over 22,000 unique 3D MRI volumes (over 1,800,000 2D image slices). We conducted a systematic evaluation of ProFound across a broad spectrum of $11$ downstream clinical tasks on over 3,000 independent patients, including prostate cancer detection, Gleason grading, lesion localisation, gland volume estimation, zonal and surrounding structure segmentation. Experimental results demonstrate that finetuned ProFound consistently outperforms or remains competitive with state-of-the-art specialised models and existing medical vision foundation models trained/finetuned on the same data.",
+      "authors": [
+        "Yipei Wang",
+        "Yinsong Xu",
+        "Weixi Yi",
+        "Shaheer Ullah Saeed",
+        "Natasha Thorley",
+        "Alexander Ng",
+        "Yukun Zhou",
+        "Wen Yan",
+        "Dean Barratt",
+        "Shonit Punwani",
+        "Veeru Kasivisvanathan",
+        "Mark Emberton",
+        "Daniel C. Alexander",
+        "Yipeng Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-04T11:46:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.03961v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Domain-specialized vision foundation model for volumetric prostate mpMRI",
+      "llm_evidence_cn": "针对前列腺多参数MRI的领域专用视觉基础模型",
+      "llm_evidence": "针对前列腺多参数MRI的领域专用视觉基础模型",
+      "canonical_evidence": "针对前列腺多参数MRI的领域专用视觉基础模型",
+      "llm_tldr_en": "Presents ProFound, a self-supervised vision foundation model specifically for multi-task prostate imaging.",
+      "llm_tldr_cn": "推出了ProFound，这是一个专门针对多任务前列腺影像的自监督视觉基础模型。",
+      "llm_tldr": "推出了ProFound，这是一个专门针对多任务前列腺影像的自监督视觉基础模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07228v1",
+      "title": "LightMedSeg: Lightweight 3D Medical Image Segmentation with Learned Spatial Anchors",
+      "abstract": "Accurate and efficient 3D medical image segmentation is essential for clinical AI, where models must remain reliable under stringent memory, latency, and data availability constraints. Transformer-based methods achieve strong accuracy but suffer from excessive parameters, high FLOPs, and limited generalization. We propose LightMedSeg, a modular UNet-style segmentation architecture that integrates anatomical priors with adaptive context modeling. Anchor-conditioned FiLM modulation enables anatomy-aware feature calibration, while a local structural prior module and texture-aware routing dynamically allocate representational capacity to boundary-rich regions. Computational redundancy is minimized through ghost and depthwise convolutions, and multi-scale features are adaptively fused via a learned skip router with anchor-relative spatial position bias. Despite requiring only 0.48M parameters and 14.64~GFLOPs, LightMedSeg achieves segmentation accuracy within a few Dice points of heavy transformer baselines. Therefore, LightMedSeg is a deployable and data-efficient solution for 3D medical image segmentation. Code will be released publicly upon acceptance.",
+      "authors": [
+        "Kavyansh Tyagi",
+        "Vishwas Rathi",
+        "Puneet Goyal"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-03-07T14:20:59+00:00",
+      "link": "https://arxiv.org/pdf/2603.07228v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Lightweight 3D medical image segmentation architecture",
+      "llm_evidence_cn": "轻量级 3D 医学图像分割架构",
+      "llm_evidence": "轻量级 3D 医学图像分割架构",
+      "canonical_evidence": "轻量级 3D 医学图像分割架构",
+      "llm_tldr_en": "Proposes a lightweight 3D medical segmentation model using spatial anchors and anatomical priors.",
+      "llm_tldr_cn": "提出一种利用空间锚点和解剖先验的轻量级 3D 医学图像分割模型。",
+      "llm_tldr": "提出一种利用空间锚点和解剖先验的轻量级 3D 医学图像分割模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07307v1",
+      "title": "StructSAM: Structure- and Spectrum-Preserving Token Merging for Segment Anything Models",
+      "abstract": "Recent token merging techniques for Vision Transformers (ViTs) provide substantial speedups by reducing the number of tokens processed by self-attention, often without retraining. However, their direct application to the Segment Anything Model (SAM) family is nontrivial: SAM's image encoder mixes windowed and global attention, and its mask decoder relies on dense, prompt-conditioned features for precise boundary prediction. We systematically evaluate representative token-merging methods on SAM and Medical SAM in a strict off-the-shelf setting, and find that existing destination-selection heuristics can erode boundaries and leak prompt information as merge rates increase. We propose \\textbf{StructSAM}, a resolution-preserving merge-unmerge framework tailored to SAM. StructSAM computes a lightweight token-energy score from first-order feature gradients, uses grid-based flatness screening to protect boundary and prompt regions, and merges tokens within flat areas toward low-energy destinations with explicit token recovery. We further provide a spectral graph coarsening view showing that score-guided merging yields bounded Laplacian spectral distortion compared to random or window-restricted baselines. Across eight natural and medical benchmarks, StructSAM reduces encoder FLOPs by 25-30\\% (up to 40\\%+ with prompt-aware merging) with minor drops in mIoU/Dice, consistently outperforming ToMe, PiToMe, ToMeSD, VidToMe, and ALGM at the same compute.",
+      "authors": [
+        "Duy M. H. Nguyen",
+        "Tuan A. Tran",
+        "Duong Nguyen",
+        "Siwei Xie",
+        "Trung Q. Nguyen",
+        "Mai T. N. Truong",
+        "Daniel Palenicek",
+        "An T. Le",
+        "Michael Barz",
+        "TrungTin Nguyen",
+        "Tuan Dam",
+        "Ngan Le",
+        "Minh Vu",
+        "Khoa Doan",
+        "Vien Ngo",
+        "Pengtao Xie",
+        "James Zou",
+        "Daniel Sonntag",
+        "Jan Peters",
+        "Mathias Niepert"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-03-07T18:30:58+00:00",
+      "link": "https://arxiv.org/pdf/2603.07307v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adapting Segment Anything Model for medical imaging via token merging",
+      "llm_evidence_cn": "通过令牌合并将SAM模型应用于医学影像",
+      "llm_evidence": "通过令牌合并将SAM模型应用于医学影像",
+      "canonical_evidence": "通过令牌合并将SAM模型应用于医学影像",
+      "llm_tldr_en": "Proposes StructSAM to accelerate Segment Anything Models for medical imaging while preserving structural details.",
+      "llm_tldr_cn": "提出StructSAM，在保持结构细节的同时加速医学影像中的SAM模型。",
+      "llm_tldr": "提出StructSAM，在保持结构细节的同时加速医学影像中的SAM模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07436v1",
+      "title": "RPG-SAM: Reliability-Weighted Prototypes and Geometric Adaptive Threshold Selection for Training-Free One-Shot Polyp Segmentation",
+      "abstract": "Training-free one-shot segmentation offers a scalable alternative to expert annotations where knowledge is often transferred from support images and foundation models. But existing methods often treat all pixels in support images and query response intensities models in a homogeneous way. They ignore the regional heterogeity in support images and response heterogeity in query.To resolve this, we propose RPG-SAM, a framework that systematically tackles these heterogeneity gaps. Specifically, to address regional heterogeneity, we introduce Reliability-Weighted Prototype Mining (RWPM) to prioritize high-fidelity support features while utilizing background anchors as contrastive references for noise suppression. To address response heterogeneity, we develop Geometric Adaptive Selection (GAS) to dynamically recalibrate binarization thresholds by evaluating the morphological consensus of candidates. Finally, an iterative refinement loop method is designed to polishes anatomical boundaries. By accounting for multi-layered information heterogeneity, RPG-SAM achieves a 5.56\\% mIoU improvement on the Kvasir dataset. Code will be released.",
+      "authors": [
+        "Weikun Lin",
+        "Yunhao Bai",
+        "Yan Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-08T03:16:49+00:00",
+      "link": "https://arxiv.org/pdf/2603.07436v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Adapting foundation models (SAM) for one-shot medical image segmentation",
+      "llm_evidence_cn": "将基础模型（SAM）应用于单样本医学图像分割",
+      "llm_evidence": "将基础模型（SAM）应用于单样本医学图像分割",
+      "canonical_evidence": "将基础模型（SAM）应用于单样本医学图像分割",
+      "llm_tldr_en": "Introduces RPG-SAM for training-free one-shot polyp segmentation using reliability-weighted prototypes.",
+      "llm_tldr_cn": "引入RPG-SAM框架，利用可靠性加权原型实现无需训练的单样本息肉分割。",
+      "llm_tldr": "引入RPG-SAM框架，利用可靠性加权原型实现无需训练的单样本息肉分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.08605v1",
+      "title": "Weakly Supervised Teacher-Student Framework with Progressive Pseudo-mask Refinement for Gland Segmentation",
+      "abstract": "Background and objectives: Colorectal cancer histopathological grading depends on accurate segmentation of glandular structures. Current deep learning approaches rely on large scale pixel level annotations that are labor intensive and difficult to obtain in routine clinical practice. Weakly supervised semantic segmentation offers a promising alternative. However, class activation map based methods often produce incomplete pseudo masks that emphasize highly discriminative regions and fail to supervise unannotated glandular structures. We propose a weakly supervised teacher student framework that leverages sparse pathologist annotations and an Exponential Moving Average stabilized teacher network to generate refined pseudo masks.   Methods: The framework integrates confidence based filtering, adaptive fusion of teacher predictions with limited ground truth, and curriculum guided refinement to progressively segment unannotated glandular regions. The method was evaluated on an institutional colorectal cancer cohort from The Ohio State University Wexner Medical Center consisting of 60 hematoxylin and eosin stained whole slide images and on public datasets including the Gland Segmentation dataset, TCGA COAD, TCGA READ, and SPIDER.   Results: On the Gland Segmentation dataset the framework achieved a mean Intersection over Union of 80.10 and a mean Dice coefficient of 89.10. Cross cohort evaluation demonstrated robust generalization on TCGA COAD and TCGA READ without additional annotations, while reduced performance on SPIDER reflected domain shift.   Conclusions: The proposed framework provides an annotation efficient and generalizable approach for gland segmentation in colorectal histopathology.",
+      "authors": [
+        "Hikmat Khan",
+        "Wei Chen",
+        "Muhammad Khalid Khan Niazi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-09T16:54:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.08605v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Deep learning for gland segmentation in histopathology",
+      "llm_evidence_cn": "组织病理学中腺体分割的深度学习",
+      "llm_evidence": "组织病理学中腺体分割的深度学习",
+      "canonical_evidence": "组织病理学中腺体分割的深度学习",
+      "llm_tldr_en": "Proposes a weakly supervised teacher-student framework for accurate gland segmentation with sparse annotations.",
+      "llm_tldr_cn": "提出一种弱监督教师-学生框架，利用稀疏标注实现准确的腺体分割。",
+      "llm_tldr": "提出一种弱监督教师-学生框架，利用稀疏标注实现准确的腺体分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.09217v1",
+      "title": "TubeMLLM: A Foundation Model for Topology Knowledge Exploration in Vessel-like Anatomy",
+      "abstract": "Modeling medical vessel-like anatomy is challenging due to its intricate topology and sensitivity to dataset shifts. Consequently, task-specific models often suffer from topological inconsistencies, including artificial disconnections and spurious merges. Motivated by the promise of multimodal large language models (MLLMs) for zero-shot generalization, we propose TubeMLLM, a unified foundation model that couples structured understanding with controllable generation for medical vessel-like anatomy. By integrating topological priors through explicit natural language prompting and aligning them with visual representations in a shared-attention architecture, TubeMLLM significantly enhances topology-aware perception. Furthermore, we construct TubeMData, a pionner multimodal benchmark comprising comprehensive topology-centric tasks, and introduce an adaptive loss weighting strategy to emphasize topology-critical regions during training. Extensive experiments on fifteen diverse datasets demonstrate our superiority. Quantitatively, TubeMLLM achieves state-of-the-art out-of-distribution performance, substantially reducing global topological discrepancies on color fundus photography (decreasing the $β_{0}$ number error from 37.42 to 8.58 compared to baselines). Notably, TubeMLLM exhibits exceptional zero-shot cross-modality transferring ability on unseen X-ray angiography, achieving a Dice score of 67.50% while significantly reducing the $β_{0}$ error to 1.21. TubeMLLM also maintains robustness against degradations such as blur, noise, and low resolution. Furthermore, in topology-aware understanding tasks, the model achieves 97.38% accuracy in evaluating mask topological quality, significantly outperforming standard vision-language baselines.",
+      "authors": [
+        "Yaoyu Liu",
+        "Minghui Zhang",
+        "Xin You",
+        "Hanxiao Zhang",
+        "Yun Gu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-10T05:39:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.09217v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Foundation model for vessel-like anatomy",
+      "llm_evidence_cn": "血管类解剖结构的基础模型",
+      "llm_evidence": "血管类解剖结构的基础模型",
+      "canonical_evidence": "血管类解剖结构的基础模型",
+      "llm_tldr_en": "Introduces TubeMLLM, a foundation model for topology-aware perception in medical vessel anatomy.",
+      "llm_tldr_cn": "引入TubeMLLM，一种用于医学血管解剖结构拓扑感知的基础模型。",
+      "llm_tldr": "引入TubeMLLM，一种用于医学血管解剖结构拓扑感知的基础模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.09530v1",
+      "title": "DCAU-Net: Differential Cross Attention and Channel-Spatial Feature Fusion for Medical Image Segmentation",
+      "abstract": "Accurate medical image segmentation requires effective modeling of both long-range dependencies and fine-grained boundary details. While transformers mitigate the issue of insufficient semantic information arising from the limited receptive field inherent in convolutional neural networks, they introduce new challenges: standard self-attention incurs quadratic computational complexity and often assigns non-negligible attention weights to irrelevant regions, diluting focus on discriminative structures and ultimately compromising segmentation accuracy. Existing attention variants, although effective in reducing computational complexity, fail to suppress redundant computation and inadvertently impair global context modeling. Furthermore, conventional fusion strategies in encoder-decoder architectures, typically based on simple concatenation or summation, can not adaptively integrate high-level semantic information with low-level spatial details. To address these limitations, we propose DCAU-Net, a novel yet efficient segmentation framework with two key ideas. First, a new Differential Cross Attention (DCA) is designed to compute the difference between two independent softmax attention maps to adaptively highlight discriminative structures. By replacing pixel-wise key and value tokens with window-level summary tokens, DCA dramatically reduces computational complexity without sacrificing precision. Second, a Channel-Spatial Feature Fusion (CSFF) strategy is introduced to adaptively recalibrate features from skip connections and up-sampling paths through using sequential channel and spatial attention, effectively suppressing redundant information and amplifying salient cues. Experiments on two public benchmarks demonstrate that DCAU-Net achieves competitive performance with enhanced segmentation accuracy and robustness.",
+      "authors": [
+        "Yanxin Li",
+        "Hui Wan",
+        "Libin Lan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-10T11:37:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.09530v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Medical image segmentation using attention and feature fusion",
+      "llm_evidence_cn": "使用注意力和特征融合的医学图像分割",
+      "llm_evidence": "使用注意力和特征融合的医学图像分割",
+      "canonical_evidence": "使用注意力和特征融合的医学图像分割",
+      "llm_tldr_en": "Introduces DCAU-Net to improve medical image segmentation by modeling long-range dependencies and fine details.",
+      "llm_tldr_cn": "引入 DCAU-Net，通过建模远程依赖和精细细节来改进医学图像分割。",
+      "llm_tldr": "引入 DCAU-Net，通过建模远程依赖和精细细节来改进医学图像分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.02926v1",
+      "title": "GloPath: An Entity-Centric Foundation Model for Glomerular Lesion Assessment and Clinicopathological Insights",
+      "abstract": "Glomerular pathology is central to the diagnosis and prognosis of renal diseases, yet the heterogeneity of glomerular morphology and fine-grained lesion patterns remain challenging for current AI approaches. We present GloPath, an entity-centric foundation model trained on over one million glomeruli extracted from 14,049 renal biopsy specimens using multi-scale and multi-view self-supervised learning. GloPath addresses two major challenges in nephropathology: glomerular lesion assessment and clinicopathological insights discovery. For lesion assessment, GloPath was benchmarked across three independent cohorts on 52 tasks, including lesion recognition, grading, few-shot classification, and cross-modality diagnosis-outperforming state-of-the-art methods in 42 tasks (80.8%). In the large-scale real-world study, it achieved an ROC-AUC of 91.51% for lesion recognition, demonstrating strong robustness in routine clinical settings. For clinicopathological insights, GloPath systematically revealed statistically significant associations between glomerular morphological parameters and clinical indicators across 224 morphology-clinical variable pairs, demonstrating its capacity to connect tissue-level pathology with patient-level outcomes. Together, these results position GloPath as a scalable and interpretable platform for glomerular lesion assessment and clinicopathological discovery, representing a step toward clinically translatable AI in renal pathology.",
+      "authors": [
+        "Qiming He",
+        "Jing Li",
+        "Tian Guan",
+        "Yifei Ma",
+        "Zimo Zhao",
+        "Yanxia Wang",
+        "Hongjing Chen",
+        "Yingming Xu",
+        "Shuang Ge",
+        "Yexing Zhang",
+        "Yizhi Wang",
+        "Xinrui Chen",
+        "Lianghui Zhu",
+        "Yiqing Liu",
+        "Qingxia Hou",
+        "Shuyan Zhao",
+        "Xiaoqin Wang",
+        "Lili Ma",
+        "Peizhen Hu",
+        "Qiang Huang",
+        "Zihan Wang",
+        "Zhiyuan Shen",
+        "Junru Cheng",
+        "Siqi Zeng",
+        "Jiurun Chen",
+        "Zhen Song",
+        "Chao He",
+        "Zhe Wang",
+        "Yonghong He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T12:32:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.02926v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Entity-centric foundation model for glomerular pathology using self-supervised learning",
+      "llm_evidence_cn": "基于自监督学习的肾小球病理实体中心基础模型",
+      "llm_evidence": "基于自监督学习的肾小球病理实体中心基础模型",
+      "canonical_evidence": "基于自监督学习的肾小球病理实体中心基础模型",
+      "llm_tldr_en": "Introduces GloPath, a foundation model for renal pathology trained on over one million glomeruli images.",
+      "llm_tldr_cn": "介绍了GloPath，这是一个在超过100万个肾小球图像上训练的肾脏病理基础模型。",
+      "llm_tldr": "介绍了GloPath，这是一个在超过100万个肾小球图像上训练的肾脏病理基础模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.02419v1",
+      "title": "DINOv3 Visual Representations for Blueberry Perception Toward Robotic Harvesting",
+      "abstract": "Vision Foundation Models trained via large-scale self-supervised learning have demonstrated strong generalization in visual perception; however, their practical role and performance limits in agricultural settings remain insufficiently understood. This work evaluates DINOv3 as a frozen backbone for blueberry robotic harvesting-related visual tasks, including fruit and bruise segmentation, as well as fruit and cluster detection. Under a unified protocol with lightweight decoders, segmentation benefits consistently from stable patch-level representations and scales with backbone size. In contrast, detection is constrained by target scale variation, patch discretization, and localization compatibility. The failure of cluster detection highlights limitations in modeling relational targets defined by spatial aggregation. Overall, DINOv3 is best viewed not as an end-to-end task model, but as a semantic backbone whose effectiveness depends on downstream spatial modeling aligned with fruit-scale and aggregation structures, providing guidance for blueberry robotic harvesting. Code and dataset will be available upon acceptance.",
+      "authors": [
+        "Rui-Feng Wang",
+        "Daniel Petti",
+        "Yue Chen",
+        "Changying Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-02T22:01:25+00:00",
+      "link": "https://arxiv.org/pdf/2603.02419v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Evaluates DINOv3 as a frozen backbone for segmentation tasks",
+      "llm_evidence_cn": "评估 DINOv3 作为冻结骨干网络在分割任务中的表现",
+      "llm_evidence": "评估 DINOv3 作为冻结骨干网络在分割任务中的表现",
+      "canonical_evidence": "评估 DINOv3 作为冻结骨干网络在分割任务中的表现",
+      "llm_tldr_en": "Evaluates DINOv3 performance in agricultural segmentation, providing insights into its patch-level representations.",
+      "llm_tldr_cn": "评估 DINOv3 在农业分割中的表现，揭示了其补丁级表示的特性。",
+      "llm_tldr": "评估 DINOv3 在农业分割中的表现，揭示了其补丁级表示的特性。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "DINOv3 foundation model architecture and features",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.02959v1",
+      "title": "Semi-Supervised Few-Shot Adaptation of Vision-Language Models",
+      "abstract": "Vision-language models (VLMs) pre-trained on large, heterogeneous data sources are becoming increasingly popular, providing rich multi-modal embeddings that enable efficient transfer to new tasks. A particularly relevant application is few-shot adaptation, where only a handful of annotated examples are available to adapt the model through multi-modal linear probes. In medical imaging, specialized VLMs have shown promising performance in zero- and few-shot image classification, which is valuable for mitigating the high cost of expert annotations. However, challenges remain in extremely low-shot regimes: the inherent class imbalances in medical tasks often lead to underrepresented categories, penalizing overall model performance. To address this limitation, we propose leveraging unlabeled data by introducing an efficient semi-supervised solver that propagates text-informed pseudo-labels during few-shot adaptation. The proposed method enables lower-budget annotation pipelines for adapting VLMs, reducing labeling effort by >50% in low-shot regimes.",
+      "authors": [
+        "Julio Silva-Rodríguez",
+        "Ender Konukoglu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T13:11:47+00:00",
+      "link": "https://arxiv.org/pdf/2603.02959v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adapting vision-language models for medical imaging tasks",
+      "llm_evidence_cn": "将视觉语言模型适配于医学影像任务",
+      "llm_evidence": "将视觉语言模型适配于医学影像任务",
+      "canonical_evidence": "将视觉语言模型适配于医学影像任务",
+      "llm_tldr_en": "Proposes a semi-supervised few-shot adaptation method for medical vision-language models.",
+      "llm_tldr_cn": "提出了一种用于医学视觉语言模型的半监督少样本适配方法。",
+      "llm_tldr": "提出了一种用于医学视觉语言模型的半监督少样本适配方法。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.03718v1",
+      "title": "Glass Segmentation with Fusion of Learned and General Visual Features",
+      "abstract": "Glass surface segmentation from RGB images is a challenging task, since glass as a transparent material distinctly lacks visual characteristics. However, glass segmentation is critical for scene understanding and robotics, as transparent glass surfaces must be identified as solid material. This paper presents a novel architecture for glass segmentation, deploying a dual-backbone producing general visual features as well as task-specific learned visual features. General visual features are produced by a frozen DINOv3 vision foundation model, and the task-specific features are generated with a Swin model trained in a supervised manner. Resulting multi-scale feature representations are downsampled with residual Squeeze-and-Excitation Channel Reduction, and fed into a Mask2Former Decoder, producing the final segmentation masks. The architecture was evaluated on four commonly used glass segmentation datasets, achieving state-of-the-art results on several accuracy metrics. The model also has a competitive inference speed compared to the previous state-of-the-art method, and surpasses it when using a lighter DINOv3 backbone variant. The implementation source code and model weights are available at: https://github.com/ojalar/lgnet",
+      "authors": [
+        "Risto Ojala",
+        "Tristan Ellison",
+        "Mo Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-04T04:40:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.03718v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses frozen DINOv3 vision foundation model for feature extraction",
+      "llm_evidence_cn": "使用冻结的 DINOv3 视觉基础模型进行特征提取",
+      "llm_evidence": "使用冻结的 DINOv3 视觉基础模型进行特征提取",
+      "canonical_evidence": "使用冻结的 DINOv3 视觉基础模型进行特征提取",
+      "llm_tldr_en": "Integrates DINOv3 features with a Swin model for glass surface segmentation tasks.",
+      "llm_tldr_cn": "将 DINOv3 特征与 Swin 模型结合，用于玻璃表面分割任务。",
+      "llm_tldr": "将 DINOv3 特征与 Swin 模型结合，用于玻璃表面分割任务。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "DINOv3 foundation model architecture and features",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.03125v1",
+      "title": "AWDiff: An a trous wavelet diffusion model for lung ultrasound image synthesis",
+      "abstract": "Lung ultrasound (LUS) is a safe and portable imaging modality, but the scarcity of data limits the development of machine learning methods for image interpretation and disease monitoring. Existing generative augmentation methods, such as Generative Adversarial Networks (GANs) and diffusion models, often lose subtle diagnostic cues due to resolution reduction, particularly B-lines and pleural irregularities. We propose A trous Wavelet Diffusion (AWDiff), a diffusion based augmentation framework that integrates the a trous wavelet transform to preserve fine-scale structures while avoiding destructive downsampling. In addition, semantic conditioning with BioMedCLIP, a vision language foundation model trained on large scale biomedical corpora, enforces alignment with clinically meaningful labels. On a LUS dataset, AWDiff achieved lower distortion and higher perceptual quality compared to existing methods, demonstrating both structural fidelity and clinical diversity.",
+      "authors": [
+        "Maryam Heidari",
+        "Nantheera Anantrasirichai",
+        "Steven Walker",
+        "Rahul Bhatnagar",
+        "Alin Achim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T15:57:57+00:00",
+      "link": "https://arxiv.org/pdf/2603.03125v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "BioMedCLIP vision language foundation model",
+      "llm_evidence_cn": "BioMedCLIP 视觉语言基础模型",
+      "llm_evidence": "BioMedCLIP 视觉语言基础模型",
+      "canonical_evidence": "BioMedCLIP 视觉语言基础模型",
+      "llm_tldr_en": "Uses BioMedCLIP foundation model to guide wavelet-based diffusion for lung ultrasound synthesis.",
+      "llm_tldr_cn": "利用BioMedCLIP基础模型引导小波扩散模型进行肺部超声图像合成。",
+      "llm_tldr": "利用BioMedCLIP基础模型引导小波扩散模型进行肺部超声图像合成。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.03101v1",
+      "title": "MoECLIP: Patch-Specialized Experts for Zero-shot Anomaly Detection",
+      "abstract": "The CLIP model's outstanding generalization has driven recent success in Zero-Shot Anomaly Detection (ZSAD) for detecting anomalies in unseen categories. The core challenge in ZSAD is to specialize the model for anomaly detection tasks while preserving CLIP's powerful generalization capability. Existing approaches attempting to solve this challenge share the fundamental limitation of a patch-agnostic design that processes all patches monolithically without regard for their unique characteristics. To address this limitation, we propose \\textbf{MoECLIP}, a Mixture-of-Experts (MoE) architecture for the ZSAD task, which achieves patch-level adaptation by dynamically routing each image patch to a specialized Low-Rank Adaptation (LoRA) expert based on its unique characteristics. Furthermore, to prevent functional redundancy among the LoRA experts, we introduce (1) Frozen Orthogonal Feature Separation (FOFS), which orthogonally separates the input feature space to force experts to focus on distinct information, and (2) a simplex equiangular tight frame (ETF) loss to regulate the expert outputs to form maximally equiangular representations. Comprehensive experimental results across 14 benchmark datasets spanning industrial and medical domains demonstrate that MoECLIP outperforms existing state-of-the-art methods. The code is available at https://github.com/CoCoRessa/MoECLIP.",
+      "authors": [
+        "Jun Yeong Park",
+        "JunYoung Seo",
+        "Minji Kang",
+        "Yu Rang Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-03T15:36:55+00:00",
+      "link": "https://arxiv.org/pdf/2603.03101v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adapting CLIP foundation model for anomaly detection",
+      "llm_evidence_cn": "将CLIP基础模型应用于异常检测",
+      "llm_evidence": "将CLIP基础模型应用于异常检测",
+      "canonical_evidence": "将CLIP基础模型应用于异常检测",
+      "llm_tldr_en": "Proposes MoECLIP to specialize the CLIP foundation model for zero-shot anomaly detection tasks.",
+      "llm_tldr_cn": "提出MoECLIP，使CLIP基础模型能够专门用于零样本异常检测任务。",
+      "llm_tldr": "提出MoECLIP，使CLIP基础模型能够专门用于零样本异常检测任务。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.04024v1",
+      "title": "Volumetric Directional Diffusion: Anchoring Uncertainty Quantification in Anatomical Consensus for Ambiguous Medical Image Segmentation",
+      "abstract": "Equivocal 3D lesion segmentation exhibits high inter-observer variability. Conventional deterministic models ignore this aleatoric uncertainty, producing over-confident masks that obscure clinical risks. Conversely, while generative methods (e.g., standard diffusion) capture sample diversity, recovering complex topology from pure noise frequently leads to severe structural fractures and out-of-distribution anatomical hallucinations. To resolve this fidelity-diversity trade-off, we propose Volumetric Directional Diffusion (VDD). Unlike standard diffusion models that denoise isotropic Gaussian noise, VDD mathematically anchors the generative trajectory to a deterministic consensus prior. By restricting the generative search space to iteratively predict a 3D boundary residual field, VDD accurately explores the fine-grained geometric variations inherent in expert disagreements without risking topological collapse. Extensive validation on three multi-rater datasets (LIDC-IDRI, KiTS21, and ISBI 2015) demonstrates that VDD achieves state-of-the-art uncertainty quantification (significantly improving GED and CI) while remaining highly competitive in segmentation accuracy against deterministic upper bounds. Ultimately, VDD provides clinicians with anatomically coherent uncertainty maps, enabling safer decision-making and mitigating risks in downstream tasks (e.g., radiotherapy planning or surgical margin assessment).",
+      "authors": [
+        "Chao Wu",
+        "Kangxian Xie",
+        "Mingchen Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-04T12:58:43+00:00",
+      "link": "https://arxiv.org/pdf/2603.04024v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Diffusion models for ambiguous medical image segmentation",
+      "llm_evidence_cn": "用于模糊医学图像分割的扩散模型",
+      "llm_evidence": "用于模糊医学图像分割的扩散模型",
+      "canonical_evidence": "用于模糊医学图像分割的扩散模型",
+      "llm_tldr_en": "Proposes Volumetric Directional Diffusion to handle uncertainty in 3D medical lesion segmentation.",
+      "llm_tldr_cn": "提出体积方向扩散模型（VDD），解决3D医学病灶分割中的不确定性问题。",
+      "llm_tldr": "提出体积方向扩散模型（VDD），解决3D医学病灶分割中的不确定性问题。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.03527v1",
+      "title": "Logit-Level Uncertainty Quantification in Vision-Language Models for Histopathology Image Analysis",
+      "abstract": "Vision-Language Models (VLMs) with their multimodal capabilities have demonstrated remarkable success in almost all domains, including education, transportation, healthcare, energy, finance, law, and retail. Nevertheless, the utilization of VLMs in healthcare applications raises crucial concerns due to the sensitivity of large-scale medical data and the trustworthiness of these models (reliability, transparency, and security). This study proposes a logit-level uncertainty quantification (UQ) framework for histopathology image analysis using VLMs to deal with these concerns. UQ is evaluated for three VLMs using metrics derived from temperature-controlled output logits. The proposed framework demonstrates a critical separation in uncertainty behavior. While VLMs show high stochastic sensitivity (cosine similarity (CS) $<0.71$ and $<0.84$, Jensen-Shannon divergence (JS) $<0.57$ and $<0.38$, and Kullback-Leibler divergence (KL) $<0.55$ and $<0.35$, respectively for mean values of VILA-M3-8B and LLaVA-Med v1.5), near-maximal temperature impacts ($Δ_T \\approx 1.00$), and displaying abrupt uncertainty transitions, particularly for complex diagnostic prompts. In contrast, the pathology-specific PRISM model maintains near-deterministic behavior (mean CS $>0.90$, JS $<0.10$, KL $<0.09$) and significantly minimal temperature effects across all prompt complexities. These findings emphasize the importance of logit-level uncertainty quantification to evaluate trustworthiness in histopathology applications utilizing VLMs.",
+      "authors": [
+        "Betul Yurdem",
+        "Ferhat Ozgur Catak",
+        "Murat Kuzlu",
+        "Mehmet Kemal Gullu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-03-03T21:21:00+00:00",
+      "link": "https://arxiv.org/pdf/2603.03527v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uncertainty quantification in vision-language models for healthcare",
+      "llm_evidence_cn": "医疗视觉语言模型中的不确定性量化",
+      "llm_evidence": "医疗视觉语言模型中的不确定性量化",
+      "canonical_evidence": "医疗视觉语言模型中的不确定性量化",
+      "llm_tldr_en": "Develops an uncertainty quantification framework for histopathology analysis using vision-language models.",
+      "llm_tldr_cn": "为使用视觉语言模型的组织病理学分析开发了一个不确定性量化框架。",
+      "llm_tldr": "为使用视觉语言模型的组织病理学分析开发了一个不确定性量化框架。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.03276v1",
+      "title": "Beyond Language Modeling: An Exploration of Multimodal Pretraining",
+      "abstract": "The visual world offers a critical axis for advancing foundation models beyond language. Despite growing interest in this direction, the design space for native multimodal models remains opaque. We provide empirical clarity through controlled, from-scratch pretraining experiments, isolating the factors that govern multimodal pretraining without interference from language pretraining. We adopt the Transfusion framework, using next-token prediction for language and diffusion for vision, to train on diverse data including text, video, image-text pairs, and even action-conditioned video. Our experiments yield four key insights: (i) Representation Autoencoder (RAE) provides an optimal unified visual representation by excelling at both visual understanding and generation; (ii) visual and language data are complementary and yield synergy for downstream capabilities; (iii) unified multimodal pretraining leads naturally to world modeling, with capabilities emerging from general training; and (iv) Mixture-of-Experts (MoE) enables efficient and effective multimodal scaling while naturally inducing modality specialization. Through IsoFLOP analysis, we compute scaling laws for both modalities and uncover a scaling asymmetry: vision is significantly more data-hungry than language. We demonstrate that the MoE architecture harmonizes this scaling asymmetry by providing the high model capacity required by language while accommodating the data-intensive nature of vision, paving the way for truly unified multimodal models.",
+      "authors": [
+        "Shengbang Tong",
+        "David Fan",
+        "John Nguyen",
+        "Ellis Brown",
+        "Gaoyue Zhou",
+        "Shengyi Qian",
+        "Boyang Zheng",
+        "Théophane Vallaeys",
+        "Junlin Han",
+        "Rob Fergus",
+        "Naila Murray",
+        "Marjan Ghazvininejad",
+        "Mike Lewis",
+        "Nicolas Ballas",
+        "Amir Bar",
+        "Michael Rabbat",
+        "Jakob Verbeek",
+        "Luke Zettlemoyer",
+        "Koustuv Sinha",
+        "Yann LeCun",
+        "Saining Xie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-03T18:58:00+00:00",
+      "link": "https://arxiv.org/pdf/2603.03276v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Exploration of multimodal foundation model architectures and visual representations",
+      "llm_evidence_cn": "探索多模态基础模型架构和视觉表示",
+      "llm_evidence": "探索多模态基础模型架构和视觉表示",
+      "canonical_evidence": "探索多模态基础模型架构和视觉表示",
+      "llm_tldr_en": "Explores multimodal foundation model design using Transfusion and Representation Autoencoders for visual tasks.",
+      "llm_tldr_cn": "通过Transfusion框架和表示自动编码器探索多模态基础模型的设计，提升视觉理解能力。",
+      "llm_tldr": "通过Transfusion框架和表示自动编码器探索多模态基础模型的设计，提升视觉理解能力。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "DINOv3 foundation model architecture and features",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.04795v1",
+      "title": "LAW & ORDER: Adaptive Spatial Weighting for Medical Diffusion and Segmentation",
+      "abstract": "Medical image analysis relies on accurate segmentation, and benefits from controllable synthesis (of new training images). Yet both tasks of the cyclical pipeline face spatial imbalance: lesions occupy small regions against vast backgrounds. In particular, diffusion models have been shown to drift from prescribed lesion layouts, while efficient segmenters struggle on spatially uncertain regions. Adaptive spatial weighting addresses this by learning where to allocate computational resources. This paper introduces a pair of network adapters: 1) Learnable Adaptive Weighter (LAW) which predicts per-pixel loss modulation from features and masks for diffusion training, stabilized via a mix of normalization, clamping, and regularization to prevent degenerate solutions; and 2) Optimal Region Detection with Efficient Resolution (ORDER) which applies selective bidirectional skip attention at late decoder stages for efficient segmentation. Experiments on polyp and kidney tumor datasets demonstrate that LAW achieves 20% FID generative improvement over a uniform baseline (52.28 vs. 65.60), with synthetic data then improving downstream segmentation by 4.9% Dice coefficient (83.2% vs. 78.3%). ORDER reaches 6.0% Dice improvement on MK-UNet (81.3% vs. 75.3%) with 0.56 GFLOPs and just 42K parameters, remaining 730x smaller than the standard nnUNet.",
+      "authors": [
+        "Anugunj Naman",
+        "Ayushman Singh",
+        "Gaibo Zhang",
+        "Yaguang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-05T04:20:32+00:00",
+      "link": "https://arxiv.org/pdf/2603.04795v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adaptive spatial weighting for medical image segmentation tasks",
+      "llm_evidence_cn": "医学图像分割任务中的自适应空间加权",
+      "llm_evidence": "医学图像分割任务中的自适应空间加权",
+      "canonical_evidence": "医学图像分割任务中的自适应空间加权",
+      "llm_tldr_en": "Introduces LAW & ORDER adapters to improve medical image segmentation and diffusion by addressing spatial imbalance.",
+      "llm_tldr_cn": "引入LAW & ORDER适配器，通过解决空间不平衡问题来改进医学图像分割和扩散模型。",
+      "llm_tldr": "引入LAW & ORDER适配器，通过解决空间不平衡问题来改进医学图像分割和扩散模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.03618v1",
+      "title": "CoRe-BT: A Multimodal Radiology-Pathology-Text Benchmark for Robust Brain Tumor Typing",
+      "abstract": "Accurate brain tumor typing requires integrating heterogeneous clinical evidence, including magnetic resonance imaging (MRI), histopathology, and pathology reports, which are often incomplete at the time of diagnosis. We introduce CoRe-BT, a cross-modal radiology-pathology-text benchmark for brain tumor typing, designed to study robust multimodal learning under missing modality conditions. The dataset comprises 310 patients with multi-sequence brain MRI (T1, T1c, T2, FLAIR), including 95 cases with paired H&E-stained whole-slide pathology images and pathology reports. All cases are annotated with tumor type and grade, and MRI volumes include expert-annotated tumor masks, enabling both region-aware modeling and auxiliary learning tasks. Tumors are categorized into six clinically relevant classes capturing the heterogeneity of common and rare glioma subtypes. We evaluate tumor typing under variable modality availability by comparing MRI-only models with multimodal approaches that incorporate pathology information when present. Baseline experiments demonstrate the feasibility of multimodal fusion and highlight complementary modality contributions across clinically relevant typing tasks. CoRe-BT provides a grounded testbed for advancing multimodal glioma typing and representation learning in realistic scenarios with incomplete clinical data.",
+      "authors": [
+        "Juampablo E. Heras Rivera",
+        "Daniel K. Low",
+        "Xavier Xiong",
+        "Jacob J. Ruzevick",
+        "Daniel D. Child",
+        "Wen-wai Yim",
+        "Mehmet Kurt",
+        "Asma Ben Abacha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-04T01:06:50+00:00",
+      "link": "https://arxiv.org/pdf/2603.03618v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal benchmark including expert-annotated tumor masks for segmentation",
+      "llm_evidence_cn": "包含专家标注肿瘤掩码的多模态分割基准",
+      "llm_evidence": "包含专家标注肿瘤掩码的多模态分割基准",
+      "canonical_evidence": "包含专家标注肿瘤掩码的多模态分割基准",
+      "llm_tldr_en": "Introduces a multimodal benchmark for brain tumor typing and segmentation under missing modality conditions.",
+      "llm_tldr_cn": "引入了一个用于缺失模态下脑肿瘤分型和分割的多模态基准数据集。",
+      "llm_tldr": "引入了一个用于缺失模态下脑肿瘤分型和分割的多模态基准数据集。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
