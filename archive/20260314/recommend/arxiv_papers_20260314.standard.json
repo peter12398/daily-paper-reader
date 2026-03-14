@@ -1,0 +1,771 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-14T19:17:32.618720+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 26,
+    "deep_cap": 6,
+    "deep_selected": 8,
+    "quick_candidates": 44,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2603.08215v1",
+      "title": "Skill-Evolving Grounded Reasoning for Free-Text Promptable 3D Medical Image Segmentation",
+      "abstract": "Free-text promptable 3D medical image segmentation offers an intuitive and clinically flexible interaction paradigm. However, current methods are highly sensitive to linguistic variability: minor changes in phrasing can cause substantial performance degradation despite identical clinical intent. Existing approaches attempt to improve robustness through stronger vision-language fusion or larger vocabularies, yet they lack mechanisms to consistently align ambiguous free-form expressions with anatomically grounded representations. We propose Skill-Evolving grounded Reasoning (SEER), a novel framework for free-text promptable 3D medical image segmentation that explicitly bridges linguistic variability and anatomical precision through a reasoning-driven design. First, we curate the SEER-Trace dataset, which pairs raw clinical requests with image-grounded, skill-tagged reasoning traces, establishing a reproducible benchmark. Second, SEER constructs an evidence-aligned target representation via a vision-language reasoning chain that verifies clinical intent against image-derived anatomical evidence, thereby enforcing semantic consistency before voxel-level decoding. Third, we introduce SEER-Loop, a dynamic skill-evolving strategy that distills high-reward reasoning trajectories into reusable skill artifacts and progressively integrates them into subsequent inference, enabling structured self-refinement and improved robustness to diverse linguistic expressions. Extensive experiments demonstrate superior performance of SEER over state-of-the-art baselines. Under linguistic perturbations, SEER reduces performance variance by 81.94% and improves worst-case Dice by 18.60%.",
+      "authors": [
+        "Tongrui Zhang",
+        "Chenhui Wang",
+        "Yongming Li",
+        "Zhihao Chen",
+        "Xufeng Zhan",
+        "Hongming Shan"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-03-09T10:45:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.08215v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Free-text promptable 3D medical image segmentation using vision-language fusion",
+      "llm_evidence_cn": "基于视觉语言融合的可提示3D医学图像分割",
+      "llm_evidence": "基于视觉语言融合的可提示3D医学图像分割",
+      "canonical_evidence": "基于视觉语言融合的可提示3D医学图像分割",
+      "llm_tldr_en": "Introduces SEER to align free-text prompts with anatomical precision for robust 3D medical segmentation.",
+      "llm_tldr_cn": "提出SEER框架，通过将自由文本提示与解剖精度对齐，实现鲁棒的3D医学图像分割。",
+      "llm_tldr": "提出SEER框架，通过将自由文本提示与解剖精度对齐，实现鲁棒的3D医学图像分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.08800v1",
+      "title": "Granulon: Awakening Pixel-Level Visual Encoders with Adaptive Multi-Granularity Semantics for MLLM",
+      "abstract": "Recent advances in multimodal large language models largely rely on CLIP-based visual encoders, which emphasize global semantic alignment but struggle with fine-grained visual understanding. In contrast, DINOv3 provides strong pixel-level perception yet lacks coarse-grained semantic abstraction, leading to limited multi-granularity reasoning. To address this gap, we propose Granulon, a novel DINOv3-based MLLM with adaptive granularity augmentation. Granulon introduces a text-conditioned granularity Controller that dynamically adjusts the visual abstraction level according to the semantic scope of the textual input, and an Adaptive Token Aggregation module that performs granularity-guided pooling and relation-aware clustering to produce compact, semantically rich visual tokens. This design enables unified \"pixel-to-fine-to-coarse\" reasoning within a single forward pass. Extensive and interpretable experiments demonstrate that Granulon improves accuracy by ~30% and reduces hallucination by ~20%, outperforming all visual encoders under identical settings.",
+      "authors": [
+        "Junyuan Mao",
+        "Qiankun Li",
+        "Linghao Meng",
+        "Zhicheng He",
+        "Xinliang Zhou",
+        "Kun Wang",
+        "Yang Liu",
+        "Yueming Jin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-09T18:02:52+00:00",
+      "link": "https://arxiv.org/pdf/2603.08800v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "DINOv3-based MLLM with adaptive granularity for pixel-level perception",
+      "llm_evidence_cn": "基于DINOv3的多模态大模型，具有自适应粒度的像素级感知",
+      "llm_evidence": "基于DINOv3的多模态大模型，具有自适应粒度的像素级感知",
+      "canonical_evidence": "基于DINOv3的多模态大模型，具有自适应粒度的像素级感知",
+      "llm_tldr_en": "Introduces Granulon, a DINOv3-based model that enhances pixel-level perception with adaptive granularity.",
+      "llm_tldr_cn": "引入Granulon，一种基于DINOv3的模型，通过自适应粒度增强了像素级感知能力。",
+      "llm_tldr": "引入Granulon，一种基于DINOv3的模型，通过自适应粒度增强了像素级感知能力。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "DINOv3 foundation model architecture and features",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.08844v1",
+      "title": "A Lightweight Multi-Cancer Tumor Localization Framework for Deployable Digital Pathology",
+      "abstract": "Accurate localization of tumor regions from hematoxylin and eosin-stained whole-slide images is fundamental for translational research including spatial analysis, molecular profiling, and tissue architecture investigation. However, deep learning-based tumor detection trained within specific cancers may exhibit reduced robustness when applied across different tumor types. We investigated whether balanced training across cancers at modest scale can achieve high performance and generalize to unseen tumor types. A multi-cancer tumor localization model (MuCTaL) was trained on 79,984 non-overlapping tiles from four cancers (melanoma, hepatocellular carcinoma, colorectal cancer, and non-small cell lung cancer) using transfer learning with DenseNet169. The model achieved a tile-level ROC-AUC of 0.97 in validation data from the four training cancers, and 0.71 on an independent pancreatic ductal adenocarcinoma cohort. A scalable inference workflow was built to generate spatial tumor probability heatmaps compatible with existing digital pathology tools. Code and models are publicly available at https://github.com/AivaraX-AI/MuCTaL.",
+      "authors": [
+        "Brian Isett",
+        "Rebekah Dadey",
+        "Aofei Li",
+        "Ryan C. Augustin",
+        "Kate Smith",
+        "Aatur D. Singhi",
+        "Qiangqiang Gu",
+        "Riyue Bao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-09T19:00:04+00:00",
+      "link": "https://arxiv.org/pdf/2603.08844v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "transfer learning with DINOv2 for tumor localization",
+      "llm_evidence_cn": "使用 DINOv2 进行肿瘤定位的迁移学习",
+      "llm_evidence": "使用 DINOv2 进行肿瘤定位的迁移学习",
+      "canonical_evidence": "使用 DINOv2 进行肿瘤定位的迁移学习",
+      "llm_tldr_en": "MuCTaL uses DINOv2-based transfer learning for robust multi-cancer tumor localization in digital pathology.",
+      "llm_tldr_cn": "MuCTaL 使用基于 DINOv2 的迁移学习，在数字病理学中实现稳健的多癌症肿瘤定位。",
+      "llm_tldr": "MuCTaL 使用基于 DINOv2 的迁移学习，在数字病理学中实现稳健的多癌症肿瘤定位。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Applications of DINOv2 and DINOv3 in healthcare",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.09109v2",
+      "title": "VIVID-Med: LLM-Supervised Structured Pretraining for Deployable Medical ViTs",
+      "abstract": "Vision-language pretraining has driven significant progress in medical image analysis. However, current methods typically supervise visual encoders using one-hot labels or free-form text, neither of which effectively captures the complex semantic relationships among clinical findings. In this study, we introduce VIVID-Med, a novel framework that leverages a frozen large language model (LLM) as a structured semantic teacher to pretrain medical vision transformers (ViTs). VIVID-Med translates clinical findings into verifiable JSON field-state pairs via a Unified Medical Schema (UMS), utilizing answerability-aware masking to focus optimization. It then employs Structured Prediction Decomposition (SPD) to partition cross-attention into orthogonality-regularized query groups, extracting complementary visual aspects. Crucially, the LLM is discarded post-training, yielding a lightweight, deployable ViT-only backbone. We evaluated VIVID-Med across multiple settings: on CheXpert linear probing, it achieves a macro-AUC of 0.8588, outperforming BiomedCLIP by +6.65 points while using 500x less data. It also demonstrates robust zero-shot cross-domain transfer to NIH ChestX-ray14 (0.7225 macro-AUC) and strong cross-modality generalization to CT, achieving 0.8413 AUC on LIDC-IDRI lung nodule classification and 0.9969 macro-AUC on OrganAMNIST 11-organ classification. VIVID-Med offers a highly efficient, scalable alternative to deploying resource-heavy vision-language models in clinical settings.",
+      "authors": [
+        "Xiyao Wang",
+        "Xiaoyu Tan",
+        "Yang Dai",
+        "Yuxuan Fu",
+        "Shuo Li",
+        "Xihe Qiu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-10T02:42:51+00:00",
+      "link": "https://arxiv.org/pdf/2603.09109v2",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Vision foundation models for medical imaging",
+      "llm_evidence_cn": "用于医学成像的视觉基础模型",
+      "llm_evidence": "用于医学成像的视觉基础模型",
+      "canonical_evidence": "用于医学成像的视觉基础模型",
+      "llm_tldr_en": "VIVID-Med uses LLMs to provide structured semantic supervision for pretraining medical Vision Transformers.",
+      "llm_tldr_cn": "VIVID-Med利用大语言模型为医学视觉Transformer预训练提供结构化语义监督。",
+      "llm_tldr": "VIVID-Med利用大语言模型为医学视觉Transformer预训练提供结构化语义监督。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.10541v1",
+      "title": "Prompting with the human-touch: evaluating model-sensitivity of foundation models for musculoskeletal CT segmentation",
+      "abstract": "Promptable Foundation Models (FMs), initially introduced for natural image segmentation, have also revolutionized medical image segmentation. The increasing number of models, along with evaluations varying in datasets, metrics, and compared models, makes direct performance comparison between models difficult and complicates the selection of the most suitable model for specific clinical tasks. In our study, 11 promptable FMs are tested using non-iterative 2D and 3D prompting strategies on a private and public dataset focusing on bone and implant segmentation in four anatomical regions (wrist, shoulder, hip and lower leg). The Pareto-optimal models are identified and further analyzed using human prompts collected through a dedicated observer study. Our findings are: 1) The segmentation performance varies a lot between FMs and prompting strategies; 2) The Pareto-optimal models in 2D are SAM and SAM2.1, in 3D nnInteractive and Med-SAM2; 3) Localization accuracy and rater consistency vary with anatomical structures, with higher consistency for simple structures (wrist bones) and lower consistency for complex structures (pelvis, tibia, implants); 4) The segmentation performance drops using human prompts, suggesting that performance reported on \"ideal\" prompts extracted from reference labels might overestimate the performance in a human-driven setting; 5) All models were sensitive to prompt variations. While two models demonstrated intra-rater robustness, it did not scale to inter-rater settings. We conclude that the selection of the most optimal FM for a human-driven setting remains challenging, with even high-performing FMs being sensitive to variations in human input prompts. Our code base for prompt extraction and model inference is available: https://github.com/CarolineMagg/segmentation-FM-benchmark/",
+      "authors": [
+        "Caroline Magg",
+        "Maaike A. ter Wee",
+        "Johannes G. G. Dobbe",
+        "Geert J. Streekstra",
+        "Leendert Blankevoort",
+        "Clara I. Sánchez",
+        "Hoel Kervadec"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-11T08:45:54+00:00",
+      "link": "https://arxiv.org/pdf/2603.10541v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "evaluating foundation models for musculoskeletal CT segmentation",
+      "llm_evidence_cn": "评估用于肌肉骨骼CT分割的基础模型",
+      "llm_evidence": "评估用于肌肉骨骼CT分割的基础模型",
+      "canonical_evidence": "评估用于肌肉骨骼CT分割的基础模型",
+      "llm_tldr_en": "Evaluates 11 promptable foundation models for musculoskeletal CT segmentation tasks.",
+      "llm_tldr_cn": "评估了11个可提示基础模型在肌肉骨骼CT分割任务中的表现。",
+      "llm_tldr": "评估了11个可提示基础模型在肌肉骨骼CT分割任务中的表现。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.10967v1",
+      "title": "Med-DualLoRA: Local Adaptation of Foundation Models for 3D Cardiac MRI",
+      "abstract": "Foundation models (FMs) show great promise for robust downstream performance across medical imaging tasks and modalities, including cardiac magnetic resonance (CMR), following task-specific adaptation. However, adaptation using single-site data may lead to suboptimal performance and increased model bias, while centralized fine-tuning on clinical data is often infeasible due to privacy constraints. Federated fine-tuning offers a privacy-preserving alternative; yet conventional approaches struggle under heterogeneous, non-IID multi-center data and incur substantial communication overhead when adapting large models. In this work, we study federated FM fine-tuning for 3D CMR disease detection and propose Med-DualLoRA, a client-aware parameter-efficient fine-tuning (PEFT) federated framework that disentangles globally shared and local low-rank adaptations (LoRA) through additive decomposition. Global and local LoRA modules are trained locally, but only the global component is shared and aggregated across sites, keeping local adapters private. This design improves personalization while significantly reducing communication cost, and experiments show that adapting only two transformer blocks preserves performance while further improving efficiency. We evaluate our method on a multi-center state-of-the-art cine 3D CMR FM fine-tuned for disease detection using ACDC and combined M\\&Ms datasets, treating each vendor as a federated client. Med-DualLoRA achieves statistically significant improved performance (balanced accuracy 0.768, specificity 0.612) compared to other federated PEFT baselines, while maintaining communication efficiency. Our approach provides a scalable solution for local federated adaptation of medical FMs under realistic clinical constraints.",
+      "authors": [
+        "Joan Perramon-Llussà",
+        "Amelia Jiménez-Sánchez",
+        "Grzegorz Skorupko",
+        "Fotis Avgoustidis",
+        "Carlos Martín-Isla",
+        "Karim Lekadir",
+        "Polyxeni Gkontra"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-11T16:52:21+00:00",
+      "link": "https://arxiv.org/pdf/2603.10967v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Local adaptation of foundation models for 3D cardiac MRI",
+      "llm_evidence_cn": "3D心脏MRI基础模型的本地适配",
+      "llm_evidence": "3D心脏MRI基础模型的本地适配",
+      "canonical_evidence": "3D心脏MRI基础模型的本地适配",
+      "llm_tldr_en": "Proposes Med-DualLoRA for parameter-efficient federated fine-tuning of foundation models in medical imaging.",
+      "llm_tldr_cn": "提出Med-DualLoRA，用于医学影像基础模型的高效联邦微调与任务适配。",
+      "llm_tldr": "提出Med-DualLoRA，用于医学影像基础模型的高效联邦微调与任务适配。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.11206v1",
+      "title": "Evidential learning driven Breast Tumor Segmentation with Stage-divided Vision-Language Interaction",
+      "abstract": "Breast cancer is one of the most common causes of death among women worldwide, with millions of fatalities annually. Magnetic Resonance Imaging (MRI) can provide various sequences for characterizing tumor morphology and internal patterns, and becomes an effective tool for detection and diagnosis of breast tumors. However, previous deep-learning based tumor segmentation methods have limitations in accurately locating tumor contours due to the challenge of low contrast between cancer and normal areas and blurred boundaries. Leveraging text prompt information holds promise in ameliorating tumor segmentation effect by delineating segmentation regions. Inspired by this, we propose text-guided Breast Tumor Segmentation model (TextBCS) with stage-divided vision-language interaction and evidential learning. Specifically, the proposed stage-divided vision-language interaction facilitates information mutual between visual and text features at each stage of down-sampling, further exerting the advantages of text prompts to assist in locating lesion areas in low contrast scenarios. Moreover, the evidential learning is adopted to quantify the segmentation uncertainty of the model for blurred boundary. It utilizes the variational Dirichlet to characterize the distribution of the segmentation probabilities, addressing the segmentation uncertainties of the boundaries. Extensive experiments validate the superiority of our TextBCS over other segmentation networks, showcasing the best breast tumor segmentation performance on publicly available datasets.",
+      "authors": [
+        "Jingxing Zhong",
+        "Qingtao Pan",
+        "Xuchang Zhou",
+        "Jiazhen Lin",
+        "Xinguo Zhuang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-11T18:24:07+00:00",
+      "link": "https://arxiv.org/pdf/2603.11206v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Deep learning for breast tumor segmentation",
+      "llm_evidence_cn": "深度学习用于乳腺肿瘤分割",
+      "llm_evidence": "深度学习用于乳腺肿瘤分割",
+      "canonical_evidence": "深度学习用于乳腺肿瘤分割",
+      "llm_tldr_en": "Proposes a text-guided evidential learning model for improved breast tumor segmentation in MRI.",
+      "llm_tldr_cn": "提出一种文本引导的证据学习模型，用于改进MRI中的乳腺肿瘤分割。",
+      "llm_tldr": "提出一种文本引导的证据学习模型，用于改进MRI中的乳腺肿瘤分割。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.11627v1",
+      "title": "Developing Foundation Models for Universal Segmentation from 3D Whole-Body Positron Emission Tomography",
+      "abstract": "Positron emission tomography (PET) is a key nuclear medicine imaging modality that visualizes radiotracer distributions to quantify in vivo physiological and metabolic processes, playing an irreplaceable role in disease management. Despite its clinical importance, the development of deep learning models for quantitative PET image analysis remains severely limited, driven by both the inherent segmentation challenge from PET's paucity of anatomical contrast and the high costs of data acquisition and annotation. To bridge this gap, we develop generalist foundational models for universal segmentation from 3D whole-body PET imaging. We first build the largest and most comprehensive PET dataset to date, comprising 11041 3D whole-body PET scans with 59831 segmentation masks for model development. Based on this dataset, we present SegAnyPET, an innovative foundational model with general-purpose applicability to diverse segmentation tasks. Built on a 3D architecture with a prompt engineering strategy for mask generation, SegAnyPET enables universal and scalable organ and lesion segmentation, supports efficient human correction with minimal effort, and enables a clinical human-in-the-loop workflow. Extensive evaluations on multi-center, multi-tracer, multi-disease datasets demonstrate that SegAnyPET achieves strong zero-shot performance across a wide range of segmentation tasks, highlighting its potential to advance the clinical applications of molecular imaging.",
+      "authors": [
+        "Yichi Zhang",
+        "Le Xue",
+        "Wenbo Zhang",
+        "Lanlan Li",
+        "Feiyang Xiao",
+        "Yuchen Liu",
+        "Xiaohui Zhang",
+        "Hongwei Zhang",
+        "Shuqi Wang",
+        "Gang Feng",
+        "Liling Peng",
+        "Xin Gao",
+        "Yuanfan Xu",
+        "Yuan Qi",
+        "Kuangyu Shi",
+        "Hong Zhang",
+        "Yuan Cheng",
+        "Mei Tian",
+        "Zixin Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-12T07:41:28+00:00",
+      "link": "https://arxiv.org/pdf/2603.11627v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Foundation models for universal segmentation in 3D PET imaging",
+      "llm_evidence_cn": "用于3D PET图像通用分割的基础模型",
+      "llm_evidence": "用于3D PET图像通用分割的基础模型",
+      "canonical_evidence": "用于3D PET图像通用分割的基础模型",
+      "llm_tldr_en": "Develops a generalist foundation model for universal segmentation across large-scale 3D PET datasets.",
+      "llm_tldr_cn": "开发了一个用于大规模3D PET数据集通用分割的通用基础模型。",
+      "llm_tldr": "开发了一个用于大规模3D PET数据集通用分割的通用基础模型。",
+      "llm_tags": [
+        "query:med-fm:composite"
+      ],
+      "matched_query_tag": "query:med-fm:composite",
+      "matched_query_text": "Papers central to Foundation models（尤其是DINOv3相关）在医学图像分割领域应用的相关论文, especially work that connects or combines: DINOv3 foundation model architecture and features; Vision foundation models for medical imaging; Deep learning for medical image segmentation tasks; Applications of DINOv2 and DINOv3 in healthcare; Recent advances in DINOv3 for medical image analysis; Adapting vision foundation models for medical image segmentation; Performance of DINOv3 in clinical image segmentation benchmarks; Comparison of DINOv3 and other foundation models in medical tasks.",
+      "matched_requirement_id": "req-composite-med-fm",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.04811v1",
+      "title": "Meta-D: Metadata-Aware Architectures for Brain Tumor Analysis and Missing-Modality Segmentation",
+      "abstract": "We present Meta-D, an architecture that explicitly leverages categorical scanner metadata such as MRI sequence and plane orientation to guide feature extraction for brain tumor analysis. We aim to improve the performance of medical image deep learning pipelines by integrating explicit metadata to stabilize feature representations. We first evaluate this in 2D tumor detection, where injecting sequence (e.g., T1, T2) and plane (e.g., axial) metadata dynamically modulates convolutional features, yielding an absolute increase of up to 2.62% in F1-score over image-only baselines. Because metadata grounds feature extraction when data are available, we hypothesize it can serve as a robust anchor when data are missing. We apply this to 3D missing-modality tumor segmentation. Our Transformer Maximizer utilizes metadata-based cross-attention to isolate and route available modalities, ensuring the network focuses on valid slices. This targeted attention improves brain tumor segmentation Dice scores by up to 5.12% under extreme modality scarcity while reducing model parameters by 24.1%.",
+      "authors": [
+        "SangHyuk Kim",
+        "Daniel Haehn",
+        "Sumientra Rampersad"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-03-05T04:54:49+00:00",
+      "link": "https://arxiv.org/pdf/2603.04811v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Deep learning architecture for brain tumor analysis and segmentation",
+      "llm_evidence_cn": "用于脑肿瘤分析和分割的深度学习架构",
+      "llm_evidence": "用于脑肿瘤分析和分割的深度学习架构",
+      "canonical_evidence": "用于脑肿瘤分析和分割的深度学习架构",
+      "llm_tldr_en": "Introduces a metadata-aware architecture to improve brain tumor detection and segmentation performance.",
+      "llm_tldr_cn": "引入了一种元数据感知架构，以提高脑肿瘤检测和分割的性能。",
+      "llm_tldr": "引入了一种元数据感知架构，以提高脑肿瘤检测和分割的性能。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.04811v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.07098v1",
+      "title": "NuNext: Reframing Nucleus Detection as Next-Point Detection",
+      "abstract": "Nucleus detection in histopathology is pivotal for a wide range of clinical applications. Existing approaches either regress nuclear proxy maps that require complex post-processing, or employ dense anchors or queries that introduce severe foreground-background imbalance. In this work, we reformulate nucleus detection as next-point prediction, wherein a multimodal large language model is developed to directly output foreground nucleus centroids from the input image. The model is trained in two stages. In the supervised learning stage, we propose spatial-aware soft supervision to relax strict centroid matching and a chain-of-visual-thought strategy to incorporate visual priors that facilitate coordinate prediction. In the reinforcement fine-tuning stage, we design distribution matching reward, low-variance group filtering, and fine-grained advantage shaping to further improve the model's detection quality. Extensive experiments on nine widely used benchmarks demonstrate the superiority of our method. Code will be released soon.",
+      "authors": [
+        "Zhongyi Shui",
+        "Honglin Li",
+        "Xiaozhong Ji",
+        "Ye Zhang",
+        "Zijiang Yang",
+        "Chenglu Zhu",
+        "Yuxuan Sun",
+        "Kai Yao",
+        "Conghui He",
+        "Cheng Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-07T08:17:35+00:00",
+      "link": "https://arxiv.org/pdf/2603.07098v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "nucleus detection in histopathology using multimodal large language models",
+      "llm_evidence_cn": "使用多模态大语言模型进行组织病理学中的细胞核检测",
+      "llm_evidence": "使用多模态大语言模型进行组织病理学中的细胞核检测",
+      "canonical_evidence": "使用多模态大语言模型进行组织病理学中的细胞核检测",
+      "llm_tldr_en": "NuNext reframes nucleus detection as a next-point prediction task using a multimodal large language model.",
+      "llm_tldr_cn": "NuNext 将细胞核检测重新定义为使用多模态大语言模型的下一点预测任务。",
+      "llm_tldr": "NuNext 将细胞核检测重新定义为使用多模态大语言模型的下一点预测任务。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Deep learning for medical image segmentation tasks",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.07142v1",
+      "title": "PDD: Manifold-Prior Diverse Distillation for Medical Anomaly Detection",
+      "abstract": "Medical image anomaly detection faces unique challenges due to subtle, heterogeneous anomalies embedded in complex anatomical structures. Through systematic Grad-CAM analysis, we reveal that discriminative activation maps fail on medical data, unlike their success on industrial datasets, motivating the need for manifold-level modeling. We propose PDD (Manifold-Prior Diverse Distillation), a framework that unifies dual-teacher priors into a shared high-dimensional manifold and distills this knowledge into dual students with complementary behaviors. Specifically, frozen VMamba-Tiny and wide-ResNet50 encoders provide global contextual and local structural priors, respectively. Their features are unified through a Manifold Matching and Unification (MMU) module, while an Inter-Level Feature Adaption (InA) module enriches intermediate representations. The unified manifold is distilled into two students: one performs layer-wise distillation via InA for local consistency, while the other receives skip-projected representations through a Manifold Prior Affine (MPA) module to capture cross-layer dependencies. A diversity loss prevents representation collapse while maintaining detection sensitivity. Extensive experiments on multiple medical datasets demonstrate that PDD significantly outperforms existing state-of-the-art methods, achieving improvements of up to 11.8%, 5.1%, and 8.5% in AUROC on HeadCT, BrainMRI, and ZhangLab datasets, respectively, and 3.4% in F1 max on the Uni-Medical dataset, establishing new state-of-the-art performance in medical image anomaly detection. The implementation will be released at https://github.com/OxygenLu/PDD",
+      "authors": [
+        "Xijun Lu",
+        "Hongying Liu",
+        "Fanhua Shang",
+        "Yanming Hui",
+        "Liang Wan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-07T10:25:39+00:00",
+      "link": "https://arxiv.org/pdf/2603.07142v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "medical image anomaly detection using manifold-level modeling",
+      "llm_evidence_cn": "使用流形级建模的医学图像异常检测",
+      "llm_evidence": "使用流形级建模的医学图像异常检测",
+      "canonical_evidence": "使用流形级建模的医学图像异常检测",
+      "llm_tldr_en": "PDD uses manifold-prior distillation to improve medical anomaly detection by unifying global and local features.",
+      "llm_tldr_cn": "PDD 通过统一全局和局部特征，利用流形先验蒸馏来改进医学异常检测。",
+      "llm_tldr": "PDD 通过统一全局和局部特征，利用流形先验蒸馏来改进医学异常检测。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.05012v1",
+      "title": "Tell2Adapt: A Unified Framework for Source Free Unsupervised Domain Adaptation via Vision Foundation Model",
+      "abstract": "Source Free Unsupervised Domain Adaptation (SFUDA) is critical for deploying deep learning models across diverse clinical settings. However, existing methods are typically designed for low-gap, specific domain shifts and cannot generalize into a unified, multi-modalities, and multi-target framework, which presents a major barrier to real-world application. To overcome this issue, we introduce Tell2Adapt, a novel SFUDA framework that harnesses the vast, generalizable knowledge of the Vision Foundation Model (VFM). Our approach ensures high-fidelity VFM prompts through Context-Aware Prompts Regularization (CAPR), which robustly translates varied text prompts into canonical instructions. This enables the generation of high-quality pseudo-labels for efficiently adapting the lightweight student model to target domain. To guarantee clinical reliability, the framework incorporates Visual Plausibility Refinement (VPR), which leverages the VFM's anatomical knowledge to re-ground the adapted model's predictions in target image's low-level visual features, effectively removing noise and false positives. We conduct one of the most extensive SFUDA evaluations to date, validating our framework across 10 domain adaptation directions and 22 anatomical targets, including brain, cardiac, polyp, and abdominal targets. Our results demonstrate that Tell2Adapt consistently outperforms existing approaches, achieving SOTA for a unified SFUDA framework in medical image segmentation. Code are avaliable at https://github.com/derekshiii/Tell2Adapt.",
+      "authors": [
+        "Yulong Shi",
+        "Shijie Li",
+        "Ziyi Li",
+        "Lin Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-05T10:01:22+00:00",
+      "link": "https://arxiv.org/pdf/2603.05012v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "harnessing vision foundation models for medical domain adaptation",
+      "llm_evidence_cn": "利用视觉基础模型进行医学领域自适应",
+      "llm_evidence": "利用视觉基础模型进行医学领域自适应",
+      "canonical_evidence": "利用视觉基础模型进行医学领域自适应",
+      "llm_tldr_en": "Uses vision foundation models to enable source-free unsupervised domain adaptation in clinical settings.",
+      "llm_tldr_cn": "利用视觉基础模型在临床环境中实现无源无监督领域自适应。",
+      "llm_tldr": "利用视觉基础模型在临床环境中实现无源无监督领域自适应。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.05012v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.07113v1",
+      "title": "Efficient Chest X-ray Representation Learning via Semantic-Partitioned Contrastive Learning",
+      "abstract": "Self-supervised learning (SSL) has emerged as a powerful paradigm for Chest X-ray (CXR) analysis under limited annotations. Yet, existing SSL strategies remain suboptimal for medical imaging. Masked image modeling allocates substantial computation to reconstructing high-frequency background details with limited diagnostic value. Contrastive learning, on the other hand, often depends on aggressive augmentations that risk altering clinically meaningful structures. We introduce Semantic-Partitioned Contrastive Learning (S-PCL), an efficient pre-training framework tailored for CXR representation learning. Instead of reconstructing pixels or relying on heavy augmentations, S-PCL randomly partitions patch tokens from a single CXR into two non-overlapping semantic subsets. Each subset provides a complementary but incomplete view. The encoder must maximize agreement between these partitions, implicitly inferring global anatomical layout and local pathological cues from partial evidence. This semantic partitioning forms an internal bottleneck that enforces long-range dependency modeling and structural coherence. S-PCL eliminates the need for hand-crafted augmentations, auxiliary decoders, and momentum encoders. The resulting architecture is streamlined, computationally efficient, and easy to scale. Extensive experiments on large-scale CXR benchmarks, including ChestX-ray14, CheXpert, RSNA Pneumonia and SIIM-ACR Pneumothorax, show that S-PCL achieves competitive performance while attaining the lowest GFLOPs and superior accuracy among existing SSL approaches.",
+      "authors": [
+        "Wangyu Feng",
+        "Shawn Young",
+        "Lijian Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-07T08:52:23+00:00",
+      "link": "https://arxiv.org/pdf/2603.07113v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Self-supervised representation learning for medical imaging",
+      "llm_evidence_cn": "医学影像的自监督表示学习",
+      "llm_evidence": "医学影像的自监督表示学习",
+      "canonical_evidence": "医学影像的自监督表示学习",
+      "llm_tldr_en": "Introduces a semantic-partitioned contrastive learning framework for efficient chest X-ray analysis.",
+      "llm_tldr_cn": "引入语义分区对比学习框架，用于高效的胸部X射线影像分析。",
+      "llm_tldr": "引入语义分区对比学习框架，用于高效的胸部X射线影像分析。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.07443v1",
+      "title": "Med-Evo: Test-time Self-evolution for Medical Multimodal Large Language Models",
+      "abstract": "Medical Multimodal Large Language Models (MLLMs) have demonstrated remarkable capabilities across diverse healthcare tasks. However, current post-training strategies, such as supervised fine-tuning and reinforcement learning, heavily depend on substantial annotated data while overlooking the potential of unlabeled test data for model enhancement. This limitation becomes particularly pronounced in medical domains, where acquiring extensive labeled medical data is difficult due to the strict data sensitivity and annotation complexity. Moreover, leveraging test data poses challenges in generating reliable supervision signals from unlabeled samples and maintaining stable self-evolution. To address these limitations, we propose Med-Evo, the first self-evolution framework for medical MLLMs that utilizes label-free reinforcement learning to promote model performance without requiring additional labeled data. Our framework introduces two key innovations: $1)$ Feature-driven Pseudo Labeling (FPL) that identifies semantic centroids from all heterogeneous candidate responses to select pseudo labels in each rollout, and $2)$ Hard-Soft Reward (HSR) that combines exact match with token-level assessment and semantic similarity to provide hierarchical reward. Experiments on three medical VQA benchmarks and two base MLLMs show clear advantages of our approach over SOTA methods, with significant improvements of 10.43\\% accuracy and 4.68\\% recall on the SLAKE dataset using Qwen2.5-VL, showing the effectiveness of our method.",
+      "authors": [
+        "Dunyuan Xu",
+        "Xikai Yang",
+        "Juzheng Miao",
+        "Yaoqian Li",
+        "Jinpeng Li",
+        "Pheng-Ann Heng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-08T03:38:24+00:00",
+      "link": "https://arxiv.org/pdf/2603.07443v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Self-evolution for Medical Multimodal Large Language Models",
+      "llm_evidence_cn": "医学多模态大语言模型的自进化",
+      "llm_evidence": "医学多模态大语言模型的自进化",
+      "canonical_evidence": "医学多模态大语言模型的自进化",
+      "llm_tldr_en": "Introduces a test-time self-evolution framework for medical MLLMs using unlabeled data.",
+      "llm_tldr_cn": "介绍了一种利用无标签数据进行医学多模态大语言模型测试时自进化的框架。",
+      "llm_tldr": "介绍了一种利用无标签数据进行医学多模态大语言模型测试时自进化的框架。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.05421v1",
+      "title": "MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis",
+      "abstract": "Fetal ultrasound AI could transform prenatal care in low-resource settings, yet current foundation models exceed 300M visual parameters, precluding deployment on point-of-care devices. Standard knowledge distillation fails under such extreme capacity gaps (~26x), as compact students waste capacity mimicking architectural artifacts of oversized teachers. We introduce Selective Repulsive Knowledge Distillation, which decomposes contrastive KD into diagonal and off-diagonal components: matched pair alignment is preserved while the off-diagonal weight decays into negative values, repelling the student from the teacher's inter-class confusions and forcing discovery of architecturally native features. Our 11.4M parameter student surpasses the 304M-parameter FetalCLIP teacher on zero-shot HC18 biometry validity (88.6% vs. 83.5%) and brain sub-plane F1 (0.784 vs. 0.702), while running at 1.6 ms on iPhone 16 Pro, enabling real-time assistive AI on handheld ultrasound devices. Our code, models, and app are publicly available at https://github.com/numanai/MobileFetalCLIP.",
+      "authors": [
+        "Numan Saeed",
+        "Fadillah Adamsyah Maani",
+        "Mohammad Yaqub"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-03-05T17:43:00+00:00",
+      "link": "https://arxiv.org/pdf/2603.05421v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Foundation models for fetal ultrasound analysis",
+      "llm_evidence_cn": "用于胎儿超声分析的基础模型",
+      "llm_evidence": "用于胎儿超声分析的基础模型",
+      "canonical_evidence": "用于胎儿超声分析的基础模型",
+      "llm_tldr_en": "Develops a compact student model for fetal ultrasound by distilling knowledge from large foundation models.",
+      "llm_tldr_cn": "通过从大型基础模型中蒸馏知识，开发了一个用于胎儿超声的紧凑型学生模型。",
+      "llm_tldr": "通过从大型基础模型中蒸馏知识，开发了一个用于胎儿超声的紧凑型学生模型。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2603.05421v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.07170v1",
+      "title": "Class Visualizations and Activation Atlases for Enhancing Interpretability in Deep Learning-Based Computational Pathology",
+      "abstract": "The rapid adoption of transformer-based models in computational pathology has enabled prediction of molecular and clinical biomarkers from H&E whole-slide images, yet interpretability has not kept pace with model complexity. While attribution- and generative-based methods are common, feature visualization approaches such as class visualizations (CVs) and activation atlases (AAs) have not been systematically evaluated for these models. We developed a visualization framework and assessed CVs and AAs for a transformer-based foundation model across tissue and multi-organ cancer classification tasks with increasing label granularity. Four pathologists annotated real and generated images to quantify inter-observer agreement, complemented by attribution and similarity metrics. CVs preserved recognizability for morphologically distinct tissues but showed reduced separability for overlapping cancer subclasses. In tissue classification, agreement decreased from Fleiss k = 0.75 (scans) to k = 0.31 (CVs), with similar trends in cancer subclass tasks. AAs revealed layer-dependent organization: coarse tissue-level concepts formed coherent regions, whereas finer subclasses exhibited dispersion and overlap. Agreement was moderate for tissue classification (k = 0.58), high for coarse cancer groupings (k = 0.82), and low at subclass level (k = 0.11). Atlas separability closely tracked expert agreement on real images, indicating that representational ambiguity reflects intrinsic pathological complexity. Attribution-based metrics approximated expert variability in low-complexity settings, whereas perceptual and distributional metrics showed limited alignment. Overall, concept-level feature visualization reveals structured morphological manifolds in transformer-based pathology models and provides a framework for expert-centered interrogation of learned representations across label granularities.",
+      "authors": [
+        "Marco Gustav",
+        "Fabian Wolf",
+        "Christina Glasner",
+        "Nic G. Reitsam",
+        "Stefan Schulz",
+        "Kira Aschenbroich",
+        "Bruno Märkl",
+        "Sebastian Foersch",
+        "Jakob Nikolas Kather"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-07T12:23:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.07170v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "interpretability of transformer-based foundation models in pathology",
+      "llm_evidence_cn": "病理学中基于Transformer的基础模型的可解释性",
+      "llm_evidence": "病理学中基于Transformer的基础模型的可解释性",
+      "canonical_evidence": "病理学中基于Transformer的基础模型的可解释性",
+      "llm_tldr_en": "Evaluates visualization methods for transformer-based foundation models in computational pathology.",
+      "llm_tldr_cn": "评估了计算病理学中基于Transformer的基础模型的特征可视化方法。",
+      "llm_tldr": "评估了计算病理学中基于Transformer的基础模型的特征可视化方法。",
+      "llm_tags": [
+        "query:med-fm:composite"
+      ],
+      "matched_query_tag": "query:med-fm:composite",
+      "matched_query_text": "Papers central to Foundation models（尤其是DINOv3相关）在医学图像分割领域应用的相关论文, especially work that connects or combines: DINOv3 foundation model architecture and features; Vision foundation models for medical imaging; Deep learning for medical image segmentation tasks; Applications of DINOv2 and DINOv3 in healthcare; Recent advances in DINOv3 for medical image analysis; Adapting vision foundation models for medical image segmentation; Performance of DINOv3 in clinical image segmentation benchmarks; Comparison of DINOv3 and other foundation models in medical tasks.",
+      "matched_requirement_id": "req-composite-med-fm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.07468v1",
+      "title": "FedEU: Evidential Uncertainty-Driven Federated Fine-Tuning of Vision Foundation Models for Remote Sensing Image Segmentation",
+      "abstract": "Remote sensing image segmentation (RSIS) in federated environments has gained increasing attention because it enables collaborative model training across distributed datasets without sharing raw imagery or annotations. Federated RSIS combined with parameter-efficient fine-tuning (PEFT) can unleash the generalization power of pretrained foundation models for real-world applications, with minimal parameter aggregation and communication overhead. However, the dynamic adaptation of pretrained models to heterogeneous client data inevitably increases update uncertainty and compromises the reliability of collaborative optimization due to the lack of uncertainty estimation for each local model. To bridge this gap, we present FedEU, a federated optimization framework for fine-tuning RSIS models driven by evidential uncertainty. Specifically, personalized evidential uncertainty modeling is introduced to quantify epistemic variations of local models and identify high-risk areas under local data distributions. Furthermore, the client-specific feature embedding (CFE) is exploited to enhance channel-aware feature representation while preserving client-specific properties through personalized attention and an element-aware parameter update approach. These uncertainty estimates are uploaded to the server to enable adaptive global aggregation via a Top-k uncertainty-guided weighting (TUW) strategy, which mitigates the impact of distribution shifts and unreliable updates. Extensive experiments on three large-scale heterogeneous datasets demonstrate the superior performance of FedEU. More importantly, FedEU enables balanced model adaptation across diverse clients by explicitly reducing prediction uncertainty, resulting in more robust and reliable federated outcomes. The source codes will be available at https://github.com/zxk688/FedEU.",
+      "authors": [
+        "Xiaokang Zhang",
+        "Xuran Xiong",
+        "Jianzhong Huang",
+        "Lefei Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-08T05:11:03+00:00",
+      "link": "https://arxiv.org/pdf/2603.07468v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fine-tuning vision foundation models for image segmentation",
+      "llm_evidence_cn": "微调视觉基础模型用于图像分割",
+      "llm_evidence": "微调视觉基础模型用于图像分割",
+      "canonical_evidence": "微调视觉基础模型用于图像分割",
+      "llm_tldr_en": "Introduces an uncertainty-driven federated fine-tuning method for adapting vision foundation models to segmentation.",
+      "llm_tldr_cn": "引入了一种不确定性驱动的联邦微调方法，用于将视觉基础模型适配到图像分割任务中。",
+      "llm_tldr": "引入了一种不确定性驱动的联邦微调方法，用于将视觉基础模型适配到图像分割任务中。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.06885v1",
+      "title": "OPTED: Open Preprocessed Trachoma Eye Dataset Using Zero-Shot SAM 3 Segmentation",
+      "abstract": "Trachoma remains the leading infectious cause of blindness worldwide, with Sub-Saharan Africa bearing over 85% of the global burden and Ethiopia alone accounting for more than half of all cases. Yet publicly available preprocessed datasets for automated trachoma classification are scarce, and none originate from the most affected region. Raw clinical photographs of eyelids contain significant background noise that hinders direct use in machine learning pipelines. We present OPTED, an open-source preprocessed trachoma eye dataset constructed using the Segment Anything Model 3 (SAM 3) for automated region-of-interest extraction. We describe a reproducible four-step pipeline: (1) text-prompt-based zero-shot segmentation of the tarsal conjunctiva using SAM 3, (2) background removal and bounding-box cropping with alignment, (3) quality filtering based on confidence scores, and (4) Lanczos resizing to 224x224 pixels. A separate prompt-selection stage identifies the optimal text prompt, and manual quality assurance verifies outputs. Through comparison of five candidate prompts on all 2,832 known-label images, we identify \"inner surface of eyelid with red tissue\" as optimal, achieving a mean confidence of 0.872 (std 0.070) and 99.5% detection rate (the remaining 13 images are recovered via fallback prompts). The pipeline produces outputs in two formats: cropped and aligned images preserving the original aspect ratio, and standardized 224x224 images ready for pre-trained architectures. The OPTED dataset, preprocessing code, and all experimental artifacts are released as open source to facilitate reproducible trachoma classification research.",
+      "authors": [
+        "Kibrom Gebremedhin",
+        "Hadush Hailu",
+        "Bruk Gebregziabher"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-06T21:07:08+00:00",
+      "link": "https://arxiv.org/pdf/2603.06885v1",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Zero-shot segmentation using SAM 3 for medical eye dataset construction",
+      "llm_evidence_cn": "使用SAM 3进行零样本分割以构建医学眼科数据集",
+      "llm_evidence": "使用SAM 3进行零样本分割以构建医学眼科数据集",
+      "canonical_evidence": "使用SAM 3进行零样本分割以构建医学眼科数据集",
+      "llm_tldr_en": "OPTED uses SAM 3 for automated region-of-interest extraction in trachoma clinical photographs.",
+      "llm_tldr_cn": "OPTED利用SAM 3模型在沙眼临床照片中自动提取感兴趣区域。",
+      "llm_tldr": "OPTED利用SAM 3模型在沙眼临床照片中自动提取感兴趣区域。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Adapting vision foundation models for medical image segmentation",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.07170v2",
+      "title": "Class Visualizations and Activation Atlases for Enhancing Interpretability in Deep Learning-Based Computational Pathology",
+      "abstract": "The rapid adoption of transformer-based models in computational pathology has enabled prediction of molecular and clinical biomarkers from H&E whole-slide images, yet interpretability has not kept pace with model complexity. While attribution- and generative-based methods are common, feature visualization approaches such as class visualizations (CVs) and activation atlases (AAs) have not been systematically evaluated for these models. We developed a visualization framework and assessed CVs and AAs for a transformer-based foundation model across tissue and multi-organ cancer classification tasks with increasing label granularity. Four pathologists annotated real and generated images to quantify inter-observer agreement, complemented by attribution and similarity metrics. CVs preserved recognizability for morphologically distinct tissues but showed reduced separability for overlapping cancer subclasses. In tissue classification, agreement decreased from Fleiss k = 0.75 (scans) to k = 0.31 (CVs), with similar trends in cancer subclass tasks. AAs revealed layer-dependent organization: coarse tissue-level concepts formed coherent regions, whereas finer subclasses exhibited dispersion and overlap. Agreement was moderate for tissue classification (k = 0.58), high for coarse cancer groupings (k = 0.82), and low at subclass level (k = 0.11). Atlas separability closely tracked expert agreement on real images, indicating that representational ambiguity reflects intrinsic pathological complexity. Attribution-based metrics approximated expert variability in low-complexity settings, whereas perceptual and distributional metrics showed limited alignment. Overall, concept-level feature visualization reveals structured morphological manifolds in transformer-based pathology models and provides a framework for expert-centered interrogation of learned representations across label granularities.",
+      "authors": [
+        "Marco Gustav",
+        "Fabian Wolf",
+        "Christina Glasner",
+        "Nic G. Reitsam",
+        "Stefan Schulz",
+        "Kira Aschenbroich",
+        "Bruno Märkl",
+        "Sebastian Foersch",
+        "Jakob Nikolas Kather"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-03-07T12:23:10+00:00",
+      "link": "https://arxiv.org/pdf/2603.07170v2",
+      "tags": [
+        "keyword:MED FM",
+        "query:MED FM"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Interpretability of transformer-based foundation models in pathology",
+      "llm_evidence_cn": "病理学中基于Transformer的基础模型的可解释性",
+      "llm_evidence": "病理学中基于Transformer的基础模型的可解释性",
+      "canonical_evidence": "病理学中基于Transformer的基础模型的可解释性",
+      "llm_tldr_en": "Evaluates visualization frameworks for transformer-based foundation models in computational pathology tasks.",
+      "llm_tldr_cn": "评估了计算病理学任务中基于Transformer的基础模型的特征可视化框架。",
+      "llm_tldr": "评估了计算病理学任务中基于Transformer的基础模型的特征可视化框架。",
+      "llm_tags": [
+        "query:med-fm"
+      ],
+      "matched_query_tag": "query:med-fm",
+      "matched_query_text": "Vision foundation models for medical imaging",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

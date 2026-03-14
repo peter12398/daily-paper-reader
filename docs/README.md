@@ -6,85 +6,79 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-03-11
-- 运行时间：2026-03-11 19:44:16 UTC
+- 最新运行日期：2026-03-14
+- 运行时间：2026-03-14 19:20:05 UTC
 - 运行状态：成功
-- 本次总论文数：21
-- 精读区：10
+- 本次总论文数：19
+- 精读区：8
 - 速读区：11
 
 ### 今日简报（AI）
-今日深度研读21篇AI前沿论文，聚焦2D转3D视觉突破与医疗大模型进化。
-满分论文《PlaneCycle》实现无需训练的2D到3D跨越，而《BRIGHT》则通过协同架构刷新了乳腺病理诊断标准。
-建议重点关注“零样本”
-- 详情：[/202603/11/README](/202603/11/README)
+今日精选19篇前沿论文，重点聚焦3D医疗影像的进化推理分割与多模态大模型（MLLM）的像素级视觉编码突破。
+最值得关注的是获9.0高分的3D医疗自由文本提示框架及Granulon多粒度语义编码器，显著提升了复杂场景下的理解精度。
+建议优先研读如何利用视觉基座模型与知识蒸馏技术，解决医疗超声及跨领域适配中的实际落地难题。
+- 详情：[/202603/14/README](/202603/14/README)
 
 ### 精读区论文标签
-1. [PlaneCycle: Training-Free 2D-to-3D Lifting of Foundation Models Without Adapters](/202603/11/2603.04165v1-planecycle-training-free-2d-to-3d-lifting-of-foundation-models-without-adapters)  
-   标签：评分：10.0/10、query:med-fm
-   evidence：使用预训练的 DINOv3 模型进行 3D 分割任务
-2. [BRIGHT: A Collaborative Generalist-Specialist Foundation Model for Breast Pathology](/202603/11/2603.03030v1-bright-a-collaborative-generalist-specialist-foundation-model-for-breast-pathology)  
+1. [Skill-Evolving Grounded Reasoning for Free-Text Promptable 3D Medical Image Segmentation](/202603/14/2603.08215v1-skill-evolving-grounded-reasoning-for-free-text-promptable-3d-medical-image-segmentation)  
    标签：评分：9.0/10、query:med-fm
-   evidence：通用病理基础模型
-3. [ProSMA-UNet: Decoder Conditioning for Proximal-Sparse Skip Feature Selection](/202603/11/2603.03187v1-prosma-unet-decoder-conditioning-for-proximal-sparse-skip-feature-selection)  
+   evidence：基于视觉语言融合的可提示3D医学图像分割
+2. [Granulon: Awakening Pixel-Level Visual Encoders with Adaptive Multi-Granularity Semantics for MLLM](/202603/14/2603.08800v1-granulon-awakening-pixel-level-visual-encoders-with-adaptive-multi-granularity-semantics-for-mllm)  
    标签：评分：9.0/10、query:med-fm
-   evidence：用于医学图像分割任务的深度学习架构
-4. [ProFound: A moderate-sized vision foundation model for multi-task prostate imaging](/202603/11/2603.03961v1-profound-a-moderate-sized-vision-foundation-model-for-multi-task-prostate-imaging)  
+   evidence：基于DINOv3的多模态大模型，具有自适应粒度的像素级感知
+3. [A Lightweight Multi-Cancer Tumor Localization Framework for Deployable Digital Pathology](/202603/14/2603.08844v1-a-lightweight-multi-cancer-tumor-localization-framework-for-deployable-digital-pathology)  
    标签：评分：9.0/10、query:med-fm
-   evidence：针对前列腺多参数MRI的领域专用视觉基础模型
-5. [LightMedSeg: Lightweight 3D Medical Image Segmentation with Learned Spatial Anchors](/202603/11/2603.07228v1-lightmedseg-lightweight-3d-medical-image-segmentation-with-learned-spatial-anchors)  
+   evidence：使用 DINOv2 进行肿瘤定位的迁移学习
+4. [VIVID-Med: LLM-Supervised Structured Pretraining for Deployable Medical ViTs](/202603/14/2603.09109v2-vivid-med-llm-supervised-structured-pretraining-for-deployable-medical-vits)  
    标签：评分：9.0/10、query:med-fm
-   evidence：轻量级 3D 医学图像分割架构
-6. [StructSAM: Structure- and Spectrum-Preserving Token Merging for Segment Anything Models](/202603/11/2603.07307v1-structsam-structure--and-spectrum-preserving-token-merging-for-segment-anything-models)  
+   evidence：用于医学成像的视觉基础模型
+5. [Prompting with the human-touch: evaluating model-sensitivity of foundation models for musculoskeletal CT segmentation](/202603/14/2603.10541v1-prompting-with-the-human-touch-evaluating-model-sensitivity-of-foundation-models-for-musculoskeletal-ct-segmentation)  
    标签：评分：9.0/10、query:med-fm
-   evidence：通过令牌合并将SAM模型应用于医学影像
-7. [RPG-SAM: Reliability-Weighted Prototypes and Geometric Adaptive Threshold Selection for Training-Free One-Shot Polyp Segmentation](/202603/11/2603.07436v1-rpg-sam-reliability-weighted-prototypes-and-geometric-adaptive-threshold-selection-for-training-free-one-shot-polyp-segmentation)  
+   evidence：评估用于肌肉骨骼CT分割的基础模型
+6. [Med-DualLoRA: Local Adaptation of Foundation Models for 3D Cardiac MRI](/202603/14/2603.10967v1-med-duallora-local-adaptation-of-foundation-models-for-3d-cardiac-mri)  
    标签：评分：9.0/10、query:med-fm
-   evidence：将基础模型（SAM）应用于单样本医学图像分割
-8. [Weakly Supervised Teacher-Student Framework with Progressive Pseudo-mask Refinement for Gland Segmentation](/202603/11/2603.08605v1-weakly-supervised-teacher-student-framework-with-progressive-pseudo-mask-refinement-for-gland-segmentation)  
+   evidence：3D心脏MRI基础模型的本地适配
+7. [Evidential learning driven Breast Tumor Segmentation with Stage-divided Vision-Language Interaction](/202603/14/2603.11206v1-evidential-learning-driven-breast-tumor-segmentation-with-stage-divided-vision-language-interaction)  
    标签：评分：9.0/10、query:med-fm
-   evidence：组织病理学中腺体分割的深度学习
-9. [TubeMLLM: A Foundation Model for Topology Knowledge Exploration in Vessel-like Anatomy](/202603/11/2603.09217v1-tubemllm-a-foundation-model-for-topology-knowledge-exploration-in-vessel-like-anatomy)  
+   evidence：深度学习用于乳腺肿瘤分割
+8. [Developing Foundation Models for Universal Segmentation from 3D Whole-Body Positron Emission Tomography](/202603/14/2603.11627v1-developing-foundation-models-for-universal-segmentation-from-3d-whole-body-positron-emission-tomography)  
    标签：评分：9.0/10、query:med-fm
-   evidence：血管类解剖结构的基础模型
-10. [DCAU-Net: Differential Cross Attention and Channel-Spatial Feature Fusion for Medical Image Segmentation](/202603/11/2603.09530v1-dcau-net-differential-cross-attention-and-channel-spatial-feature-fusion-for-medical-image-segmentation)  
-   标签：评分：9.0/10、query:med-fm
-   evidence：使用注意力和特征融合的医学图像分割
+   evidence：用于3D PET图像通用分割的基础模型
 
 ### 速读区论文标签
-1. [GloPath: An Entity-Centric Foundation Model for Glomerular Lesion Assessment and Clinicopathological Insights](/202603/11/2603.02926v1-glopath-an-entity-centric-foundation-model-for-glomerular-lesion-assessment-and-clinicopathological-insights)  
+1. [Meta-D: Metadata-Aware Architectures for Brain Tumor Analysis and Missing-Modality Segmentation](/202603/14/2603.04811v1-meta-d-metadata-aware-architectures-for-brain-tumor-analysis-and-missing-modality-segmentation)  
    标签：评分：8.0/10、query:med-fm
-   evidence：基于自监督学习的肾小球病理实体中心基础模型
-2. [Glass Segmentation with Fusion of Learned and General Visual Features](/202603/11/2603.03718v1-glass-segmentation-with-fusion-of-learned-and-general-visual-features)  
+   evidence：用于脑肿瘤分析和分割的深度学习架构
+2. [Tell2Adapt: A Unified Framework for Source Free Unsupervised Domain Adaptation via Vision Foundation Model](/202603/14/2603.05012v1-tell2adapt-a-unified-framework-for-source-free-unsupervised-domain-adaptation-via-vision-foundation-model)  
    标签：评分：8.0/10、query:med-fm
-   evidence：使用冻结的 DINOv3 视觉基础模型进行特征提取
-3. [Volumetric Directional Diffusion: Anchoring Uncertainty Quantification in Anatomical Consensus for Ambiguous Medical Image Segmentation](/202603/11/2603.04024v1-volumetric-directional-diffusion-anchoring-uncertainty-quantification-in-anatomical-consensus-for-ambiguous-medical-image-segmentation)  
+   evidence：利用视觉基础模型进行医学领域自适应
+3. [MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis](/202603/14/2603.05421v1-mobilefetalclip-selective-repulsive-knowledge-distillation-for-mobile-fetal-ultrasound-analysis)  
    标签：评分：8.0/10、query:med-fm
-   evidence：用于模糊医学图像分割的扩散模型
-4. [LAW & ORDER: Adaptive Spatial Weighting for Medical Diffusion and Segmentation](/202603/11/2603.04795v1-law--order-adaptive-spatial-weighting-for-medical-diffusion-and-segmentation)  
+   evidence：用于胎儿超声分析的基础模型
+4. [OPTED: Open Preprocessed Trachoma Eye Dataset Using Zero-Shot SAM 3 Segmentation](/202603/14/2603.06885v1-opted-open-preprocessed-trachoma-eye-dataset-using-zero-shot-sam-3-segmentation)  
    标签：评分：8.0/10、query:med-fm
-   evidence：医学图像分割任务中的自适应空间加权
-5. [DINOv3 Visual Representations for Blueberry Perception Toward Robotic Harvesting](/202603/11/2603.02419v1-dinov3-visual-representations-for-blueberry-perception-toward-robotic-harvesting)  
+   evidence：使用SAM 3进行零样本分割以构建医学眼科数据集
+5. [NuNext: Reframing Nucleus Detection as Next-Point Detection](/202603/14/2603.07098v1-nunext-reframing-nucleus-detection-as-next-point-detection)  
    标签：评分：7.0/10、query:med-fm
-   evidence：评估 DINOv3 作为冻结骨干网络在分割任务中的表现
-6. [AWDiff: An a trous wavelet diffusion model for lung ultrasound image synthesis](/202603/11/2603.03125v1-awdiff-an-a-trous-wavelet-diffusion-model-for-lung-ultrasound-image-synthesis)  
+   evidence：使用多模态大语言模型进行组织病理学中的细胞核检测
+6. [Efficient Chest X-ray Representation Learning via Semantic-Partitioned Contrastive Learning](/202603/14/2603.07113v1-efficient-chest-x-ray-representation-learning-via-semantic-partitioned-contrastive-learning)  
    标签：评分：7.0/10、query:med-fm
-   evidence：BioMedCLIP 视觉语言基础模型
-7. [Logit-Level Uncertainty Quantification in Vision-Language Models for Histopathology Image Analysis](/202603/11/2603.03527v1-logit-level-uncertainty-quantification-in-vision-language-models-for-histopathology-image-analysis)  
+   evidence：医学影像的自监督表示学习
+7. [Class Visualizations and Activation Atlases for Enhancing Interpretability in Deep Learning-Based Computational Pathology](/202603/14/2603.07170v1-class-visualizations-and-activation-atlases-for-enhancing-interpretability-in-deep-learning-based-computational-pathology)  
    标签：评分：7.0/10、query:med-fm
-   evidence：医疗视觉语言模型中的不确定性量化
-8. [CoRe-BT: A Multimodal Radiology-Pathology-Text Benchmark for Robust Brain Tumor Typing](/202603/11/2603.03618v1-core-bt-a-multimodal-radiology-pathology-text-benchmark-for-robust-brain-tumor-typing)  
+   evidence：病理学中基于Transformer的基础模型的可解释性
+8. [Class Visualizations and Activation Atlases for Enhancing Interpretability in Deep Learning-Based Computational Pathology](/202603/14/2603.07170v2-class-visualizations-and-activation-atlases-for-enhancing-interpretability-in-deep-learning-based-computational-pathology)  
    标签：评分：7.0/10、query:med-fm
-   evidence：包含专家标注肿瘤掩码的多模态分割基准
-9. [Semi-Supervised Few-Shot Adaptation of Vision-Language Models](/202603/11/2603.02959v1-semi-supervised-few-shot-adaptation-of-vision-language-models)  
+   evidence：病理学中基于Transformer的基础模型的可解释性
+9. [PDD: Manifold-Prior Diverse Distillation for Medical Anomaly Detection](/202603/14/2603.07142v1-pdd-manifold-prior-diverse-distillation-for-medical-anomaly-detection)  
    标签：评分：6.0/10、query:med-fm
-   evidence：将视觉语言模型适配于医学影像任务
-10. [MoECLIP: Patch-Specialized Experts for Zero-shot Anomaly Detection](/202603/11/2603.03101v1-moeclip-patch-specialized-experts-for-zero-shot-anomaly-detection)  
+   evidence：使用流形级建模的医学图像异常检测
+10. [Med-Evo: Test-time Self-evolution for Medical Multimodal Large Language Models](/202603/14/2603.07443v1-med-evo-test-time-self-evolution-for-medical-multimodal-large-language-models)  
    标签：评分：6.0/10、query:med-fm
-   evidence：将CLIP基础模型应用于异常检测
-11. [Beyond Language Modeling: An Exploration of Multimodal Pretraining](/202603/11/2603.03276v1-beyond-language-modeling-an-exploration-of-multimodal-pretraining)  
+   evidence：医学多模态大语言模型的自进化
+11. [FedEU: Evidential Uncertainty-Driven Federated Fine-Tuning of Vision Foundation Models for Remote Sensing Image Segmentation](/202603/14/2603.07468v1-fedeu-evidential-uncertainty-driven-federated-fine-tuning-of-vision-foundation-models-for-remote-sensing-image-segmentation)  
    标签：评分：6.0/10、query:med-fm
-   evidence：探索多模态基础模型架构和视觉表示
+   evidence：微调视觉基础模型用于图像分割
 
 
 <div class="dpr-home-promo-card">

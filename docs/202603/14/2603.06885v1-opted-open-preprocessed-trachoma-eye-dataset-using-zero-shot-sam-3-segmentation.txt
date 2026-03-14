@@ -1,0 +1,138 @@
+Title: OPTED: Open Preprocessed Trachoma Eye Dataset Using Zero-Shot SAM 3 Segmentation
+
+URL Source: https://arxiv.org/pdf/2603.06885v1
+
+Published Time: Tue, 10 Mar 2026 00:16:53 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# OPTED: Open Preprocessed Trachoma Eye Dataset Using Zero-Shot SAM 3 Segmentation 
+
+Kibrom Gebremedhin 
+
+Department of Computer Science Mekelle University 
+
+Mekelle, Ethiopia kibrom.gebremedhin@mu.edu.et 
+
+Hadush Hailu 
+
+Department of Computer Science Maharishi International University 
+
+Fairfield, IA, USA hadush.gebrerufael@miu.edu 
+
+Bruk Gebregziabher 
+
+Signal Technologies 
+
+Germany bruk@signaltech.xyz 
+
+Fig. 1. The OPTED preprocessing pipeline. Raw eyelid photographs are processed through four stages: (1) SAM 3 text-prompt segmentation, (2) bounding-box cropping, (3) alignment, and (4) Lanczos resizing to 224 × 224 px. The pipeline converts 2,832 source images into classification-ready samples across three WHO grades (Normal, TF, TI). 
+
+Abstract —Trachoma remains the leading infectious cause of blindness worldwide, with Sub-Saharan Africa bearing over 85% of the global burden and Ethiopia alone accounting for more than half of all cases. Yet publicly available preprocessed datasets for automated trachoma classification are scarce, and none originate from the most affected region. Raw clinical photographs of eyelids contain significant background noise that hinders direct use in machine learning pipelines. We present OPTED, an open-source preprocessed trachoma eye dataset constructed using the Segment Anything Model 3 (SAM 3) for automated region-of-interest extraction. We describe a reproducible four-step pipeline: (1) text-prompt-based zero-shot segmentation of the tarsal conjunctiva using SAM 3, (2) background removal and bounding-box cropping with alignment, (3) quality filtering based on confidence scores, and (4) Lanczos resizing to 224 ×224 pixels. A separate prompt-selection stage identifies the optimal text prompt, and manual quality assurance verifies outputs. Through comparison of five candidate prompts on all 2,832 known-label images, we identify “inner surface of eyelid with red tissue” as optimal, achieving a mean confidence of 0.872 (std 0.070) and 99.5% detection rate (the remaining 13 images are recovered via fallback prompts). The pipeline produces outputs in two formats: cropped and aligned images preserving the original aspect ratio, and standardized 224 × 224 images ready for pre-trained architectures. The OPTED dataset, preprocessing code, and all experimental artifacts are released as open source to facilitate reproducible trachoma classification research. 
+
+Index Terms —trachoma, image segmentation, dataset prepa-ration, Segment Anything Model, open-source dataset, medical image preprocessing 
+
+I. I NTRODUCTION 
+
+Trachoma, caused by ocular infection with Chlamydia tra-chomatis , is the world’s leading infectious cause of blindness, affecting approximately 1.9 million people and remaining a public health problem in 30 countries [1]. Sub-Saharan Africa bears over 85% of active cases globally [2], and Ethiopia alone harbors more than 50% of the worldwide burden [3], [4]. Within Ethiopia, Tigray Region is among the hardest hit, with a region-wide TF prevalence of 26.1% and trichiasis rates far exceeding the WHO elimination threshold [5], yet these predominantly rural communities have the least access to specialized ophthalmic screening. The WHO targets global elimination by 2030 [6], underscoring the need for scalable, technology-driven screening tools. 
+
+> arXiv:2603.06885v1 [cs.CV] 6 Mar 2026
+
+Clinical grading suffers from inter-grader variability and is not auditable [7]. Deep learning approaches show promise [7]– [11], but are hampered by scarce public datasets and no standardized preprocessing for ROI extraction. No publicly available preprocessed trachoma dataset has originated from Sub-Saharan Africa. Raw eyelid photographs contain background clutter (gloved fingers, skin, variable lighting; Fig. 2). Prior work used manual cropping [7], skin-color classifiers [12], or SAM point prompts [9], [13], but none released their preprocessing pipeline. In this paper, we present OPTED, an open-source prepro-cessed trachoma eye dataset and a fully reproducible prepro-cessing pipeline built on SAM 3 [14], the latest generation of Meta’s Segment Anything Model. Our key contributions are: 1) A systematic text-prompt evaluation for SAM 3, com-paring five prompts across 2,832 images to identify the optimal segmentation prompt. 2) A complete, open-source four-step preprocessing pipeline (zero-shot segmentation, background removal, alignment, Lanczos resizing). 3) The OPTED dataset: preprocessed trachoma images in two formats (cropped/aligned and 224 × 224 ), with all code and artifacts for full reproducibility. II. R ELATED WORK 
+
+Despite the significant public health burden of trachoma, publicly available image datasets for automated classification remain extremely scarce. To our knowledge, no open-source preprocessed trachoma dataset with accompanying code has been released, and none of the existing datasets originate from Sub-Saharan Africa, the region bearing the vast majority of the disease burden. The few trachoma image collections reported in the literature are typically proprietary or study-specific and vary widely in size and preprocessing methodology. Kim et al. [7] used 1,656 images preprocessed via skin-color classification and Gabor-filter rotation ( 128 × 128 ), achieving 
+
+κ = 0 .44 /0.69 for TF/TI. Socia et al. [8] trained ResNet101 on 2,300 images; Yenegeta and Assabie [15] proposed Tra-chomaNet for scarring categories (97.9% accuracy). Pan et al. [9] applied SAM with point prompts for ROI extraction at 
+
+224 ×224 , showing 6%/12% improvements for TF/TI. Zewudie et al. [10] proposed feature-map quantification, and Joye et al. [11] trained a deep CNN on Ethiopian field images. In all cases, datasets were not released and preprocessing was described only as a secondary methodological detail. The Segment Anything Model (SAM) [13], trained on over 1 billion masks from 11 million images, introduced a foundation model approach to image segmentation supporting point, box, and text prompts for zero-shot segmentation. SAM 3 [14] extends this with improved open-vocabulary text-prompt segmentation, enabling users to specify target regions using natural language descriptions. The literature shows convergence toward 224 × 224 pixel inputs [9], [10], while Lanczos interpolation is preferred for medical images [16]. OPTED differs from prior work in three respects: it is the first publicly available preprocessed trachoma dataset originating from Sub-Saharan Africa; it provides images in two formats (cropped/aligned and 224 × 224 ); and the entire pipeline is released as open-source code. III. D ATASET AND METHODS 
+
+A. Source Data 
+
+The source dataset is a multi-country trachoma image col-lection provided by Tropical Data (https://www.tropicaldata. org), a global initiative that supports countries in conducting standardized trachoma prevalence surveys following WHO methodologies. The collection aggregates images from seven field studies spanning six countries: the Solomon Islands (2015), Ethiopia (Amhara Region, TANA II study, 2011), Tan-zania (2006 and 2022), Australia (2022), The Gambia (PRET, 2010), and Colombia/Guatemala/Paraguay. The collection to-tals 2,963 raw eyelid photographs divided into three classes: Normal (healthy eyes), TF (trachomatous inflammation, follic-ular), and TI (trachomatous inflammation, intense). Of these, 2,832 have known labels assigned by certified graders using the WHO simplified trachoma grading system [17]; the re-maining images carry ambiguous or missing annotations and are excluded. Images were captured using digital cameras with resolutions ranging from 3008 × 2000 to 4288 × 2848 
+
+pixels in JPEG format. Each image depicts an everted upper eyelid exposing the tarsal conjunctiva, the tissue surface where trachoma signs (follicles, inflammation) are clinically assessed (Fig. 8). 
+
+a) Ethical considerations: The source images were col-lected by Tropical Data under ethically approved survey pro-tocols in each participating country, with informed consent obtained from subjects (or guardians for minors) in accordance with local institutional review board requirements. All images are de-identified eyelid photographs containing no personally identifiable information. The dataset was obtained under a data use agreement with Tropical Data. We release the preprocessed derivatives (cropped and resized regions of interest) under the same ethical framework as the original collection. 
+
+B. Preprocessing Pipeline Overview 
+
+Our pipeline transforms raw photographs into standardized, ML-ready images through four per-image processing steps (Fig. 2; see also Fig. 5 for step-by-step examples): 1) SAM 3 segmentation: generate a binary mask of the tarsal conjunctiva using text-prompt-based segmentation. 2) Background removal and cropping: apply the mask to remove background, compute the bounding box, and crop with 5% padding. 3) Alignment: orient images so the longest axis is horizon-tal. 4) Resize: scale to 224 × 224 pixels using Lanczos inter-polation. A preceding prompt-selection stage (Section III-D), per-formed once on the full dataset, identifies the optimal text prompt through systematic multi-prompt comparison. After pipeline execution, a manual quality assurance review verifies segmentation accuracy and flags any failed images for fallback processing (Section IV-B). 
+
+C. SAM 3 Text-Prompt Segmentation 
+
+We use SAM 3 [14] in a zero-shot setting, meaning no fine-tuning or task-specific training is performed; the model is applied directly using only a text prompt. SAM 3 is a 848M-parameter open-vocabulary segmentation model that can segment objects specified by natural language descriptions, which is particularly valuable for anatomical structures that do not correspond to standard object categories. For each image, the SAM 3 processor generates one or more candidate masks with associated confidence scores. We select the highest-scoring mask and apply a per-pixel binary threshold of 0.5 to produce the final mask. A separate per-image confidence threshold of 0.3 is used for quality control: images where no mask is detected or the highest confidence score falls below this threshold are flagged for manual review. 
+
+D. Prompt Selection 
+
+A critical design choice in text-prompt segmentation is the prompt itself. Medical terminology (e.g., “everted eyelid conjunctiva”, “conjunctiva”) produced zero masks in prelimi-nary testing, as SAM 3’s training data predominantly contains visual rather than clinical descriptions. We therefore focused on visually descriptive prompts. We evaluated five candidate prompts on all 2,832 known-label images in the dataset. For each prompt, we measured five metrics: detection rate (percentage of images where SAM 3 returned at least one mask), number of missed images (no valid mask produced), mean confidence score (average of the highest mask score across detected images), score standard deviation (consistency across images), and mask area ratio (percentage of total image pixels covered by the mask). Table I summarizes the results. The combined prompt “inner surface of eyelid with red tissue” achieved the highest mean confidence score (0.873), the lowest standard deviation (0.069), and the largest mask area (29.8%) across the full dataset, making it the most confident, consistent, and complete prompt. Although it missed 13 images (99.5% detection), all misses were recovered by a fallback prompt selection step that tries the remaining prompts in order of confidence. The larger mask area was confirmed through visual inspection to correspond to more complete coverage of the tarsal conjunctiva, including peripheral tissue regions missed by shorter prompts. “Red lining inside eyelid” performed worst, missing 36 images and scoring only 0.737 mean confidence. The selected prompt is “inner surface of eyelid with red tissue.” We note that the prompt was selected based on perfor-mance across the entire dataset rather than a held-out subset; since no model parameters are updated, and only a fixed text description is chosen, we consider this methodologically acceptable for a preprocessing step. Fig. 4 summarizes the quantitative comparison, and Fig. 3 provides representative segmentation masks from each prompt. 
+
+E. Background Removal and Cropping 
+
+Given the selected prompt, each image is processed as follows: 1) The SAM 3 mask is binarized (threshold = 0.5) and resized to match the original image dimensions using nearest-neighbor interpolation. 2) Background pixels (where mask = 0) are set to black (RGB 0, 0, 0), chosen to maximize contrast with the typically reddish-pink conjunctival tissue. 3) The axis-aligned bounding box of the mask is computed. Fig. 2. Overview of the OPTED preprocessing pipeline. Raw eyelid photographs are processed through SAM 3 text-prompt segmentation, background removal, bounding-box cropping with 5% padding, horizontal alignment, and Lanczos resizing to 224 × 224 pixels. 
+
+> Fig. 3. Visual comparison of SAM 3 masks from the five candidate prompts on three sample images (two Normal, one Trachoma). Blue overlay indicates the predicted mask; yellow contours delineate boundaries. The selected prompt P5 (green border) provides the most complete coverage of the tarsal conjunctiva.
+
+4) The image is cropped to the bounding box with 5% padding on each side, clamped to image boundaries. 
+
+F. Alignment 
+
+Cropped images are oriented so the longest axis is hor-izontal. If the crop height exceeds the crop width (portrait orientation), the image is rotated 90 ◦ counter-clockwise. This standardization ensures consistent spatial layout across the dataset. 
+
+G. Resizing with Lanczos Interpolation 
+
+Final images are resized to 224 × 224 pixels using Lanczos interpolation [16]. This size was chosen for compatibility with standard pre-trained architectures (ResNet, ViT, Xception) that expect square inputs, consistent with the approach used in recent trachoma classification literature [9], [10]. We evaluated four interpolation methods on our cropped eyelid images: nearest neighbor, bilinear, bicubic, and Lanczos (Fig. 6). Lanczos achieved the highest PSNR (39.16 dB) and SSIM (0.9713), followed by bicubic (38.42 dB / 0.9681), TABLE I: Prompt comparison across all 2,832 known-label images. Prompt Det. Miss Score Std Area red tissue inside eye 99.8% 6 0.853 0.069 28.2% inner surface of eyelid >99.9% 1 0.846 0.080 24.0% red lining inside eyelid 98.7% 36 0.737 0.076 26.7% membrane under eyelid 99.5% 14 0.805 0.082 26.3% 
+
+inner surface of eyelid with red tissue 99.5% 13 0.873 0.069 29.8% 
+
+> Fig. 4. Radar chart comparing the five candidate prompts across five metrics: detection rate, mean confidence, consistency (1 – std), mask area ratio, and fewest misses. The winning prompt P5 (“inner surface of eyelid with red tissue”) dominates on confidence, consistency, and mask coverage.
+
+bilinear (37.18 dB / 0.9623), and nearest neighbor (33.91 dB / 0.9412), confirming the best preservation of fine tissue details such as follicles and vascular patterns, which are critical features for trachoma classification. Direct square resizing introduces some aspect ratio distor-tion (typical crops are 2.5:1 to 3.3:1), but this is standard in trachoma literature [7], [9], [10]; Pan et al. [9] found that square 224 × 224 with pre-trained ResNet50 outperformed native-ratio resizing. IV. OPTED D ATASET 
+
+A. Dataset Statistics 
+
+The full pipeline was applied to 2,832 known-label images, successfully processing all of them after combining primary and fallback prompts. Table II summarizes the per-class statis-tics. TABLE II: OPTED dataset statistics. Normal TF TI Processed images 2,487 324 21 Mean confidence 0.870 0.888 0.902 †
+
+Final image size 224 × 224 × 3
+
+Format PNG 
+
+> †Based on 21 images.
+
+B. Quality Assurance 
+
+Images where SAM 3 returns no mask or a confidence score below 0.3 are excluded. The primary prompt failed on 13 of 2,832 images (all Normal-class), recovered using fallback prompts. All outputs were manually reviewed. The overall mean confidence is 0.872 (std = 0 .070 ), ranging from 0.502 to 0.971. TI images achieve the highest mean (0.902), followed by TF (0.888) and Normal (0.870). Fig. 9 shows the distribution. 
+
+C. Provided Splits 
+
+The dataset includes a stratified train/validation/test split (Table III) with an approximate 70/15/15 ratio, preserving the class distribution across partitions. All TI images are included despite their scarcity (21 total). The split file is provided so that researchers can compare results on the same test set. TABLE III: Train/validation/test split by class. Train Val Test Total Normal 1,741 373 373 2,487 TF 227 49 48 324 TI 15 3 3 21 Total 1,983 425 424 2,832 V. U SAGE AND REPRODUCIBILITY 
+
+A. Data Availability and Intended Use 
+
+The OPTED dataset, all preprocessing scripts, prompt com-parison results, and visual inspection outputs are publicly available at: Fig. 5. Step-by-step visualization of the OPTED pipeline on three sample images (two Normal, one Trachoma). From left to right: raw photograph, SAM 3 mask overlay, background removed, bounding-box crop with horizontal alignment, and final 224 × 224 output. 
+
+Fig. 6. PSNR and SSIM comparison of four interpolation methods for resizing cropped eyelid images to 224 × 224 . Lanczos achieves the highest PSNR (39.16 dB) and SSIM (0.9713), indicating best preservation of fine tissue detail. 
+
+OPTED Dataset The dataset is released under CC-BY-NC 4.0 (non-commercial use); code under MIT license. OPTED is intended for training and evaluating trachoma classification models (Normal vs. TF vs. TI). 
+
+B. Reproducing the Pipeline 
+
+The pipeline requires Python 3.12+, PyTorch 2.7+ with CUDA, the SAM 3 checkpoint (848M parameters, 3.45 GB), and a HuggingFace access token. A setup script and step-by-step instructions are included. On an NVIDIA RTX 2000 
+
+Fig. 7. Class distribution of the OPTED dataset, showing the breakdown into Normal, TF (trachomatous inflammation, follicular), and TI (trachomatous inflammation, intense) categories. Fig. 8. Representative samples from the final OPTED dataset ( 224 × 224 pixels). Top row: Normal (healthy conjunctiva). Middle row: TF (trachomatous inflammation, follicular). Bottom row: TI (trachomatous inflammation, intense). 
+
+Ada GPU (8 GB VRAM), the full pipeline processes all 2,832 images in approximately one hour ( ≈1.3 s per image). VI. L IMITATIONS AND FUTURE WORK 
+
+The pipeline relies on SAM 3’s confidence scores as a segmentation quality proxy; expert validation using IoU/Dice metrics is planned as future work. We do not compare against alternative segmentation methods (e.g., SAM 2 point prompts [9] or U-Net), as the goal is a reproducible open-source pipeline rather than a segmentation benchmark. Inter-grader agreement statistics are not available; grading was performed by WHO-certified assessors following standardized protocols. The dataset exhibits substantial class imbalance: TI accounts for only 21 of 2,832 samples (0.7%), with only 3 TI images in the test set; researchers should consider cross-validation for TI evaluation. The 13 fallback images exhibited blur (4), partial eversion (5), or finger occlusion (4), suggesting that confidence-aware fallback mechanisms are needed in production pipelines. VII. C ONCLUSION 
+
+We presented OPTED, an open-source preprocessed tra-choma eye dataset and accompanying pipeline built on SAM 3 text-prompt segmentation. To our knowledge, the first publicly available preprocessed trachoma dataset originating from a multi-country collection that includes Sub-Saharan African field studies, the region bearing the majority of the global dis-ease burden. The systematic prompt evaluation demonstrates that purely visual descriptions outperform clinical terminology Fig. 9. Distribution of SAM 3 confidence scores across the full dataset, separated by class. Dashed lines indicate per-class means. Trachoma images achieve slightly higher confidence due to the visually distinct inflamed tissue. 
+
+when used with vision-language foundation models, a prelimi-nary observation that may have implications for other medical image segmentation tasks and warrants further investigation. The complete dataset of 2,832 images, stratified train/validation/test splits, preprocessing code, prompt comparison artifacts, and all intermediate outputs are released at OPTED Dataset. We invite the research community to build on this foundation by benchmarking classification architectures on the provided splits, extending the pipeline to additional imaging modalities, and contributing new images to address the persistent class imbalance in TI, toward the WHO’s goal of eliminating trachoma as a public health problem by 2030. ACKNOWLEDGEMENTS 
+
+The authors gratefully acknowledge Dr. Yonas Mitku, Di-rector of the Eye Center at Quiha Central Hospital, and the Tropical Data team for their invaluable cooperation. Their clinical expertise and willingness to make the data openly available were essential to the creation of OPTED. REFERENCES [1] World Health Organization, “Trachoma: Key facts,” WHO, Nov. 2025. [Online]. Available: https://www.who.int/news-room/fact-sheets/detail/ trachoma [2] A. W. Solomon et al. , “Trachoma,” Nat. Rev. Dis. Primers , vol. 8, no. 32, pp. 1–18, 2022. [3] A. R. Last et al. , “Cluster randomised controlled trial of double-dose azithromycin mass drug administration, facial cleanliness and fly control measures for trachoma control in Oromia, Ethiopia: The Stronger SAFE trial protocol,” BMJ Open , vol. 14, no. 12, p. e084478, 2024. [4] M. J. Burton and D. C. W. Mabey, “The global burden of trachoma: a review,” PLoS Negl. Trop. Dis. , vol. 3, no. 10, p. e460, 2009. [5] S. T. Sherief, C. Macleod, G. Gigar, H. Godefay, A. Abraha, M. Dejene, and A. W. Solomon, “The prevalence of trachoma in Tigray Region, Northern Ethiopia: Results of 11 population-based prevalence surveys completed as part of the Global Trachoma Mapping Project,” Oph-thalmic Epidemiol. , vol. 23, no. sup1, pp. 94–99, 2016. [6] World Health Organization, “Ending the neglect to attain the Sustainable Development Goals: A road map for neglected tropical diseases 2021– 2030,” WHO, 2021. [7] M. C. Kim et al. , “Sensitivity and specificity of computer vision classi-fication of eyelid photographs for programmatic trachoma assessment,” 
+
+PLoS ONE , vol. 14, no. 2, pp. 1–12, 2019. [8] D. Socia, C. J. Brady, S. K. West, and R. C. Cockrell, “Detection of trachoma using machine learning approaches,” PLoS Negl. Trop. Dis. ,vol. 16, pp. 1–15, 2022. [9] Y. Pan, W. Lan, and B. Xu, “Active trachoma: enhancing image classification using pretrained SOTA models and explainable AI,” Front. Bacteriol. , vol. 3, p. 1333641, 2024. [10] M. S. Zewudie, S. Xiong, X. Yu, and X. Wu, “Feature map quantifi-cation: An efficient approach for active trachoma image classification,” 
+
+Comput. Biol. Med. , 2025. [11] A. S. Joye et al. , “Computer vision identification of trachomatous inflammation–follicular using deep learning,” Cornea , vol. 44, no. 5, pp. 613–618, 2025. [12] S. L. Phung, A. Bouzerdoum, and D. Chai, “Skin segmentation using color pixel classification: analysis and comparison,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 27, no. 1, pp. 148–154, 2005. [13] A. Kirillov et al. , “Segment anything,” arXiv preprint arXiv:2304.02643 ,2023. [14] N. Carion, L. Gustafson, Y.-T. Hu, S. Debnath, R. Hu, D. Sur´ ıs, C. Ryali, K. V. Alwala, H. Khedr et al. , “SAM 3: Segment Anything with Concepts,” arXiv preprint arXiv:2511.16719 , 2025. [15] B. Yenegeta and Y. Assabie, “TrachomaNet: Detection and grading of trachoma using texture feature based deep convolutional neural network,” Multimed. Tools Appl. , vol. 82, pp. 4209–4234, 2023. [16] K. Turkowski, “Filters for common resampling tasks,” in Graphics Gems , A. S. Glassner, Ed. Academic Press, 1990, pp. 147–165. [17] B. Thylefors, C. R. Dawson, B. R. Jones, S. K. West, and H. R. Taylor, “A simple system for the assessment of trachoma and its complications,” 
+
+Bull. World Health Organ. , vol. 65, no. 4, pp. 477–483, 1987.
