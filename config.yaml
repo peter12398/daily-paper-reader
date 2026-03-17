@@ -64,3 +64,52 @@ subscriptions:
           source: manual
           note: ''
       updated_at: '2026-03-10T22:02:20.224Z'
+    - tag: FM-Diff-MedSeg
+      description: 基础模型+扩散模型+多模态医学影像合成+分割联合学习
+      enabled: true
+      keywords:
+        - keyword: joint synthesis and segmentation
+          keyword_cn: 合成与分割联合学习
+          query: joint synthesis and segmentation ｜ 合成与分割联合学习
+        - keyword: cross-modal synthesis
+          keyword_cn: 跨模态合成
+          query: cross-modal synthesis ｜ 跨模态合成
+        - keyword: latent diffusion model
+          keyword_cn: 潜空间扩散模型
+          query: latent diffusion model ｜ 潜空间扩散模型
+        - keyword: representation learning
+          keyword_cn: 表征学习
+          query: R
+        - keyword: multi-modal medical imaging
+          keyword_cn: 多模态医学图像
+          query: m
+        - keyword: foundation model
+          keyword_cn: 基础模型
+          query: f
+        - keyword: medical image segmentation
+          keyword_cn: 医学图像分割
+          query: m
+        - keyword: diffusion  model
+          keyword_cn: 扩散模型
+          query: d
+      intent_queries:
+        - query: >-
+            using pretrained representation models or foundation encoders in diffusion models for medical image
+            translation and segmentation
+          query_cn: 使用预训练表征模型或基础编码器的扩散模型，用于医学图像翻译与分割
+          enabled: true
+          source: manual
+          note: ''
+        - query: latent diffusion for CT MR cross modal synthesis with segmentation guidance in medical imaging
+          query_cn: 用于医学影像 CT MR 跨模态合成并带分割引导的潜空间扩散模型
+          enabled: true
+          source: manual
+          note: ''
+        - query: >-
+            diffusion models for multimodal medical image synthesis with joint segmentation using foundation or
+            representation models
+          query_cn: 基于基础模型或表征模型的扩散方法，用于多模态医学图像合成并联合分割
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-03-17T14:26:25.592Z'
