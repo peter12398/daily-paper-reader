@@ -26,44 +26,6 @@ subscriptions:
     diff_threshold_pct: 15
   keyword_recall_mode: or
   intent_profiles:
-    - tag: MED FM
-      description: Foundation models（尤其是DINOv3相关）在医学图像分割领域应用的相关论文
-      enabled: true
-      keywords:
-        - keyword: DINOv3
-          keyword_cn: DINOv3 基础模型
-          query: DINOv3 foundation model architecture and features
-        - keyword: Foundation models
-          keyword_cn: 视觉基础模型
-          query: Vision foundation models for medical imaging
-        - keyword: Medical image segmentation
-          keyword_cn: 医学图像分割
-          query: Deep learning for medical image segmentation tasks
-        - keyword: DINOv2 medical
-          keyword_cn: DINO系列医学应用
-          query: Applications of DINOv2 and DINOv3 in healthcare
-      intent_queries:
-        - query: Recent advances in DINOv3 for medical image analysis
-          query_cn: DINOv3在医学图像分析中的最新进展
-          enabled: true
-          source: manual
-          note: ''
-        - query: Adapting vision foundation models for medical image segmentation
-          query_cn: 视觉基础模型在医学图像分割中的适配研究
-          enabled: true
-          source: manual
-          note: ''
-        - query: Performance of DINOv3 in clinical image segmentation benchmarks
-          query_cn: DINOv3在临床图像分割基准测试中的表现
-          enabled: true
-          source: manual
-          note: ''
-        - query: Comparison of DINOv3 and other foundation models in medical tasks
-          query_cn: DINOv3与其他基础模型在医学任务中的对比
-          enabled: true
-          source: manual
-          note: ''
-      updated_at: '2026-03-10T22:02:20.224Z'
     - tag: FM-Diff-MedSeg
       description: 基础模型+扩散模型+多模态医学影像合成+分割联合学习
       enabled: true
